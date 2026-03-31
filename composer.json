@@ -16,6 +16,11 @@
       "src/Helpers/helpers.php"
     ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "W4\\UiFramework\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "Francisco J. Morales", 
@@ -28,6 +33,10 @@
         "php": "^8.3",
         "composer/installers": "^2.0",
         "laravel/framework": "^13.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^11.0",
+        "phpunit/phpunit": "^11.0"
     },
     "extra": {
         "laravel": {
@@ -46,6 +55,9 @@
         "allow-plugins": {
             "composer/installers": true
         }
+    },
+    "scripts": {
+        "test": "phpunit --colors=always"
     },
     "minimum-stability": "stable",
     "prefer-stable": true

@@ -4,6 +4,10 @@ namespace W4\UiFramework\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use W4\UiFramework\Components\Button\Button;
+use W4\UiFramework\Components\Input\Input;
+use W4\UiFramework\Core\ComponentFactory;
+use W4\UiFramework\Core\ComponentRegistry;
 use W4\UiFramework\Core\RendererPipeline;
 use W4\UiFramework\Core\RuntimeRenderer;
 use W4\UiFramework\Core\ThemeResolverPipeline;
@@ -20,9 +24,21 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../../config/w4-ui-framework.php',
-            'w4-ui-framework'
+            __DIR__ . '/../../config/w4_ui_framework.php',
+            'w4_ui_framework'
         );
+
+        $this->app->singleton(ComponentRegistry::class, function () {
+            return (new ComponentRegistry())
+                ->register('button', Button::class)
+                ->register('input', Input::class);
+        });
+
+        $this->app->singleton(ComponentFactory::class, function ($app) {
+            return new ComponentFactory(
+                $app->make(ComponentRegistry::class)
+            );
+        });
 
         $this->app->singleton(ThemeManager::class, function () {
             $manager = new ThemeManager();
@@ -75,7 +91,7 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../../config/w4-ui-framework.php' => config_path('w4-ui-framework.php'),
+            __DIR__ . '/../../config/w4_ui_framework.php' => config_path('w4_ui_framework.php'),
         ], 'w4-ui-config');
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'w4-ui');
