@@ -2,6 +2,7 @@
 
 namespace W4\UiFramework\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use W4\UiFramework\Core\RendererPipeline;
 use W4\UiFramework\Core\RuntimeRenderer;
@@ -12,6 +13,7 @@ use W4\UiFramework\Renderers\BladeRenderer;
 use W4\UiFramework\Support\W4UiManager;
 use W4\UiFramework\Themes\Bootstrap\BootstrapTheme;
 use W4\UiFramework\Themes\DaisyUI\DaisyTheme;
+use W4\UiFramework\View\Components\Render as RenderComponent;
 
 class W4UiFrameworkServiceProvider extends ServiceProvider
 {
@@ -77,5 +79,7 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
         ], 'w4-ui-config');
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'w4-ui');
+
+        Blade::component('w4-render', RenderComponent::class);
     }
 }
