@@ -45,7 +45,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
 
         $this->assertArrayHasKey('w4-render', $aliases);
         $this->assertSame(Render::class, $aliases['w4-render']);
-        $this->assertTrue($this->app->make('view')->exists('w4-ui::button'));
+        $this->assertTrue($this->app->make('view')->exists('w4-ui::components.ui.button'));
     }
 
     public function test_publishes_config_file_to_expected_target(): void

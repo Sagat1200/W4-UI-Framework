@@ -10,4 +10,4 @@
     }
 @endphp
 
-{!! app(\W4\UIFramework\Support\W4UIManager::class)->render($instance, $renderer) !!}
+{!! app(\W4\UiFramework\Support\W4UiManager::class)->render($instance, $renderer) !!}
