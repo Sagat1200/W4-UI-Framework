@@ -204,6 +204,46 @@ $payload = W4Ui::payload($input);
 
 `payload` retorna datos normalizados (`renderer`, `view`, `data`, `theme`) para inspección o bridges.
 
+### 4.6 Ejemplo de uso dentro de un controlador Laravel
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Contracts\View\View;
+use W4\UiFramework\Components\UI\Input\Input;
+use W4\UiFramework\Components\UI\Input\InputComponentState;
+use W4\UiFramework\Facades\W4Ui;
+
+class ProfileController extends Controller
+{
+    public function edit(): View
+    {
+        $emailInput = Input::make('Correo')
+            ->name('email')
+            ->id('input-email')
+            ->type('email')
+            ->placeholder('correo@dominio.com')
+            ->state(InputComponentState::ENABLED);
+
+        return view('profile.edit', [
+            'emailInputHtml' => W4Ui::render($emailInput),
+        ]);
+    }
+}
+```
+
+En la vista `resources/views/profile/edit.blade.php`:
+
+```blade
+<form method="POST" action="{{ route('profile.update') }}">
+    @csrf
+    @method('PUT')
+    {!! $emailInputHtml !!}
+</form>
+```
+
 ## 5. 🔧 Personalización por atributo y tema
 
 Ejemplo con DaisyUI, estado inválido y clases extra:

@@ -170,6 +170,44 @@ $payload = W4Ui::payload($button);
 
 `payload` devuelve la estructura normalizada (`renderer`, `view`, `data`, `theme`) útil para inspección o bridges.
 
+### 4.6 Ejemplo de uso dentro de un controlador Laravel
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Contracts\View\View;
+use W4\UiFramework\Components\UI\Button\Button;
+use W4\UiFramework\Facades\W4Ui;
+
+class CheckoutController extends Controller
+{
+    public function create(): View
+    {
+        $submitButton = Button::make('Finalizar compra')
+            ->name('checkout_submit')
+            ->id('btn-checkout-submit')
+            ->primary()
+            ->lg()
+            ->attribute('type', 'submit');
+
+        return view('checkout.create', [
+            'submitButtonHtml' => W4Ui::render($submitButton),
+        ]);
+    }
+}
+```
+
+En la vista `resources/views/checkout/create.blade.php`:
+
+```blade
+<form method="POST" action="{{ route('checkout.store') }}">
+    @csrf
+    {!! $submitButtonHtml !!}
+</form>
+```
+
 ## 5. 🔧 Personalización por atributo y tema
 
 Ejemplo con tema DaisyUI por componente:
