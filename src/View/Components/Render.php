@@ -16,7 +16,7 @@ class Render extends Component
 
     public function render(): View
     {
-        return view('w4-ui::components.render');
+        return view('w4-ui::components.blade.render');
     }
 
     public function html(): string
