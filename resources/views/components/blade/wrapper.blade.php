@@ -1,5 +1,3 @@
-{{-- {!! $html() !!} --}}
-
 @php
     $instance = $component();
 
@@ -9,5 +7,6 @@
         $instance->attributes($extraAttributes);
     }
 @endphp
+{{-- {!! $html() !!} --}}
 
 {!! app(\W4\UiFramework\Support\W4UiManager::class)->render($instance, $renderer) !!}
