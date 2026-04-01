@@ -26,7 +26,7 @@ abstract class BaseW4BladeComponent extends Component
      */
     public function render(): View
     {
-        return view('w4-ui::components.blade.wrapper');
+        return view('w4-ui::components.wrapper');
     }
 
     /**

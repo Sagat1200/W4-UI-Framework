@@ -19,8 +19,8 @@ use W4\UiFramework\Themes\Bootstrap\BootstrapTheme;
 use W4\UiFramework\Themes\DaisyUI\DaisyTheme;
 use W4\UiFramework\View\Components\Render as RenderComponent;
 // Componentes w4-component
-use W4\UIFramework\View\Components\UI\Button as ButtonBladeComponent;
-use W4\UIFramework\View\Components\UI\Input as InputBladeComponent;
+use W4\UiFramework\View\Components\UI\Button as ButtonBladeComponent;
+use W4\UiFramework\View\Components\UI\Input as InputBladeComponent;
 
 class W4UiFrameworkServiceProvider extends ServiceProvider
 {
@@ -95,7 +95,7 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../../config/w4_ui_framework.php' => config_path('w4_ui_framework.php'),
-        ], 'w4-ui-config');
+        ], 'w4-ui-config'); // php artisan vendor:publish --tag=w4-ui-config --path=config/w4_ui_framework.php
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'w4-ui');
 
