@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Tests;
 
 use W4\UiFramework\Components\UI\Button\Button;
+use W4\UiFramework\Components\UI\Button\ButtonComponentEvent;
 use W4\UiFramework\Components\UI\Input\Input;
 use W4\UiFramework\Core\ComponentFactory;
 use W4\UiFramework\Core\ComponentRegistry;
@@ -10,6 +11,7 @@ use W4\UiFramework\Managers\RendererManager;
 use W4\UiFramework\Managers\ThemeManager;
 use W4\UiFramework\Providers\W4UiFrameworkServiceProvider;
 use W4\UiFramework\View\Components\Render;
+use W4\UiFramework\View\Components\UI\Button as ButtonBladeComponent;
 
 class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
 {
@@ -66,5 +68,66 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         });
 
         $this->assertIsString($matchedSource);
+    }
+
+    public function test_button_state_machine_affects_resolved_theme_classes(): void
+    {
+        $daisyButton = Button::make('Guardar')
+            ->theme('daisyui')
+            ->dispatch(ButtonComponentEvent::SET_ACTIVE);
+
+        $daisyPayload = $this->app->make('w4.ui')->payload($daisyButton);
+
+        $this->assertSame('active', $daisyPayload['data']['state']);
+        $this->assertStringContainsString('btn-active', $daisyPayload['theme']['classes']['root']);
+        $this->assertSame('true', $daisyPayload['theme']['attributes']['aria-pressed']);
+
+        $bootstrapButton = Button::make('Guardar')
+            ->theme('bootstrap')
+            ->dispatch(ButtonComponentEvent::SET_ACTIVE);
+
+        $bootstrapPayload = $this->app->make('w4.ui')->payload($bootstrapButton);
+
+        $this->assertStringContainsString('active', $bootstrapPayload['theme']['classes']['root']);
+        $this->assertSame('true', $bootstrapPayload['theme']['attributes']['aria-pressed']);
+    }
+
+    public function test_blade_button_maps_state_props_to_state_machine_events(): void
+    {
+        $activeBladeButton = new ButtonBladeComponent(
+            label: 'Guardar',
+            theme: 'daisyui',
+            active: true
+        );
+
+        $activePayload = $this->app->make('w4.ui')->payload($activeBladeButton->component());
+
+        $this->assertSame('active', $activePayload['data']['state']);
+        $this->assertStringContainsString('btn-active', $activePayload['theme']['classes']['root']);
+        $this->assertSame('true', $activePayload['theme']['attributes']['aria-pressed']);
+
+        $readonlyBladeButton = new ButtonBladeComponent(
+            label: 'Guardar',
+            theme: 'bootstrap',
+            readonly: true
+        );
+
+        $readonlyPayload = $this->app->make('w4.ui')->payload($readonlyBladeButton->component());
+
+        $this->assertSame('readonly', $readonlyPayload['data']['state']);
+        $this->assertTrue($readonlyPayload['theme']['attributes']['disabled']);
+        $this->assertSame('true', $readonlyPayload['theme']['attributes']['aria-disabled']);
+
+        $loadingHasPriorityBladeButton = new ButtonBladeComponent(
+            label: 'Guardar',
+            loading: true,
+            disabled: true,
+            readonly: true,
+            active: true
+        );
+
+        $loadingPayload = $this->app->make('w4.ui')->payload($loadingHasPriorityBladeButton->component());
+
+        $this->assertSame('loading', $loadingPayload['data']['state']);
     }
 }

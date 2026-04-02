@@ -2,8 +2,11 @@
 
 namespace W4\UiFramework\Components\UI\Button;
 
+use InvalidArgumentException;
 use W4\UiFramework\Components\UI\Button\ButtonComponentState;
+use W4\UiFramework\Components\UI\Button\ButtonComponentEvent;
 use W4\UiFramework\Components\UI\Button\ButtonInteractState;
+use W4\UiFramework\Components\UI\Button\ButtonStateMachine;
 use W4\UiFramework\Core\BaseComponent;
 use W4\UiFramework\Support\Traits\InteractsWithSize;
 use W4\UiFramework\Support\Traits\InteractsWithState;
@@ -18,6 +21,7 @@ class Button extends BaseComponent
     protected ?string $icon = null;
 
     protected ButtonInteractState $interactState;
+    protected ButtonStateMachine $stateMachine;
 
     public function __construct()
     {
@@ -27,6 +31,7 @@ class Button extends BaseComponent
         $this->size = 'md';
         $this->state = ButtonComponentState::ENABLED;
         $this->interactState = new ButtonInteractState();
+        $this->stateMachine = new ButtonStateMachine();
     }
 
     public function componentName(): string
@@ -54,6 +59,75 @@ class Button extends BaseComponent
         $this->interactState = $state;
 
         return $this;
+    }
+
+    public function can(ButtonComponentEvent $event): bool
+    {
+        return $this->stateMachine->canTransition($this->currentState(), $event);
+    }
+
+    public function dispatch(ButtonComponentEvent $event): static
+    {
+        $this->state($this->stateMachine->transition($this->currentState(), $event));
+
+        return $this;
+    }
+
+    public function click(): static
+    {
+        return $this->dispatch(ButtonComponentEvent::CLICK);
+    }
+
+    public function disable(): static
+    {
+        return $this->dispatch(ButtonComponentEvent::DISABLE);
+    }
+
+    public function enable(): static
+    {
+        return $this->dispatch(ButtonComponentEvent::ENABLE);
+    }
+
+    public function startLoading(): static
+    {
+        return $this->dispatch(ButtonComponentEvent::START_LOADING);
+    }
+
+    public function finishLoading(): static
+    {
+        return $this->dispatch(ButtonComponentEvent::FINISH_LOADING);
+    }
+
+    public function setReadonly(): static
+    {
+        return $this->dispatch(ButtonComponentEvent::SET_READONLY);
+    }
+
+    public function setActive(): static
+    {
+        return $this->dispatch(ButtonComponentEvent::SET_ACTIVE);
+    }
+
+    public function resetState(): static
+    {
+        return $this->dispatch(ButtonComponentEvent::RESET);
+    }
+
+    protected function currentState(): ButtonComponentState
+    {
+        if ($this->state instanceof ButtonComponentState) {
+            return $this->state;
+        }
+
+        if (is_string($this->state)) {
+            try {
+                return ButtonComponentState::from($this->state);
+            } catch (\ValueError) {
+                throw new InvalidArgumentException("Estado de botón inválido [{$this->state}]");
+            }
+        }
+
+        throw new InvalidArgumentException('El estado actual del botón no es válido.');
     }
 
     public function toThemeContext(): array

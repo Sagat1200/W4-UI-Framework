@@ -3,7 +3,7 @@
 namespace W4\UiFramework\View\Components\UI;
 
 use W4\UiFramework\Components\UI\Button\Button as ButtonComponent;
-use W4\UiFramework\Components\UI\Button\ButtonComponentState;
+use W4\UiFramework\Components\UI\Button\ButtonComponentEvent;
 use W4\UiFramework\Components\UI\Button\ButtonInteractState;
 use W4\UiFramework\Contracts\ComponentInterface;
 use W4\UiFramework\View\Components\BaseW4BladeComponent;
@@ -22,6 +22,8 @@ class Button extends BaseW4BladeComponent
         public ?string $icon = null,
         public bool $disabled = false,
         public bool $loading = false,
+        public bool $readonly = false,
+        public bool $active = false,
     ) {
         parent::__construct(
             id: $id,
@@ -46,11 +48,13 @@ class Button extends BaseW4BladeComponent
         }
 
         if ($this->loading) {
-            $button->state(ButtonComponentState::LOADING);
+            $button->dispatch(ButtonComponentEvent::START_LOADING);
         } elseif ($this->disabled) {
-            $button->state(ButtonComponentState::DISABLED);
-        } else {
-            $button->state(ButtonComponentState::ENABLED);
+            $button->dispatch(ButtonComponentEvent::DISABLE);
+        } elseif ($this->readonly) {
+            $button->dispatch(ButtonComponentEvent::SET_READONLY);
+        } elseif ($this->active) {
+            $button->dispatch(ButtonComponentEvent::SET_ACTIVE);
         }
 
         $button->interactState(new ButtonInteractState());

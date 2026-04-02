@@ -39,6 +39,10 @@ class ButtonThemeResolver implements ComponentThemeResolverInterface
             $classes->add('loading');
         }
 
+        if ($state === 'active') {
+            $classes->add('btn-active');
+        }
+
         if (! empty($context['attributes']['class'])) {
             $classes->merge($context['attributes']['class']);
         }
@@ -57,6 +61,7 @@ class ButtonThemeResolver implements ComponentThemeResolverInterface
             'type' => $userAttributes['type'] ?? 'button',
             'disabled' => in_array($state, ['disabled', 'loading', 'readonly'], true),
             'aria-disabled' => in_array($state, ['disabled', 'loading', 'readonly'], true) ? 'true' : 'false',
+            'aria-pressed' => $state === 'active' ? 'true' : 'false',
         ]);
     }
 }

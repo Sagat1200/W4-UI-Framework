@@ -11,7 +11,7 @@ class BladeRenderer extends AbstractRenderer
     {
         return [
             'renderer' => 'blade',
-            'view' => 'w4-ui::components.ui.' . $component->componentName(),
+            'view' => 'w4-ui::components.' . $component->componentName(),
             'component' => $component->componentName(),
             'data' => $component->toArray(),
             'theme' => $resolvedTheme,

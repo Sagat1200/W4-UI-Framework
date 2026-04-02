@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\View\Components\UI;
+namespace W4\UiFramework\View\Components\Forms;
 
-use W4\UiFramework\Components\UI\Input\Input as InputComponent;
-use W4\UiFramework\Components\UI\Input\InputComponentState;
-use W4\UiFramework\Components\UI\Input\InputInteractState;
+use W4\UiFramework\Components\Forms\Input\Input as InputComponent;
+use W4\UiFramework\Components\Forms\Input\InputComponentState;
+use W4\UiFramework\Components\Forms\Input\InputInteractState;
 use W4\UiFramework\Contracts\ComponentInterface;
 use W4\UiFramework\View\Components\BaseW4BladeComponent;
 
