@@ -123,7 +123,7 @@ class Button extends BaseComponent
             try {
                 return ButtonComponentState::from($this->state);
             } catch (\ValueError) {
-                throw new InvalidArgumentException("Estado de botón inválido [{$this->state}]");
+                throw new InvalidArgumentException('Estado de botón inválido [' . (string) $this->state . ']');
             }
         }
 

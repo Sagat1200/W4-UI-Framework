@@ -5,7 +5,7 @@ namespace W4\UiFramework\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use W4\UiFramework\Components\UI\Button\Button;
-use W4\UiFramework\Components\UI\Input\Input;
+use W4\UiFramework\Components\Forms\Input\Input;
 use W4\UiFramework\Core\ComponentFactory;
 use W4\UiFramework\Core\ComponentRegistry;
 use W4\UiFramework\Core\RendererPipeline;
@@ -20,7 +20,7 @@ use W4\UiFramework\Themes\DaisyUI\DaisyTheme;
 use W4\UiFramework\View\Components\Render as RenderComponent;
 // Componentes w4-component
 use W4\UiFramework\View\Components\UI\Button as ButtonBladeComponent;
-use W4\UiFramework\View\Components\UI\Input as InputBladeComponent;
+use W4\UiFramework\View\Components\Forms\Input as InputBladeComponent;
 
 class W4UiFrameworkServiceProvider extends ServiceProvider
 {
