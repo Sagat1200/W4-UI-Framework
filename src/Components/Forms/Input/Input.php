@@ -2,8 +2,11 @@
 
 namespace W4\UiFramework\Components\Forms\Input;
 
+use InvalidArgumentException;
 use W4\UiFramework\Components\Forms\Input\InputComponentState;
+use W4\UiFramework\Components\Forms\Input\InputComponentEvent;
 use W4\UiFramework\Components\Forms\Input\InputInteractState;
+use W4\UiFramework\Components\Forms\Input\InputStateMachine;
 use W4\UiFramework\Core\BaseComponent;
 use W4\UiFramework\Support\Traits\InteractsWithSize;
 use W4\UiFramework\Support\Traits\InteractsWithState;
@@ -26,6 +29,7 @@ class Input extends BaseComponent
     protected ?string $errorMessage = null;
 
     protected InputInteractState $interactState;
+    protected InputStateMachine $stateMachine;
 
     public function __construct()
     {
@@ -35,6 +39,7 @@ class Input extends BaseComponent
         $this->size = 'md';
         $this->state = InputComponentState::ENABLED;
         $this->interactState = new InputInteractState();
+        $this->stateMachine = new InputStateMachine();
     }
 
     public function componentName(): string
@@ -106,6 +111,75 @@ class Input extends BaseComponent
         $this->interactState = $state;
 
         return $this;
+    }
+
+    public function can(InputComponentEvent $event): bool
+    {
+        return $this->stateMachine->canTransition($this->currentState(), $event);
+    }
+
+    public function dispatch(InputComponentEvent $event): static
+    {
+        $this->state($this->stateMachine->transition($this->currentState(), $event));
+
+        return $this;
+    }
+
+    public function disable(): static
+    {
+        return $this->dispatch(InputComponentEvent::DISABLE);
+    }
+
+    public function enable(): static
+    {
+        return $this->dispatch(InputComponentEvent::ENABLE);
+    }
+
+    public function setReadonly(): static
+    {
+        return $this->dispatch(InputComponentEvent::SET_READONLY);
+    }
+
+    public function setInvalid(): static
+    {
+        return $this->dispatch(InputComponentEvent::SET_INVALID);
+    }
+
+    public function setValid(): static
+    {
+        return $this->dispatch(InputComponentEvent::SET_VALID);
+    }
+
+    public function startLoading(): static
+    {
+        return $this->dispatch(InputComponentEvent::START_LOADING);
+    }
+
+    public function finishLoading(): static
+    {
+        return $this->dispatch(InputComponentEvent::FINISH_LOADING);
+    }
+
+    public function resetState(): static
+    {
+        return $this->dispatch(InputComponentEvent::RESET);
+    }
+
+    protected function currentState(): InputComponentState
+    {
+        if ($this->state instanceof InputComponentState) {
+            return $this->state;
+        }
+
+        if (is_string($this->state)) {
+            try {
+                return InputComponentState::from($this->state);
+            } catch (\ValueError) {
+                throw new InvalidArgumentException('Estado de input inválido [' . (string) $this->state . ']');
+            }
+        }
+
+        throw new InvalidArgumentException('El estado actual del input no es válido.');
     }
 
     public function toThemeContext(): array

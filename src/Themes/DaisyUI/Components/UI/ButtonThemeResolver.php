@@ -30,7 +30,7 @@ class ButtonThemeResolver implements ComponentThemeResolverInterface
         match ($size) {
             'xs' => $classes->add('btn-xs'),
             'sm' => $classes->add('btn-sm'),
-            'md' => $classes->add('btn'),
+            'md' => $classes->add('btn-md'),
             'lg' => $classes->add('btn-lg'),
             'xl' => $classes->add('btn-xl'),
             default => null,

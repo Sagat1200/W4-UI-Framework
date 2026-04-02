@@ -12,6 +12,7 @@ class InputThemeResolver implements ComponentThemeResolverInterface
         $variant = $context['variant'] ?? 'default';
         $size = $context['size'] ?? 'md';
         $state = $context['state'] ?? 'enabled';
+        $interactState = $context['interact_state'] ?? [];
 
         $inputClasses = ClassBag::make('form-control');
 
@@ -35,6 +36,10 @@ class InputThemeResolver implements ComponentThemeResolverInterface
             default => null,
         };
 
+        if (($interactState['focused'] ?? false) === true) {
+            $inputClasses->add('focus');
+        }
+
         if (! empty($context['attributes']['class'])) {
             $inputClasses->merge($context['attributes']['class']);
         }
@@ -52,6 +57,7 @@ class InputThemeResolver implements ComponentThemeResolverInterface
     {
         $state = $context['state'] ?? 'enabled';
         $userAttributes = $context['attributes'] ?? [];
+        $interactState = $context['interact_state'] ?? [];
 
         return array_merge($userAttributes, [
             'type' => $context['type'] ?? $userAttributes['type'] ?? 'text',
@@ -62,6 +68,10 @@ class InputThemeResolver implements ComponentThemeResolverInterface
             'disabled' => in_array($state, ['disabled', 'loading'], true),
             'readonly' => $state === 'readonly',
             'aria-invalid' => in_array($state, ['invalid'], true) ? 'true' : 'false',
+            'aria-busy' => $state === 'loading' ? 'true' : 'false',
+            'data-focused' => ($interactState['focused'] ?? false) ? 'true' : 'false',
+            'data-hovered' => ($interactState['hovered'] ?? false) ? 'true' : 'false',
+            'data-filled' => ($interactState['filled'] ?? false) ? 'true' : 'false',
         ]);
     }
 }

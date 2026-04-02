@@ -3,7 +3,7 @@
 namespace W4\UiFramework\View\Components\Forms;
 
 use W4\UiFramework\Components\Forms\Input\Input as InputComponent;
-use W4\UiFramework\Components\Forms\Input\InputComponentState;
+use W4\UiFramework\Components\Forms\Input\InputComponentEvent;
 use W4\UiFramework\Components\Forms\Input\InputInteractState;
 use W4\UiFramework\Contracts\ComponentInterface;
 use W4\UiFramework\View\Components\BaseW4BladeComponent;
@@ -24,7 +24,13 @@ class Input extends BaseW4BladeComponent
         public string $variant = 'default',
         public string $size = 'md',
         public bool $disabled = false,
+        public bool $loading = false,
         public bool $readonly = false,
+        public bool $invalid = false,
+        public bool $valid = false,
+        public bool $focused = false,
+        public bool $hovered = false,
+        public bool $filled = false,
     ) {
         parent::__construct(
             id: $id,
@@ -57,17 +63,23 @@ class Input extends BaseW4BladeComponent
             $input->errorMessage($this->errorMessage);
         }
 
-        if ($this->readonly) {
-            $input->state(InputComponentState::READONLY);
+        if ($this->loading) {
+            $input->dispatch(InputComponentEvent::START_LOADING);
         } elseif ($this->disabled) {
-            $input->state(InputComponentState::DISABLED);
-        } elseif ($this->errorMessage) {
-            $input->state(InputComponentState::INVALID);
-        } else {
-            $input->state(InputComponentState::ENABLED);
+            $input->dispatch(InputComponentEvent::DISABLE);
+        } elseif ($this->readonly) {
+            $input->dispatch(InputComponentEvent::SET_READONLY);
+        } elseif ($this->invalid || $this->errorMessage) {
+            $input->dispatch(InputComponentEvent::SET_INVALID);
+        } elseif ($this->valid) {
+            $input->dispatch(InputComponentEvent::SET_VALID);
         }
 
-        $input->interactState(new InputInteractState());
+        $input->interactState(new InputInteractState(
+            focused: $this->focused,
+            hovered: $this->hovered,
+            filled: $this->filled || (($this->value ?? '') !== ''),
+        ));
 
         return $input;
     }

@@ -9,27 +9,31 @@ class InputThemeResolver implements ComponentThemeResolverInterface
 {
     public function classes(array $context = []): array
     {
-        $variant = $context['variant'] ?? 'default';
+        $variant = $context['variant'] ?? 'neutral';
         $size = $context['size'] ?? 'md';
         $state = $context['state'] ?? 'enabled';
+        $interactState = $context['interact_state'] ?? [];
 
         $inputClasses = ClassBag::make(['input', 'input-bordered', 'w-full']);
 
         match ($size) {
             'xs' => $inputClasses->add('input-xs'),
             'sm' => $inputClasses->add('input-sm'),
+            'md' => $inputClasses->add('input-md'),
             'lg' => $inputClasses->add('input-lg'),
+            'xl' => $inputClasses->add('input-xl'),
             default => null,
         };
 
         match ($variant) {
+            'neutral' => $inputClasses->add('input-neutral'),
             'primary' => $inputClasses->add('input-primary'),
             'secondary' => $inputClasses->add('input-secondary'),
             'accent' => $inputClasses->add('input-accent'),
             'success' => $inputClasses->add('input-success'),
             'warning' => $inputClasses->add('input-warning'),
-            'danger', 'error' => $inputClasses->add('input-error'),
-            default => null,
+            'error' => $inputClasses->add('input-error'),
+            default => $inputClasses->add('input-neutral'),
         };
 
         match ($state) {
@@ -38,6 +42,10 @@ class InputThemeResolver implements ComponentThemeResolverInterface
             'loading' => $inputClasses->add('opacity-75'),
             default => null,
         };
+
+        if (($interactState['focused'] ?? false) === true) {
+            $inputClasses->add('ring');
+        }
 
         if (! empty($context['attributes']['class'])) {
             $inputClasses->merge($context['attributes']['class']);
@@ -56,6 +64,7 @@ class InputThemeResolver implements ComponentThemeResolverInterface
     {
         $state = $context['state'] ?? 'enabled';
         $userAttributes = $context['attributes'] ?? [];
+        $interactState = $context['interact_state'] ?? [];
 
         return array_merge($userAttributes, [
             'type' => $context['type'] ?? $userAttributes['type'] ?? 'text',
@@ -66,6 +75,10 @@ class InputThemeResolver implements ComponentThemeResolverInterface
             'disabled' => in_array($state, ['disabled', 'loading'], true),
             'readonly' => $state === 'readonly',
             'aria-invalid' => in_array($state, ['invalid'], true) ? 'true' : 'false',
+            'aria-busy' => $state === 'loading' ? 'true' : 'false',
+            'data-focused' => ($interactState['focused'] ?? false) ? 'true' : 'false',
+            'data-hovered' => ($interactState['hovered'] ?? false) ? 'true' : 'false',
+            'data-filled' => ($interactState['filled'] ?? false) ? 'true' : 'false',
         ]);
     }
 }
