@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Themes\Bootstrap\Components\UI;
+namespace W4\UiFramework\Themes\Bootstrap\Components\Forms;
 
 use W4\UiFramework\Contracts\ComponentThemeResolverInterface;
 use W4\UiFramework\Support\ClassBag;

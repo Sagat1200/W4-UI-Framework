@@ -4,7 +4,7 @@ namespace W4\UiFramework\Themes\DaisyUI;
 
 use W4\UiFramework\Core\AbstractTheme;
 use W4\UiFramework\Themes\DaisyUI\Components\UI\ButtonThemeResolver;
-use W4\UiFramework\Themes\DaisyUI\Components\UI\InputThemeResolver;
+use W4\UiFramework\Themes\DaisyUI\Components\Forms\InputThemeResolver;
 
 class DaisyTheme extends AbstractTheme
 {
