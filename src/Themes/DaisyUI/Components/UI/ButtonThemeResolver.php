@@ -9,7 +9,7 @@ class ButtonThemeResolver implements ComponentThemeResolverInterface
 {
     public function classes(array $context = []): array
     {
-        $variant = $context['variant'] ?? 'primary';
+        $variant = $context['variant'] ?? 'neutral';
         $size = $context['size'] ?? 'md';
         $state = $context['state'] ?? 'enabled';
 
@@ -17,13 +17,14 @@ class ButtonThemeResolver implements ComponentThemeResolverInterface
 
         $classes->add(match ($variant) {
             'neutral' => 'btn-neutral',
+            'primary' => 'btn-primary',
             'secondary' => 'btn-secondary',
             'accent' => 'btn-accent',
+            'info' => 'btn-info',
             'success' => 'btn-success',
             'warning' => 'btn-warning',
-            'info' => 'btn-info',
-            'error', 'danger' => 'btn-error',
-            default => 'btn-primary',
+            'error' => 'btn-error',
+            default => 'btn-neutral',
         });
 
         match ($size) {
