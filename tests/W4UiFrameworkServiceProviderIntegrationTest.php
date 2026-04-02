@@ -130,4 +130,58 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
 
         $this->assertSame('loading', $loadingPayload['data']['state']);
     }
+
+    public function test_blade_renderer_detects_any_components_subfolder_except_blade(): void
+    {
+        $componentsRoot = dirname(__DIR__) . '/resources/views/components';
+        $layoutDir = $componentsRoot . '/layout';
+        $layoutViewPath = $layoutDir . '/renderer-probe.blade.php';
+        $bladeDir = $componentsRoot . '/blade';
+        $bladeViewPath = $bladeDir . '/renderer-probe.blade.php';
+        $layoutDirCreated = false;
+
+        if (! is_dir($layoutDir)) {
+            mkdir($layoutDir, 0777, true);
+            $layoutDirCreated = true;
+        }
+
+        file_put_contents($layoutViewPath, '<div>layout</div>');
+        file_put_contents($bladeViewPath, '<div>blade</div>');
+
+        try {
+            $component = new class implements \W4\UiFramework\Contracts\ComponentInterface
+            {
+                public function componentName(): string
+                {
+                    return 'renderer-probe';
+                }
+
+                public function toThemeContext(): array
+                {
+                    return [];
+                }
+
+                public function toArray(): array
+                {
+                    return [];
+                }
+            };
+
+            $payload = $this->app->make('w4.ui')->payload($component);
+
+            $this->assertSame('w4-ui::components.layout.renderer-probe', $payload['view']);
+        } finally {
+            if (file_exists($layoutViewPath)) {
+                unlink($layoutViewPath);
+            }
+
+            if (file_exists($bladeViewPath)) {
+                unlink($bladeViewPath);
+            }
+
+            if ($layoutDirCreated && is_dir($layoutDir)) {
+                rmdir($layoutDir);
+            }
+        }
+    }
 }
