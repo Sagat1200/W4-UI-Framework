@@ -23,6 +23,7 @@ class ButtonThemeResolver implements ComponentThemeResolverInterface
             'info' => 'btn-info',
             'light' => 'btn-light',
             'dark' => 'btn-dark',
+            'link' => 'btn-link',
             default => 'btn-primary',
         });
 
