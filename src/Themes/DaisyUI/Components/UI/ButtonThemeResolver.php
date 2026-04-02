@@ -16,6 +16,7 @@ class ButtonThemeResolver implements ComponentThemeResolverInterface
         $classes = ClassBag::make('btn');
 
         $classes->add(match ($variant) {
+            'neutral' => 'btn-neutral',
             'secondary' => 'btn-secondary',
             'accent' => 'btn-accent',
             'success' => 'btn-success',

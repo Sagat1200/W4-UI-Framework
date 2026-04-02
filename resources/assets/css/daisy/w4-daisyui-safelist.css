@@ -1,0 +1,12 @@
+/* Estilos de botones DaisyUI */
+
+/* Botones */
+@source inline("btn");
+/* Variantes de color */
+@source inline("btn-neutral btn-primary btn-secondary btn-accent btn-info btn-success btn-warning btn-error");
+@source inline("btn-xs btn-sm btn-lg btn-xl");
+@source inline("loading");
+@source inline("input input-bordered w-full");
+@source inline("input-primary input-secondary input-accent input-success input-warning input-error");
+@source inline("input-xs input-sm input-lg");
+@source inline("form-control label-text label-text-alt text-error opacity-75");
