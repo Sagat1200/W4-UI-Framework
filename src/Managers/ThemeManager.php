@@ -29,7 +29,7 @@ class ThemeManager
 
     public function currentTheme(): string
     {
-        return config('w4_ui_framework.theme', 'bootstrap');
+        return config('w4-ui-framework.theme', 'bootstrap');
     }
 
     public function all(): array

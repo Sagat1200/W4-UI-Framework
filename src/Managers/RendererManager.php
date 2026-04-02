@@ -22,7 +22,7 @@ class RendererManager
     public function driver(string $key): RendererInterface
     {
         if (! isset($this->renderers[$key])) {
-            throw new InvalidArgumentException("Renderer [{$key}] is not registered.");
+            throw new InvalidArgumentException("El renderizador [{$key}] no está registrado.");
         }
 
         return $this->renderers[$key];

@@ -16,13 +16,13 @@ class ComponentFactory
         $class = $this->registry->get($component);
 
         if ($class === null) {
-            throw new InvalidArgumentException("Component [{$component}] is not registered.");
+            throw new InvalidArgumentException("El componente [{$component}] no está registrado.");
         }
 
         $instance = new $class(...$arguments);
 
         if (! $instance instanceof ComponentInterface) {
-            throw new InvalidArgumentException("Registered component [{$component}] must implement ComponentInterface.");
+            throw new InvalidArgumentException("El componente registrado [{$component}] debe implementar la interfaz ComponentInterface.");
         }
 
         return $instance;
@@ -33,7 +33,7 @@ class ComponentFactory
         $type = $payload['component'] ?? $payload['type'] ?? null;
 
         if (! is_string($type) || $type === '') {
-            throw new InvalidArgumentException('Payload must contain a valid [component] or [type] key.');
+            throw new InvalidArgumentException('El payload debe contener una clave válida [component] o [type].');
         }
 
         $component = $this->make($type);

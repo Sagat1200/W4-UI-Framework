@@ -29,7 +29,7 @@ class RuntimeRenderer
 
         foreach ($components as $component) {
             if (! $component instanceof ComponentInterface) {
-                throw new InvalidArgumentException('All items passed to renderMany() must implement ComponentInterface.');
+                throw new InvalidArgumentException('Todos los elementos pasados a renderMany() deben implementar la interfaz ComponentInterface.');
             }
 
             $output[] = $this->render($component, $renderer);

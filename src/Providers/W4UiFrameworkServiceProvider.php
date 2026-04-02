@@ -27,7 +27,7 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../../config/w4_ui_framework.php',
+            __DIR__ . '/../../config/w4-ui-framework.php',
             'w4_ui_framework'
         );
 
@@ -94,8 +94,8 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../../config/w4_ui_framework.php' => config_path('w4_ui_framework.php'),
-        ], 'w4-ui-config'); // php artisan vendor:publish --tag=w4-ui-config --path=config/w4_ui_framework.php
+            __DIR__ . '/../../config/w4-ui-framework.php' => config_path('w4-ui-framework.php'),
+        ], 'w4-ui-config'); // php artisan vendor:publish --tag=w4-ui-config --path=config/w4-ui-framework.php
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'w4-ui');
 

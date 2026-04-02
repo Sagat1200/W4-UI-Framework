@@ -56,13 +56,13 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         );
 
         $this->assertIsArray($publishes);
-        $this->assertContains($this->app->configPath('w4_ui_framework.php'), array_values($publishes));
+        $this->assertContains($this->app->configPath('w4-ui-framework.php'), array_values($publishes));
 
         $sources = array_keys($publishes);
         $matchedSource = collect($sources)->first(function (string $source) {
             $normalized = str_replace('\\', '/', $source);
 
-            return str_ends_with($normalized, '/config/w4_ui_framework.php');
+            return str_ends_with($normalized, '/config/w4-ui-framework.php');
         });
 
         $this->assertIsString($matchedSource);

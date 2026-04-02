@@ -193,7 +193,7 @@ Los archivos de configuración deben usar **snake_case**.
 
 Ejemplo:
 
-config/w4_ui_framework.php
+config/w4-ui-framework.php
 
 ---
 

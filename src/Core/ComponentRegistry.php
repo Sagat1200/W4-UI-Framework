@@ -15,12 +15,12 @@ class ComponentRegistry
     public function register(string $alias, string $class): static
     {
         if (! class_exists($class)) {
-            throw new InvalidArgumentException("Component class [{$class}] does not exist.");
+            throw new InvalidArgumentException("La clase de componente [{$class}] no existe.");
         }
 
         if (! is_subclass_of($class, ComponentInterface::class)) {
             throw new InvalidArgumentException(
-                "Component class [{$class}] must implement " . ComponentInterface::class . '.'
+                "La clase de componente [{$class}] debe implementar " . ComponentInterface::class . '.'
             );
         }
 

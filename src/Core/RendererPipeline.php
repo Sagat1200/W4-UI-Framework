@@ -22,7 +22,7 @@ class RendererPipeline
         $rendererInstance = $this->rendererManager->driver($driver);
 
         if (! method_exists($rendererInstance, 'render')) {
-            throw new InvalidArgumentException("Renderer [{$driver}] does not have a render() method.");
+            throw new InvalidArgumentException("El renderizador [{$driver}] no tiene un método de render().");
         }
 
         return $rendererInstance->render($component, $resolvedTheme);
