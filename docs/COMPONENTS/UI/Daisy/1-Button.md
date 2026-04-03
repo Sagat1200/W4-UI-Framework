@@ -394,6 +394,26 @@ Botón con `componentId` para auditoría/estado:
 />
 ```
 
+Inspección backend de `componentId` en payload:
+
+```php
+use W4\UiFramework\Components\UI\Button\Button;
+
+$button = Button::make('Guardar cambios')
+    ->theme('daisyui')
+    ->meta('component_id', 12547)
+    ->attribute('data-component-id', '12547');
+
+$debug = w4_debug_payload($button);
+
+dd(
+    $debug['component_id'],
+    $debug['dom_component_id'],
+    $debug['state'],
+    $debug['payload']
+);
+```
+
 ## 6. 🧩 Ejemplo en controlador Laravel
 
 ```php

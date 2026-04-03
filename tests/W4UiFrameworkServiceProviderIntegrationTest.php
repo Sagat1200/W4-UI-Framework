@@ -208,4 +208,21 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertSame('audit-input-01', $inputPayload['data']['meta']['component_id']);
         $this->assertSame('audit-input-01', $inputPayload['data']['attributes']['data-component-id']);
     }
+
+    public function test_w4_debug_payload_returns_summary_keys(): void
+    {
+        $bladeButton = new ButtonBladeComponent(
+            label: 'Guardar',
+            componentId: 12547,
+            active: true
+        );
+
+        $summary = w4_debug_payload($bladeButton->component());
+
+        $this->assertSame('button', $summary['component']);
+        $this->assertSame('active', $summary['state']);
+        $this->assertSame(12547, $summary['component_id']);
+        $this->assertSame('12547', $summary['dom_component_id']);
+        $this->assertIsArray($summary['payload']);
+    }
 }
