@@ -90,6 +90,19 @@ Mapeo actual de `size`:
 - `state=loading` agrega `loading`
 - `state=active` agrega `btn-active`
 - si el usuario pasa `class` en atributos, se hace merge con las clases resueltas
+- si `class` incluye `h-*`, `min-h-*` o `max-h-*`, se remueven `btn-xs|btn-sm|btn-md|btn-lg|btn-xl` para priorizar altura custom
+
+Ejemplo de `class` con prioridad de alto:
+
+```blade
+<x-w4-button
+    label="Guardar"
+    theme="daisyui"
+    variant="primary"
+    size="sm"
+    class="w-52 h-14"
+/>
+```
 
 ### 3.4 Atributos HTML resueltos
 
@@ -160,6 +173,7 @@ Parámetros Blade comunes:
 - `loading`
 - `readonly`
 - `active`
+- `class`
 
 ### 4.4 Ejemplos de renderizado por estado y evento
 

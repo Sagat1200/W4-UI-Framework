@@ -124,6 +124,20 @@ Mapeo actual de `size`:
 - `state=loading` agrega `opacity-75`
 - `interact_state.focused=true` agrega `ring`
 - si el usuario pasa `class` en atributos, se hace merge con las clases resueltas
+- si `class` incluye `w-*`, se remueve `w-full` para respetar el ancho custom
+- si `class` incluye `h-*`, `min-h-*` o `max-h-*`, se remueven `input-xs|input-sm|input-md|input-lg|input-xl` para priorizar altura custom
+
+Ejemplo de `class` con prioridad de ancho/alto:
+
+```blade
+<x-w4-input
+    label="Correo"
+    theme="daisyui"
+    variant="primary"
+    size="xs"
+    class="w-52 h-14"
+/>
+```
 
 ### 3.4 Atributos HTML resueltos
 
@@ -209,6 +223,7 @@ Parámetros Blade comunes:
 - `focused`
 - `hovered`
 - `filled`
+- `class`
 
 ### 4.4 Ejemplos de renderizado por estado y evento
 
