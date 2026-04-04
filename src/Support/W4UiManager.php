@@ -76,30 +76,35 @@ class W4UiManager
 
     protected function logDebugPayloadIfEnabled(array $payload, ?string $renderer = null, string $origin = 'payload'): void
     {
-        if (! config('w4_ui_framework.w4_ui_debug', false)) {
+        if (! config('w4-ui-framework.w4_ui_log', false)) {
             return;
         }
 
         $data = $payload['data'] ?? [];
         $meta = is_array($data['meta'] ?? null) ? $data['meta'] : [];
         $attributes = is_array($data['attributes'] ?? null) ? $data['attributes'] : [];
+        $componentId = $meta['component_id'] ?? null;
         $domComponentId = $attributes['data-component-id'] ?? null;
 
-        if ($domComponentId === null || $domComponentId === '') {
+        if (($domComponentId === null || $domComponentId === '') && ($componentId === null || $componentId === '')) {
             return;
+        }
+
+        if ($domComponentId === null || $domComponentId === '') {
+            $domComponentId = (string) $componentId;
         }
 
         Log::build([
             'driver' => 'single',
             'path' => storage_path('logs/w4.ui.log'),
             'level' => 'debug',
-        ])->debug('w4_ui.component_debug', [
+        ])->debug('w4_ui.component_log', [
             'origin' => $origin,
             'renderer' => $payload['renderer'] ?? $renderer,
             'view' => $payload['view'] ?? null,
             'component' => $payload['component'] ?? ($data['component'] ?? null),
             'state' => $data['state'] ?? null,
-            'component_id' => $meta['component_id'] ?? null,
+            'component_id' => $componentId,
             'dom_component_id' => $domComponentId,
             'data' => $data,
             'theme' => $payload['theme'] ?? [],

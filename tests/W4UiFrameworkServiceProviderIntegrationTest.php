@@ -89,6 +89,26 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertIsString($matchedSource);
     }
 
+    public function test_publishes_log_stub_file_to_storage_logs_target(): void
+    {
+        $publishes = W4UiFrameworkServiceProvider::pathsToPublish(
+            W4UiFrameworkServiceProvider::class,
+            'w4-ui-log'
+        );
+
+        $this->assertIsArray($publishes);
+        $this->assertContains(storage_path('logs/w4.ui.log'), array_values($publishes));
+
+        $sources = array_keys($publishes);
+        $matchedSource = collect($sources)->first(function (string $source) {
+            $normalized = str_replace('\\', '/', $source);
+
+            return str_ends_with($normalized, '/stub/w4.ui.log');
+        });
+
+        $this->assertIsString($matchedSource);
+    }
+
     public function test_button_state_machine_affects_resolved_theme_classes(): void
     {
         $daisyButton = Button::make('Guardar')
@@ -244,9 +264,9 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertIsArray($summary['payload']);
     }
 
-    public function test_logs_component_debug_when_w4_ui_debug_is_enabled_and_component_has_data_component_id(): void
+    public function test_logs_component_debug_when_w4_ui_log_is_enabled_and_component_has_data_component_id(): void
     {
-        config()->set('w4_ui_framework.w4_ui_debug', true);
+        config()->set('w4-ui-framework.w4_ui_log', true);
         $logPath = storage_path('logs/w4.ui.log');
 
         if (is_file($logPath)) {
@@ -271,6 +291,17 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertStringContainsString('"component_id":12547', $logContent);
         $this->assertStringContainsString('"dom_component_id":"12547"', $logContent);
         $this->assertStringContainsString('"state":"active"', $logContent);
+
+        $metaOnlyButton = Button::make('Meta only')
+            ->theme('daisyui')
+            ->meta('component_id', 99001);
+
+        $this->app->make('w4.ui')->payload($metaOnlyButton);
+
+        $logContentAfterMetaOnly = file_get_contents($logPath);
+        $this->assertIsString($logContentAfterMetaOnly);
+        $this->assertStringContainsString('"component_id":99001', $logContentAfterMetaOnly);
+        $this->assertStringContainsString('"dom_component_id":"99001"', $logContentAfterMetaOnly);
     }
 
     public function test_user_width_class_keeps_variant_classes_in_rendered_html(): void

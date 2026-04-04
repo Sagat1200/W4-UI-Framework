@@ -50,11 +50,11 @@ return [
     ],
 
     /*
-     * Configuración de depuración
-     * Habilita depuración en todos los componentes.
+     * Configuración de registro en archivo w4.ui.log:
+     * Habilita registro en todos los componentes.
      * Nota: No se debe de utilizar en entorno de producción.
      */
-    'w4_ui_debug' => false,
+    'w4_ui_log' => env('W4_UI_LOG', false),
 
     /*
      * Configuración de prefijo de componentes:

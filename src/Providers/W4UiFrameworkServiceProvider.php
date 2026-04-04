@@ -97,6 +97,10 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
             __DIR__ . '/../../config/w4-ui-framework.php' => config_path('w4-ui-framework.php'),
         ], 'w4-ui-config'); // php artisan vendor:publish --tag=w4-ui-config --path=config/w4-ui-framework.php
 
+        $this->publishes([
+            __DIR__ . '/../../stub/w4.ui.log' => storage_path('logs/w4.ui.log'),
+        ], 'w4-ui-log'); // php artisan vendor:publish --tag=w4-ui-log --path=storage/logs/w4.ui.log
+
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'w4-ui');
 
         $prefix = $this->resolveComponentPrefix();
