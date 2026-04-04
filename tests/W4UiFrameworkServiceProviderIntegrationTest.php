@@ -247,7 +247,11 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
     public function test_logs_component_debug_when_w4_ui_debug_is_enabled_and_component_has_data_component_id(): void
     {
         config()->set('w4_ui_framework.w4_ui_debug', true);
-        Log::spy();
+        $logPath = storage_path('logs/w4.ui.log');
+
+        if (is_file($logPath)) {
+            unlink($logPath);
+        }
 
         $bladeButton = new ButtonBladeComponent(
             label: 'Guardar',
@@ -257,16 +261,16 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
 
         $this->app->make('w4.ui')->payload($bladeButton->component());
 
-        Log::shouldHaveReceived('debug')
-            ->once()
-            ->withArgs(function (string $message, array $context): bool {
-                return $message === 'w4_ui.component_debug'
-                    && $context['origin'] === 'payload'
-                    && $context['component'] === 'button'
-                    && $context['component_id'] === 12547
-                    && $context['dom_component_id'] === '12547'
-                    && $context['state'] === 'active';
-            });
+        $this->assertFileExists($logPath);
+
+        $logContent = file_get_contents($logPath);
+        $this->assertIsString($logContent);
+        $this->assertStringContainsString('w4_ui.component_debug', $logContent);
+        $this->assertStringContainsString('"origin":"payload"', $logContent);
+        $this->assertStringContainsString('"component":"button"', $logContent);
+        $this->assertStringContainsString('"component_id":12547', $logContent);
+        $this->assertStringContainsString('"dom_component_id":"12547"', $logContent);
+        $this->assertStringContainsString('"state":"active"', $logContent);
     }
 
     public function test_user_width_class_keeps_variant_classes_in_rendered_html(): void

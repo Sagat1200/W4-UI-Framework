@@ -89,7 +89,11 @@ class W4UiManager
             return;
         }
 
-        Log::debug('w4_ui.component_debug', [
+        Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/w4.ui.log'),
+            'level' => 'debug',
+        ])->debug('w4_ui.component_debug', [
             'origin' => $origin,
             'renderer' => $payload['renderer'] ?? $renderer,
             'view' => $payload['view'] ?? null,
