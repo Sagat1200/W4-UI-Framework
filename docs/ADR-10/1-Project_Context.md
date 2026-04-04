@@ -98,338 +98,232 @@ El objetivo a largo plazo es que todos estos paquetes compartan:
 * las mismas convenciones de estado
 * las mismas reglas de identidad visual
 
-## 6. 🏛️ Punto de Partida Actual
+## 6. 🏛️ Estado Actual del Proyecto
 
-El proyecto se encuentra en la **etapa inicial**.
+El proyecto **ya no está en etapa inicial**. El core está implementado y operativo para Laravel.
 
-En este momento:
+Estado actual confirmado:
 
-* la arquitectura se está definiendo
-* los límites de los paquetes se están formalizando
-* los contratos del core aún no están implementados
-* los primeros componentes reales aún no están finalizados
-* los primeros puentes de renderizado aún no están construidos
+* paquete Composer funcional (`w4/ui-framework`)
+* contratos, gestores, pipelines y renderer base implementados
+* componentes reales en producción dentro del paquete
+* wrappers Blade funcionales con prefijo configurable
+* suite de pruebas de integración activa
 
-Esto significa que la prioridad actual es **arquitectura primero**, no volumen de funcionalidades.
+Tecnologías base del paquete actual:
 
-## 7. 🧱 Estrategia Inicial de Paquetes
+* PHP `^8.3`
+* Laravel `^13.0`
+* Orchestra Testbench para pruebas del paquete
 
-El sistema se separará en tres paquetes principales.
+## 7. 🧱 Estado de Paquetes del Ecosistema
 
-### 7.1 `w4/ui-framework`
+### 7.1 `w4/ui-framework` (actual)
 
-El paquete core.
+Implementado con:
 
-Responsabilidades:
+* Core de componentes (factory, registry, managers, pipelines)
+* Renderizado por Blade
+* Themes: Bootstrap y DaisyUI registrados en el manager
+* Resolvers Tailwind implementados a nivel de componentes
+* Helpers globales (`w4_render`, `w4_view`, `w4_payload`, `w4_debug_payload`)
+* Facade `W4Ui`
 
-* componentes PHP
-* contratos
-* sistema de estado
-* theme engine
-* gestor de temas
-* resolvedor de temas
-* tokens
-* presets
-* clases de soporte
-* gestor de renderers
-* base de renderer Blade
+### 7.2 `w4/inertia-bridge` (pendiente)
 
-Este paquete debe mantenerse independiente de Inertia y Livewire.
+Sigue como objetivo del roadmap. Aún no está integrado en este repositorio.
 
-### 7.2 `w4/inertia-bridge`
+### 7.3 `w4/livewire-bridge` (pendiente)
 
-El paquete de integración con Inertia.
+Sigue como objetivo del roadmap. Aún no está integrado en este repositorio.
 
-Responsabilidades:
+## 8. 🧭 Arquitectura del Core Validada
 
-* renderer Inertia React
-* renderer Inertia Vue
-* serialización de componentes a metadatos
-* registro runtime de JS
-* componentes runtime de React y Vue
-
-Este paquete consume el core y no debe implementar temas visuales.
-
-### 7.3 `w4/livewire-bridge`
-
-El paquete de integración con Livewire.
-
-Responsabilidades:
-
-* renderer Livewire
-* mapeo de directivas wire
-* bindings de loading y model
-* soporte de hidratación/deshidratación
-* wrappers y helpers específicos de Livewire
-
-Este paquete consume el core y no debe implementar temas visuales.
-
-## 8. 🧭 Principios Arquitectónicos del Core
-
-### 8.1 Desacoplamiento del framework CSS
-
-Los componentes no deben conocer clases CSS concretas como las de Bootstrap o DaisyUI.
-
-### 8.2 Separación de responsabilidades
-
-La arquitectura se divide conceptualmente en:
+El flujo arquitectónico definido sí quedó implementado:
 
 ```text
-Componente
+Componente PHP
    ↓
-Renderer
+ThemeResolverPipeline
    ↓
-Theme Manager
+RendererPipeline
    ↓
-Theme Resolver
+W4UiManager (render/view/payload)
    ↓
-Component Theme Resolver
-   ↓
-Salida Frontend
+Salida Blade
 ```
 
-### 8.3 Aislamiento de renderers
+Principios que hoy se cumplen:
 
-El core define el componente.
-El tema define cómo debe verse.
-El bridge define cómo se entrega a un runtime frontend específico.
+* componentes desacoplados de clases CSS hardcodeadas
+* resolución visual delegada a theme resolvers
+* soporte de atributos y metadatos por componente
+* extensibilidad por registro de componentes, themes y renderers
 
-### 8.4 Extensibilidad primero
+## 9. 🧩 Modelo de Componentes Implementado
 
-El sistema debe diseñarse para que agregar nuevos:
-
-* componentes
-* temas
-* presets
-* renderers
-* bridges
-
-sea posible sin romper el core.
-
-### 8.5 Convención sobre improvisación
-
-Las convenciones claras de nombres y carpetas serán obligatorias desde el inicio.
-
-## 9. 🧩 Convenciones del Modelo de Componentes
-
-Cada componente debe seguir una convención estricta.
-
-### 9.1 Clase base de componente
-
-Cada elemento UI debe estar representado por una clase de componente PHP dedicada.
-
-Ejemplos:
+Componentes implementados en el core:
 
 * `Button`
 * `Input`
-* `Card`
 
-### 9.2 Convención de nombres de estado
+Cada componente mantiene la convención:
 
-Cada componente debe definir:
-
+* `{Component}ComponentEvent`
 * `{Component}ComponentState`
 * `{Component}InteractState`
+* `{Component}StateMachine`
 
-Ejemplos:
+Capacidades actuales del modelo:
 
-* `ButtonComponentState`
-* `ButtonInteractState`
-* `InputComponentState`
-* `InputInteractState`
+* estado y transición por eventos (`dispatch`)
+* atributos arbitrarios (`attribute`, `attributes`)
+* metadatos (`meta`)
+* identidad (`id`, `name`)
+* auditoría por `componentId` → `meta.component_id` y `data-component-id`
 
-Esta convención es obligatoria para mantener consistencia en todo el framework.
+## 10. 🎨 Estado de Temas
 
-### 9.3 Contexto abstracto
+Estado real de implementación:
 
-Los componentes deben exponer metadatos abstractos como:
+* **Bootstrap:** implementado y registrado
+* **DaisyUI:** implementado y registrado
+* **Tailwind:** resolvers implementados para Button/Input, con documentación y pruebas unitarias de resolución; su uso global depende del registro en `ThemeManager`
+* **Bootswatch:** no implementado aún en este repositorio
 
-* label
-* name
-* size
-* variant
-* state
-* interaction state
-* attributes
+Responsabilidades cubiertas por los resolvers actuales:
 
-No deben exponer directamente decisiones de estilo específicas de un framework.
+* clases por variante
+* clases por tamaño
+* atributos por estado
+* integración de clases custom del usuario (`class`)
+* reglas de merge para evitar conflictos (`w-*`, `h-*`, `min/max-h`)
 
-## 10. 🎨 Alcance Inicial de Temas
+## 11. 🖥️ Estado de Renderers
 
-En la etapa inicial actual, el alcance visual debe mantenerse enfocado.
+Renderer actualmente operativo en el core:
 
-### Familias visuales iniciales
+* **Blade**
 
-* Bootstrap
-* presets de Bootswatch
-* DaisyUI
+Capacidades Blade actuales:
 
-Tailwind como familia base puede soportarse más adelante si es necesario, pero el foco inmediato debe mantenerse en los sistemas visuales que mejor se alinean con la dirección actual del paquete.
+* selección de vista por componente
+* detección dinámica de subcarpetas en `resources/views/components/*` (excepto `blade`)
+* wrappers Blade para renderizado declarativo
+* payload normalizado para inspección y bridges futuros
 
-### Responsabilidades del tema
+Renderers pendientes por bridge:
 
-El sistema de temas debe gestionar:
-
-* resolución de clases
-* resolución de atributos HTML
-* variantes visuales de componentes
-* tamaños de componentes
-* estados
-* presets
-* design tokens más adelante
-
-## 11. 🖥️ Alcance Inicial de Renderers
-
-El framework debe reconocer tres objetivos de renderizado desde el inicio:
-
-* Blade
 * Livewire
-* Inertia
+* Inertia (React/Vue/Svelte)
 
-Pero la implementación debe realizarse por fases.
+## 12. ⚙️ Configuración y Publicación
 
-### Prioridad de fases
+Archivo de configuración vigente:
 
-1. soporte base de Blade en el core
-2. bridge de Livewire
-3. bridge de Inertia
+* `config/w4-ui-framework.php`
 
-Este orden reduce el riesgo arquitectónico y permite madurar el modelo de componentes y temas antes de manejar runtimes más complejos.
+Claves activas relevantes:
 
-## 12. 📦 Filosofía de Instalación
+* `theme`
+* `renderer`
+* `packages_w4_ui_bridge.*.enabled`
+* `w4_ui_log`
+* `w4_ui_component_prefix`
 
-El renderer se selecciona por configuración, pero los paquetes bridge se instalan explícitamente mediante Composer.
+Publicaciones soportadas:
 
-Ejemplos:
+* `--tag=w4-ui-config` para publicar config
+* `--tag=w4-ui-log` para publicar `storage/logs/w4.ui.log`
 
-### Solo core
+## 13. 🗂️ Estructura Real del Core
 
-```bash
-composer require w4/ui-framework
-```
-
-### Core + Livewire
-
-```bash
-composer require w4/ui-framework w4/livewire-bridge
-```
-
-### Core + Inertia
-
-```bash
-composer require w4/ui-framework w4/inertia-bridge
-```
-
-El core nunca debe auto-instalar bridges en función de la configuración.
-
-## 13. 🗂️ Dirección Inicial de Carpetas
-
-El paquete core debería comenzar con una estructura cercana a esta:
+La estructura esperada ya está materializada y extendida:
 
 ```text
 src/
 ├── Components
+│   ├── UI/Button/*
+│   └── Forms/Input/*
 ├── Contracts
+├── Core
+├── Facades
+├── Helpers
 ├── Managers
 ├── Providers
 ├── Renderers
 ├── Support
 ├── Themes
-└── Facades
+│   ├── Bootstrap/*
+│   ├── DaisyUI/*
+│   └── Tailwind/*
+└── View/Components
 ```
 
-Los paquetes bridge deben mantener sus propias estructuras aisladas.
+## 14. ✅ Hitos ya Completados
 
-## 14. 🛣️ Prioridades Inmediatas de Desarrollo
+* definición e implementación del core base
+* registro de componentes por factory/registry
+* renderer Blade funcional
+* themes Bootstrap y DaisyUI operativos
+* componente `Button` completo con estado/eventos
+* componente `Input` completo con estado/eventos
+* wrappers Blade (`x-<prefix>-render`, `x-<prefix>-button`, `x-<prefix>-input`)
+* helper de inspección `w4_debug_payload`
+* logging dedicado de componentes en `w4.ui.log`
+* pruebas de integración del provider, render, prefijos, payload y logging
 
-El proyecto debe comenzar con la arquitectura mínima significativa.
+## 15. 🧪 Alcance Vigente (v actual)
 
-### Primera prioridad
+Alcance real del paquete en este momento:
 
-* definir límites de paquetes
-* definir contratos
-* definir convenciones de nombres
-* definir estrategia de registro de renderers
-* definir flujo de resolución de temas
+* core usable en proyectos Laravel
+* render por helper, facade y Blade component
+* soporte de auditoría por `componentId`
+* documentación técnica de componentes Daisy y Tailwind
+* pruebas automatizadas pasando en CI/local (`composer test`)
 
-### Segunda prioridad
+## 16. 🚧 Pendientes Técnicos Reales
 
-* crear `BaseComponent`
-* crear `RendererManager`
-* crear `ThemeManager`
-* crear `BladeRenderer`
-* crear primer componente: `Button`
-* crear primeros estados:
+Pendientes principales de roadmap:
 
-  * `ButtonComponentState`
-  * `ButtonInteractState`
+* integrar bridges Livewire e Inertia
+* formalizar registro global de Tailwind en `ThemeManager`
+* ampliar catálogo de componentes (más allá de Button/Input)
+* ampliar cobertura de pruebas para escenarios cross-renderer
 
-### Tercera prioridad
+Riesgos a controlar:
 
-* crear soporte inicial de tema Bootstrap
-* crear soporte inicial de tema DaisyUI
-* crear primeros resolvedores visuales para `Button`
+* desalineación entre documentación y registro real de themes/renderers
+* crecimiento de variaciones visuales sin reglas unificadas de merge de clases
 
-### Cuarta prioridad
+## 17. 🏆 Visión de Largo Plazo (vigente)
 
-* construir `w4/livewire-bridge`
-* construir `w4/inertia-bridge`
-
-## 15. 🧪 Alcance Inicial v0
-
-La primera versión práctica debe ser intencionalmente pequeña.
-
-### Alcance sugerido para v0
-
-* paquete core inicializado
-* solo componente `Button`
-* `ButtonComponentState`
-* `ButtonInteractState`
-* gestor de renderers
-* renderer Blade
-* resolvedor de botón Bootstrap
-* resolvedor de botón DaisyUI
-* archivo de configuración
-* service provider
-
-Esto mantiene el proyecto enfocado y valida la arquitectura antes de expandirse.
-
-## 16. 🚫 Qué Debe Evitarse en Esta Etapa
-
-En el estado inicial actual, el proyecto debe evitar:
-
-* intentar soportar demasiados componentes a la vez
-* implementar constructores visuales complejos demasiado pronto
-* mezclar lógica de Livewire o Inertia dentro del core
-* hardcodear clases CSS dentro de los componentes
-* definir funcionalidades antes de estabilizar los contratos
-* agregar overrides profundos por tenant antes de que funcione el sistema base de temas
-
-## 17. 🏆 Visión de Largo Plazo
-
-El objetivo a largo plazo es convertir W4-UI-Framework en un motor universal de UI para Laravel capaz de:
+Se mantiene la visión original:
 
 * definir componentes una sola vez en PHP
-* renderizarlos a través de múltiples renderers
-* cambiar sistemas visuales sin reescribir componentes
-* soportar branding SaaS multi-tenant
-* actuar como base visual del ecosistema W4
+* renderizarlos en múltiples renderers
+* cambiar sistema visual sin reescribir componentes
+* habilitar consistencia visual para el ecosistema W4
+* soportar escenarios multi-tenant con configuración dinámica
 
-## 18. 📍 Resumen del Estado Actual del Proyecto
+## 18. 📍 Resumen Ejecutivo del Estado Actual
 
-Estado real actual:
+Estado real hoy:
 
-* la arquitectura se está estableciendo
-* la separación de paquetes ya fue decidida
-* el proyecto aún no tiene madurez de implementación
-* el siguiente paso correcto es iniciar desde la base del core
+* **core implementado y funcional**
+* **Blade operativo como renderer principal**
+* **Button e Input listos con state machine**
+* **Bootstrap y DaisyUI estables**
+* **Tailwind avanzado en resolvers, pendiente cierre de integración global**
+* **bridges Livewire/Inertia aún pendientes**
 
-## 19. ⏭️ Siguiente Paso Concreto
+## 19. ⏭️ Siguientes Pasos Concretos
 
-El siguiente paso de desarrollo debería ser:
+Orden recomendado inmediato:
 
-* inicializar `w4/ui-framework`
-* implementar los contratos y gestores base
-* implementar el primer componente (`Button`)
-* validar la arquitectura del core antes de expandir a bridges
+1. Registrar de forma oficial Tailwind en `ThemeManager` y validar flujo end-to-end.
+2. Definir y arrancar el primer bridge (Livewire o Inertia) con contrato mínimo.
+3. Expandir el set de componentes core reutilizando convenciones actuales.
+4. Mantener pruebas de integración por cada nueva capacidad para evitar regresiones.
 
