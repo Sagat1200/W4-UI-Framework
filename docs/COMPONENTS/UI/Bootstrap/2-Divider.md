@@ -71,7 +71,12 @@ Atributos:
 - `aria-hidden`
 - `data-state`
 
-## 4. 🖥️ Formas de renderizar
+## 4. 🖥️ Formas de renderizar Bootstrap Divider
+
+Nota de uso de tema:
+
+- Usa `theme="bootstrap"` en `x-w4-divider` cuando el tema global no sea Bootstrap.
+- Usa `->theme('bootstrap')` por helper/facade para forzar Bootstrap en esa instancia.
 
 ### 4.1 Helper
 
@@ -180,7 +185,7 @@ echo w4_render(
 );
 ```
 
-## 5. 🔁 Evento de ejemplo
+### 4.6 Ejemplos de renderizado por estado y evento
 
 ```php
 use W4\UiFramework\Components\UI\Divider\Divider;
@@ -193,3 +198,70 @@ echo w4_render(
         ->dispatch(DividerComponentEvent::ACTIVATE)
 );
 ```
+
+```php
+echo w4_render(
+    Divider::make()
+        ->theme('bootstrap')
+        ->text('Oculto')
+        ->dispatch(DividerComponentEvent::HIDE)
+);
+```
+
+### 4.7 Ejemplos equivalentes en Blade (`x-w4-divider`)
+
+```blade
+<x-w4-divider text="Visible" theme="bootstrap" />
+<x-w4-divider text="Activo" theme="bootstrap" :active="true" />
+<x-w4-divider text="Oculto" theme="bootstrap" :hidden="true" />
+```
+
+## 5. 🧭 Ejemplos prácticos Bootstrap
+
+Divider con `componentId` para auditoría/estado:
+
+```blade
+<x-w4-divider
+    text="Separador auditado"
+    theme="bootstrap"
+    :componentId="'divider-9001'"
+/>
+```
+
+Inspección backend de `componentId` en payload:
+
+```php
+$debug = w4_debug_payload(
+    \W4\UiFramework\Components\UI\Divider\Divider::make()
+        ->theme('bootstrap')
+        ->meta('component_id', 'divider-9001')
+        ->attribute('data-component-id', 'divider-9001')
+);
+```
+
+## 6. 🧩 Ejemplo en controlador Laravel
+
+```php
+use W4\UiFramework\Components\UI\Divider\Divider;
+use W4\UiFramework\Facades\W4Ui;
+
+public function edit()
+{
+    $divider = Divider::make()
+        ->name('profile_divider')
+        ->id('div-profile')
+        ->theme('bootstrap')
+        ->text('Perfil')
+        ->variant('info');
+
+    return view('profile.edit', [
+        'dividerHtml' => W4Ui::render($divider),
+    ]);
+}
+```
+
+## 7. 📦 Notas de integración
+
+- El Divider usa payload estándar (`renderer`, `view`, `data`, `theme`).
+- `class` se mergea con clases del resolver.
+- Con `W4_UI_LOG=true`, registra en `storage/logs/w4.ui.log` si tiene `componentId`.

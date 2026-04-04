@@ -81,6 +81,11 @@ Atributos:
 
 ## 4. 🖥️ Formas de renderizar Tailwind Divider
 
+Nota de uso de tema:
+
+- Usa `theme="tailwind"` en `x-w4-divider` cuando el tema global no sea Tailwind.
+- Usa `->theme('tailwind')` por helper/facade para forzar Tailwind en esa instancia.
+
 ### 4.1 Helper global
 
 ```php
@@ -188,7 +193,7 @@ echo w4_render(
 );
 ```
 
-## 5. 🔁 Estados y eventos
+### 4.6 Ejemplos de renderizado por estado y evento
 
 ```php
 use W4\UiFramework\Components\UI\Divider\Divider;
@@ -211,7 +216,38 @@ $divider = Divider::make()
 echo w4_render($divider);
 ```
 
-## 6. 🧪 Ejemplo en controlador
+### 4.7 Ejemplos equivalentes en Blade (`x-w4-divider`)
+
+```blade
+<x-w4-divider text="Visible" theme="tailwind" />
+<x-w4-divider text="Activo" theme="tailwind" :active="true" />
+<x-w4-divider text="Oculto" theme="tailwind" :hidden="true" />
+```
+
+## 5. 🧭 Ejemplos prácticos Tailwind
+
+Divider con `componentId` para auditoría/estado:
+
+```blade
+<x-w4-divider
+    text="Separador auditado"
+    theme="tailwind"
+    :componentId="'divider-9001'"
+/>
+```
+
+Inspección backend de `componentId` en payload:
+
+```php
+$debug = w4_debug_payload(
+    \W4\UiFramework\Components\UI\Divider\Divider::make()
+        ->theme('tailwind')
+        ->meta('component_id', 'divider-9001')
+        ->attribute('data-component-id', 'divider-9001')
+);
+```
+
+## 6. 🧩 Ejemplo en controlador Laravel
 
 ```php
 use W4\UiFramework\Components\UI\Divider\Divider;
@@ -233,3 +269,9 @@ public function settings()
     ]);
 }
 ```
+
+## 7. 📦 Notas de integración
+
+- El Divider usa payload estándar (`renderer`, `view`, `data`, `theme`).
+- `class` se mergea con clases del resolver (incluyendo utilidades `h-*` y `w-*`).
+- Con `W4_UI_LOG=true`, registra en `storage/logs/w4.ui.log` si tiene `componentId`.

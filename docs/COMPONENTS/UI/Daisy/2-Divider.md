@@ -89,6 +89,11 @@ Atributos resueltos:
 
 ## 4. 🖥️ Formas de renderizar Daisy Divider
 
+Nota de uso de tema:
+
+- Usa `theme="daisyui"` en `x-w4-divider` cuando el tema global de tu proyecto no sea DaisyUI.
+- Usa `->theme('daisyui')` en `Divider::make(...)` al renderizar por helper/facade.
+
 ### 4.1 Helper global
 
 ```php
@@ -215,7 +220,7 @@ echo w4_render(
 );
 ```
 
-## 5. 🔁 Ejemplos de estado/evento
+### 4.6 Ejemplos de renderizado por estado y evento
 
 ```php
 use W4\UiFramework\Components\UI\Divider\Divider;
@@ -238,7 +243,38 @@ $divider = Divider::make()
 echo w4_render($divider);
 ```
 
-## 6. 🧪 Ejemplo en controlador
+### 4.7 Ejemplos equivalentes en Blade (`x-w4-divider`)
+
+```blade
+<x-w4-divider text="Visible" theme="daisyui" />
+<x-w4-divider text="Activo" theme="daisyui" :active="true" />
+<x-w4-divider text="Oculto" theme="daisyui" :hidden="true" />
+```
+
+## 5. 🧭 Ejemplos prácticos Daisy
+
+Divider con `componentId` para auditoría/estado:
+
+```blade
+<x-w4-divider
+    text="Separador auditado"
+    theme="daisyui"
+    :componentId="'divider-9001'"
+/>
+```
+
+Inspección backend de `componentId` en payload:
+
+```php
+$debug = w4_debug_payload(
+    \W4\UiFramework\Components\UI\Divider\Divider::make()
+        ->theme('daisyui')
+        ->meta('component_id', 'divider-9001')
+        ->attribute('data-component-id', 'divider-9001')
+);
+```
+
+## 6. 🧩 Ejemplo en controlador Laravel
 
 ```php
 use W4\UiFramework\Components\UI\Divider\Divider;
@@ -259,3 +295,9 @@ public function edit()
     ]);
 }
 ```
+
+## 7. 📦 Notas de integración
+
+- El Divider usa payload estándar (`renderer`, `view`, `data`, `theme`).
+- `class` se mergea con las clases del resolver para conservar estilos base.
+- Con `W4_UI_LOG=true`, registra en `storage/logs/w4.ui.log` si tiene `componentId`.
