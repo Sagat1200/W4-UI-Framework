@@ -12,7 +12,7 @@ y aplica estilos/atributos a través del resolver Tailwind:
 
 `W4\UiFramework\Themes\Tailwind\Components\UI\ButtonThemeResolver`
 
-Esto mantiene la API funcional del botón y delega la parte visual a utilidades de Tailwind.
+Esto significa que toda la API funcional del botón base se conserva, y el tema Tailwind define cómo se ven variantes, tamaños y estados.
 
 ## 2. 🧱 API base del Button (heredada)
 
@@ -78,7 +78,7 @@ Mapeo actual de `variant`:
 - `error` -> `bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-500`
 - valor no reconocido -> usa fallback `primary`
 
-### 3.2 Tamaños disponibles
+### 3.2 Tamaños Tailwind disponibles
 
 Mapeo actual de `size`:
 
@@ -92,7 +92,7 @@ Mapeo actual de `size`:
 
 - `state=loading` agrega `opacity-75 cursor-wait`
 - `state=active` agrega `ring-2 ring-offset-2`
-- si el usuario pasa `class`, se hace merge con clases resueltas
+- si el usuario pasa `class` en atributos, se hace merge con las clases resueltas
 - si `class` incluye `h-*`, `min-h-*` o `max-h-*`, se remueven clases de tamaño para priorizar altura custom
 
 Ejemplo de `class` con prioridad de alto:
@@ -475,6 +475,6 @@ En la vista:
 
 ## 7. 📦 Notas de integración
 
-- Tailwind Button usa payload estándar (`renderer`, `view`, `data`, `theme`).
-- El merge de `class` respeta clases custom sin perder `variant`.
-- Si tu build purga clases dinámicas, incluye utilidades usadas en `class` dentro del scan/safelist.
+- El Tailwind Button usa el mismo payload estándar (`renderer`, `view`, `data`, `theme`).
+- La resolución final depende de que el tema activo sea `tailwind` (global o por componente).
+- Si usas Tailwind con purga de clases, asegúrate de incluir utilidades dinámicas usadas en `class` dentro del escaneo/safelist de tu app consumidora.
