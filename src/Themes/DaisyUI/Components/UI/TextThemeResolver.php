@@ -5,7 +5,7 @@ namespace W4\UiFramework\Themes\DaisyUI\Components\UI;
 use W4\UiFramework\Contracts\ComponentThemeResolverInterface;
 use W4\UiFramework\Support\ClassBag;
 
-class HeadingThemeResolver implements ComponentThemeResolverInterface
+class TextThemeResolver implements ComponentThemeResolverInterface
 {
     public function classes(array $context = []): array
     {
@@ -13,7 +13,7 @@ class HeadingThemeResolver implements ComponentThemeResolverInterface
         $size = $context['size'] ?? 'md';
         $state = $context['state'] ?? 'enabled';
 
-        $root = ClassBag::make(['font-semibold', 'leading-tight']);
+        $root = ClassBag::make(['inline-block']);
 
         $root->add(match ($variant) {
             'primary' => 'text-primary',
@@ -30,8 +30,8 @@ class HeadingThemeResolver implements ComponentThemeResolverInterface
             'xs' => 'text-xs',
             'sm' => 'text-sm',
             'md' => 'text-base',
-            'lg' => 'text-xl',
-            'xl' => 'text-2xl',
+            'lg' => 'text-lg',
+            'xl' => 'text-xl',
             default => 'text-base',
         });
 
@@ -40,7 +40,7 @@ class HeadingThemeResolver implements ComponentThemeResolverInterface
         }
 
         if ($state === 'active') {
-            $root->add('underline');
+            $root->add('font-semibold');
         }
 
         if ($state === 'hidden') {
@@ -58,13 +58,11 @@ class HeadingThemeResolver implements ComponentThemeResolverInterface
 
     public function attributes(array $context = []): array
     {
-        $level = $context['level'] ?? 'h2';
         $state = $context['state'] ?? 'enabled';
         $userAttributes = $context['attributes'] ?? [];
 
         return array_merge($userAttributes, [
-            'role' => $userAttributes['role'] ?? 'heading',
-            'aria-level' => $userAttributes['aria-level'] ?? (int) str_replace('h', '', (string) $level),
+            'role' => $userAttributes['role'] ?? 'text',
             'aria-hidden' => $state === 'hidden' ? 'true' : 'false',
             'data-state' => $state,
         ]);

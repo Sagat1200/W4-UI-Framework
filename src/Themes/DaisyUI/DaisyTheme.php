@@ -9,6 +9,8 @@ use W4\UiFramework\Themes\DaisyUI\Components\UI\HeadingThemeResolver;
 use W4\UiFramework\Themes\DaisyUI\Components\UI\IconThemeResolver;
 use W4\UiFramework\Themes\DaisyUI\Components\UI\IconButtonThemeResolver;
 use W4\UiFramework\Themes\DaisyUI\Components\UI\LabelThemeResolver;
+use W4\UiFramework\Themes\DaisyUI\Components\UI\LinkThemeResolver;
+use W4\UiFramework\Themes\DaisyUI\Components\UI\TextThemeResolver;
 use W4\UiFramework\Themes\DaisyUI\Components\Forms\InputThemeResolver;
 
 class DaisyTheme extends AbstractTheme
@@ -21,6 +23,8 @@ class DaisyTheme extends AbstractTheme
         $this->registerResolver('icon', new IconThemeResolver());
         $this->registerResolver('icon-button', new IconButtonThemeResolver());
         $this->registerResolver('label', new LabelThemeResolver());
+        $this->registerResolver('link', new LinkThemeResolver());
+        $this->registerResolver('text', new TextThemeResolver());
         $this->registerResolver('input', new InputThemeResolver());
     }
 

@@ -11,3 +11,14 @@
 @source inline("input-xs input-sm input-md input-lg input-xl");
 @source inline("form-control label-text label-text-alt text-error opacity-75");
 
+/* Divisor */
+@source inline("divider divider-horizontal");
+@source inline("divider-neutral divider-primary divider-secondary divider-accent divider-success divider-warning divider-error divider-info");
+@source inline("text-xs text-sm text-base text-lg text-xl");
+@source inline("opacity-50 font-semibold hidden");
+
+/* link */
+@source inline("link link-hover link-neutral link-primary link-secondary link-accent link-success link-warning link-error link-info pointer-events-none");
+
+/* text */
+@source inline("inline-block text-base-content text-primary text-secondary text-accent text-success text-warning text-error text-info");

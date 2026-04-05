@@ -10,6 +10,8 @@ use W4\UiFramework\Components\UI\Heading\Heading;
 use W4\UiFramework\Components\UI\Icon\Icon;
 use W4\UiFramework\Components\UI\IconButton\IconButton;
 use W4\UiFramework\Components\UI\Label\Label;
+use W4\UiFramework\Components\UI\Link\Link;
+use W4\UiFramework\Components\UI\Text\Text;
 use W4\UiFramework\Components\Forms\Input\Input;
 use W4\UiFramework\Core\ComponentFactory;
 use W4\UiFramework\Core\ComponentRegistry;
@@ -31,6 +33,8 @@ use W4\UiFramework\View\Components\UI\Heading as HeadingBladeComponent;
 use W4\UiFramework\View\Components\UI\Icon as IconBladeComponent;
 use W4\UiFramework\View\Components\UI\IconButton as IconButtonBladeComponent;
 use W4\UiFramework\View\Components\UI\Label as LabelBladeComponent;
+use W4\UiFramework\View\Components\UI\Link as LinkBladeComponent;
+use W4\UiFramework\View\Components\UI\Text as TextBladeComponent;
 use W4\UiFramework\View\Components\Forms\Input as InputBladeComponent;
 
 class W4UiFrameworkServiceProvider extends ServiceProvider
@@ -50,6 +54,8 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
                 ->register('icon', Icon::class)
                 ->register('icon-button', IconButton::class)
                 ->register('label', Label::class)
+                ->register('link', Link::class)
+                ->register('text', Text::class)
                 ->register('input', Input::class);
         });
 
@@ -129,6 +135,8 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
         Blade::component($this->componentAlias($prefix, 'icon'), IconBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'icon-button'), IconButtonBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'label'), LabelBladeComponent::class);
+        Blade::component($this->componentAlias($prefix, 'link'), LinkBladeComponent::class);
+        Blade::component($this->componentAlias($prefix, 'text'), TextBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'input'), InputBladeComponent::class);
     }
 
