@@ -11,12 +11,16 @@ use W4\UiFramework\Support\Traits\InteractsWithVariant;
 class Heading extends BaseComponent
 {
     use InteractsWithVariant;
-    use InteractsWithSize;
+    use InteractsWithSize {
+        size as private traitSize;
+    }
     use InteractsWithState;
 
     protected ?string $text = null;
 
     protected string $level = 'h2';
+
+    protected bool $hasExplicitSize = false;
 
     protected HeadingInteractState $interactState;
 
@@ -64,7 +68,22 @@ class Heading extends BaseComponent
 
         $this->level = $normalized;
 
+        if (! $this->hasExplicitSize) {
+            $this->traitSize($this->sizeFromLevel($normalized));
+        }
+
         return $this;
+    }
+
+    public function size(?string $size = null): string|static|null
+    {
+        if ($size === null) {
+            return $this->traitSize();
+        }
+
+        $this->hasExplicitSize = true;
+
+        return $this->traitSize($size);
     }
 
     public function interactState(?HeadingInteractState $state = null): HeadingInteractState|static
@@ -164,5 +183,16 @@ class Heading extends BaseComponent
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
         ]);
+    }
+
+    protected function sizeFromLevel(string $level): string
+    {
+        return match ($level) {
+            'h1' => 'xl',
+            'h2' => 'md',
+            'h3' => 'sm',
+            'h4', 'h5', 'h6' => 'xs',
+            default => 'md',
+        };
     }
 }

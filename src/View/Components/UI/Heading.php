@@ -20,7 +20,7 @@ class Heading extends BaseW4BladeComponent
         public ?string $text = null,
         public string $level = 'h2',
         public string $variant = 'neutral',
-        public string $size = 'md',
+        public ?string $size = null,
         public bool $disabled = false,
         public bool $active = false,
         public bool $hidden = false,
@@ -40,8 +40,11 @@ class Heading extends BaseW4BladeComponent
     {
         $heading = HeadingComponent::make($this->label)
             ->variant($this->variant)
-            ->size($this->size)
             ->level($this->level);
+
+        if ($this->size !== null && $this->size !== '') {
+            $heading->size($this->size);
+        }
 
         if ($this->text !== null) {
             $heading->text($this->text);

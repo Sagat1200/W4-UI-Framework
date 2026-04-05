@@ -34,6 +34,16 @@ $heading = Heading::make('Dashboard')
     ->size('xl');
 ```
 
+Regla de tamaño y nivel:
+
+- `level('h1'..'h6')` define la semántica del heading.
+- Si no defines `size(...)`, el componente asigna tamaño por nivel:
+  - `h1 -> xl`
+  - `h2 -> md`
+  - `h3 -> sm`
+  - `h4/h5/h6 -> xs`
+- Si defines `size(...)`, ese tamaño tiene prioridad sobre el mapeo automático por `level`.
+
 Estados:
 
 - `enabled`
@@ -68,6 +78,13 @@ Base:
 - `md -> text-xl`
 - `lg -> text-2xl`
 - `xl -> text-3xl`
+
+Relación con `level` cuando no hay `size(...)` explícito:
+
+- `h1 -> xl`
+- `h2 -> md`
+- `h3 -> sm`
+- `h4/h5/h6 -> xs`
 
 ### 3.3 Estados y clases adicionales
 

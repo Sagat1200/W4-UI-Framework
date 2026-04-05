@@ -458,8 +458,32 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertSame('heading-audit-01', $payload['data']['meta']['component_id']);
         $this->assertSame('heading-audit-01', $payload['data']['attributes']['data-component-id']);
         $this->assertStringContainsString('text-blue-600', $payload['theme']['classes']['root']);
+        $this->assertStringContainsString('text-3xl', $payload['theme']['classes']['root']);
         $this->assertSame('heading', $payload['theme']['attributes']['role']);
         $this->assertSame(1, $payload['theme']['attributes']['aria-level']);
+    }
+
+    public function test_heading_level_changes_default_size_but_explicit_size_has_priority(): void
+    {
+        $autoSizePayload = $this->app->make('w4.ui')->payload(
+            Heading::make('Título')
+                ->theme('tailwind')
+                ->level('h3')
+                ->variant('primary')
+        );
+
+        $explicitSizePayload = $this->app->make('w4.ui')->payload(
+            Heading::make('Título')
+                ->theme('tailwind')
+                ->level('h1')
+                ->size('sm')
+                ->variant('primary')
+        );
+
+        $this->assertStringContainsString('text-base', $autoSizePayload['theme']['classes']['root']);
+        $this->assertStringNotContainsString('text-3xl', $autoSizePayload['theme']['classes']['root']);
+        $this->assertStringContainsString('text-base', $explicitSizePayload['theme']['classes']['root']);
+        $this->assertStringNotContainsString('text-3xl', $explicitSizePayload['theme']['classes']['root']);
     }
 
     public function test_blade_icon_maps_props_to_state_and_theme_payload(): void

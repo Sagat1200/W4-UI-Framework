@@ -19,6 +19,7 @@ Se mantiene igual en los 3 temas:
 - Estados: `enabled`, `disabled`, `active`, `hidden`
 - Eventos: `activate`, `deactivate`, `disable`, `enable`, `hide`, `show`, `reset`
 - Métodos típicos: `text(...)`, `level(...)`, `variant(...)`, `size(...)`, `dispatch(...)`, `toArray()`, `toThemeContext()`
+- Regla común: `level` define semántica y, si no se define `size`, aplica mapeo automático (`h1->xl`, `h2->md`, `h3->sm`, `h4/h5/h6->xs`)
 
 ## 2. 🎨 Mapeo visual por tema
 
