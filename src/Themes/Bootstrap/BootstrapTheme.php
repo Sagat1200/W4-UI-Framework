@@ -5,6 +5,7 @@ namespace W4\UiFramework\Themes\Bootstrap;
 use W4\UiFramework\Core\AbstractTheme;
 use W4\UiFramework\Themes\Bootstrap\Components\Forms\CheckBoxThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\Forms\FieldErrorThemeResolver;
+use W4\UiFramework\Themes\Bootstrap\Components\Forms\HelperTextThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\Forms\InputThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\UI\ButtonThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\UI\DividerThemeResolver;
@@ -30,6 +31,7 @@ class BootstrapTheme extends AbstractTheme
         $this->registerResolver('input', new InputThemeResolver());
         $this->registerResolver('checkbox', new CheckBoxThemeResolver());
         $this->registerResolver('field-error', new FieldErrorThemeResolver());
+        $this->registerResolver('helper-text', new HelperTextThemeResolver());
     }
 
     public function name(): string

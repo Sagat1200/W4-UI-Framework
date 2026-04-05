@@ -13,6 +13,7 @@ use W4\UiFramework\Components\UI\Link\Link;
 use W4\UiFramework\Components\UI\Text\Text;
 use W4\UiFramework\Components\Forms\CheckBox\CheckBox;
 use W4\UiFramework\Components\Forms\FielError\FieldError;
+use W4\UiFramework\Components\Forms\HelperText\HelperText;
 use W4\UiFramework\Components\Forms\Input\Input;
 use W4\UiFramework\Core\ComponentFactory;
 use W4\UiFramework\Core\ComponentRegistry;
@@ -28,9 +29,11 @@ use W4\UiFramework\Themes\Tailwind\Components\UI\IconButtonThemeResolver as Tail
 use W4\UiFramework\Themes\Tailwind\Components\UI\LabelThemeResolver as TailwindLabelThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\UI\LinkThemeResolver as TailwindLinkThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\UI\TextThemeResolver as TailwindTextThemeResolver;
+use W4\UiFramework\Themes\Tailwind\Components\Forms\HelperTextThemeResolver as TailwindHelperTextThemeResolver;
 use W4\UiFramework\View\Components\Render;
 use W4\UiFramework\View\Components\Forms\CheckBox as CheckBoxBladeComponent;
 use W4\UiFramework\View\Components\Forms\FieldError as FieldErrorBladeComponent;
+use W4\UiFramework\View\Components\Forms\HelperText as HelperTextBladeComponent;
 use W4\UiFramework\View\Components\Forms\Input as InputBladeComponent;
 use W4\UiFramework\View\Components\UI\Button as ButtonBladeComponent;
 use W4\UiFramework\View\Components\UI\Divider as DividerBladeComponent;
@@ -66,6 +69,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $text = $factory->make('text');
         $checkbox = $factory->make('checkbox');
         $fieldError = $factory->make('field-error');
+        $helperText = $factory->make('helper-text');
         $input = $factory->make('input');
 
         $this->assertInstanceOf(Button::class, $button);
@@ -78,6 +82,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertInstanceOf(Text::class, $text);
         $this->assertInstanceOf(CheckBox::class, $checkbox);
         $this->assertInstanceOf(FieldError::class, $fieldError);
+        $this->assertInstanceOf(HelperText::class, $helperText);
         $this->assertInstanceOf(Input::class, $input);
     }
 
@@ -103,6 +108,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.ui.text'));
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.checkbox'));
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.field-error'));
+        $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.helper-text'));
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.input'));
     }
 
@@ -127,6 +133,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertArrayHasKey('admin-text', $aliases);
         $this->assertArrayHasKey('admin-checkbox', $aliases);
         $this->assertArrayHasKey('admin-field-error', $aliases);
+        $this->assertArrayHasKey('admin-helper-text', $aliases);
         $this->assertArrayHasKey('admin-input', $aliases);
     }
 
@@ -150,6 +157,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertArrayHasKey('w4-text', $aliases);
         $this->assertArrayHasKey('w4-checkbox', $aliases);
         $this->assertArrayHasKey('w4-field-error', $aliases);
+        $this->assertArrayHasKey('w4-helper-text', $aliases);
         $this->assertArrayHasKey('w4-input', $aliases);
     }
 
@@ -349,6 +357,16 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
 
         $this->assertSame('audit-field-error-01', $fieldErrorPayload['data']['meta']['component_id']);
         $this->assertSame('audit-field-error-01', $fieldErrorPayload['data']['attributes']['data-component-id']);
+
+        $bladeHelperText = new HelperTextBladeComponent(
+            text: 'Puedes usar 8+ caracteres',
+            componentId: 'audit-helper-text-01'
+        );
+
+        $helperTextPayload = $this->app->make('w4.ui')->payload($bladeHelperText->component());
+
+        $this->assertSame('audit-helper-text-01', $helperTextPayload['data']['meta']['component_id']);
+        $this->assertSame('audit-helper-text-01', $helperTextPayload['data']['attributes']['data-component-id']);
     }
 
     public function test_w4_debug_payload_returns_summary_keys(): void
@@ -743,6 +761,35 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertSame('E_REQUIRED', $payload['theme']['attributes']['data-error-code']);
     }
 
+    public function test_blade_helper_text_maps_props_to_state_and_theme_payload(): void
+    {
+        $bladeHelperText = new HelperTextBladeComponent(
+            text: 'Puedes usar 8+ caracteres',
+            icon: 'ℹ',
+            forField: 'password',
+            theme: 'tailwind',
+            variant: 'info',
+            active: true,
+            focused: true,
+            componentId: 'helper-text-audit-01'
+        );
+
+        $payload = $this->app->make('w4.ui')->payload($bladeHelperText->component());
+
+        $this->assertSame('helper-text', $payload['component']);
+        $this->assertSame('active', $payload['data']['state']);
+        $this->assertSame('Puedes usar 8+ caracteres', $payload['data']['text']);
+        $this->assertSame('ℹ', $payload['data']['icon']);
+        $this->assertSame('helper-text-audit-01', $payload['data']['meta']['component_id']);
+        $this->assertSame('helper-text-audit-01', $payload['data']['attributes']['data-component-id']);
+        $this->assertStringContainsString('text-cyan-600', $payload['theme']['classes']['root']);
+        $this->assertStringContainsString('font-medium', $payload['theme']['classes']['root']);
+        $this->assertSame('note', $payload['theme']['attributes']['role']);
+        $this->assertSame('polite', $payload['theme']['attributes']['aria-live']);
+        $this->assertSame('password', $payload['theme']['attributes']['data-for-field']);
+        $this->assertSame('true', $payload['theme']['attributes']['data-focused']);
+    }
+
     public function test_icon_button_resolves_classes_for_daisyui_bootstrap_and_tailwind(): void
     {
         $daisyPayload = $this->app->make('w4.ui')->payload(
@@ -961,6 +1008,42 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertSame('assertive', $tailwindPayload['theme']['attributes']['aria-live']);
     }
 
+    public function test_helper_text_resolves_classes_for_daisyui_bootstrap_and_tailwind(): void
+    {
+        $daisyPayload = $this->app->make('w4.ui')->payload(
+            HelperText::make('Ayuda')
+                ->theme('daisyui')
+                ->variant('info')
+                ->activate()
+        );
+
+        $bootstrapPayload = $this->app->make('w4.ui')->payload(
+            HelperText::make('Ayuda')
+                ->theme('bootstrap')
+                ->variant('info')
+                ->activate()
+        );
+
+        $tailwindPayload = $this->app->make('w4.ui')->payload(
+            HelperText::make('Ayuda')
+                ->theme('tailwind')
+                ->variant('info')
+                ->activate()
+        );
+
+        $this->assertStringContainsString('label-text-alt', $daisyPayload['theme']['classes']['root']);
+        $this->assertStringContainsString('text-info', $daisyPayload['theme']['classes']['root']);
+        $this->assertSame('polite', $daisyPayload['theme']['attributes']['aria-live']);
+
+        $this->assertStringContainsString('form-text', $bootstrapPayload['theme']['classes']['root']);
+        $this->assertStringContainsString('text-info', $bootstrapPayload['theme']['classes']['root']);
+        $this->assertSame('polite', $bootstrapPayload['theme']['attributes']['aria-live']);
+
+        $this->assertStringContainsString('text-cyan-600', $tailwindPayload['theme']['classes']['root']);
+        $this->assertStringContainsString('font-medium', $tailwindPayload['theme']['classes']['root']);
+        $this->assertSame('polite', $tailwindPayload['theme']['attributes']['aria-live']);
+    }
+
     public function test_tailwind_theme_resolvers_merge_variant_with_width_and_height_utilities(): void
     {
         $inputResolver = new TailwindInputThemeResolver();
@@ -1070,5 +1153,16 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertStringContainsString('text-blue-600', $textClasses['root']);
         $this->assertStringContainsString('text-sm', $textClasses['root']);
         $this->assertStringContainsString('mt-2', $textClasses['root']);
+
+        $helperTextResolver = new TailwindHelperTextThemeResolver();
+        $helperTextClasses = $helperTextResolver->classes([
+            'variant' => 'primary',
+            'size' => 'sm',
+            'attributes' => ['class' => 'mt-2'],
+        ]);
+
+        $this->assertStringContainsString('text-blue-600', $helperTextClasses['root']);
+        $this->assertStringContainsString('text-sm', $helperTextClasses['root']);
+        $this->assertStringContainsString('mt-2', $helperTextClasses['root']);
     }
 }
