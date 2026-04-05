@@ -411,3 +411,4 @@ public function index()
 - El componente usa payload estándar (`renderer`, `view`, `data`, `theme`).
 - La vista final de IconButton imprime `<button>` y utiliza el valor de `icon` dentro de una etiqueta `<i>`.
 - Si usas Tailwind/DaisyUI con purga de clases, asegúrate de incluir clases `btn-*`, `btn-square`, `loading` y `btn-active` en el escaneo/safelist de tu app consumidora.
+- Con `W4_UI_LOG=true`, registra en `storage/logs/w4.ui.log` si tiene `componentId`.

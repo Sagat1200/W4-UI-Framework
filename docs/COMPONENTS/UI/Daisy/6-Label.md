@@ -234,3 +234,4 @@ public function create()
 - El label usa payload estándar (`renderer`, `view`, `data`, `theme`).
 - La vista final del componente renderiza `<label>` con el contenido de `text` o fallback a `label`.
 - Si usas purga de clases, incluye utilidades dinámicas como `text-*`, `hidden`, `opacity-50` y `underline`.
+- Con `W4_UI_LOG=true`, registra en `storage/logs/w4.ui.log` si tiene `componentId`.
