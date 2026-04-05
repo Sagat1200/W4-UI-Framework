@@ -11,6 +11,7 @@ use W4\UiFramework\Components\UI\IconButton\IconButton;
 use W4\UiFramework\Components\UI\Label\Label;
 use W4\UiFramework\Components\UI\Link\Link;
 use W4\UiFramework\Components\UI\Text\Text;
+use W4\UiFramework\Components\Forms\CheckBox\CheckBox;
 use W4\UiFramework\Components\Forms\Input\Input;
 use W4\UiFramework\Core\ComponentFactory;
 use W4\UiFramework\Core\ComponentRegistry;
@@ -27,6 +28,7 @@ use W4\UiFramework\Themes\Tailwind\Components\UI\LabelThemeResolver as TailwindL
 use W4\UiFramework\Themes\Tailwind\Components\UI\LinkThemeResolver as TailwindLinkThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\UI\TextThemeResolver as TailwindTextThemeResolver;
 use W4\UiFramework\View\Components\Render;
+use W4\UiFramework\View\Components\Forms\CheckBox as CheckBoxBladeComponent;
 use W4\UiFramework\View\Components\Forms\Input as InputBladeComponent;
 use W4\UiFramework\View\Components\UI\Button as ButtonBladeComponent;
 use W4\UiFramework\View\Components\UI\Divider as DividerBladeComponent;
@@ -60,6 +62,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $label = $factory->make('label');
         $link = $factory->make('link');
         $text = $factory->make('text');
+        $checkbox = $factory->make('checkbox');
         $input = $factory->make('input');
 
         $this->assertInstanceOf(Button::class, $button);
@@ -70,6 +73,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertInstanceOf(Label::class, $label);
         $this->assertInstanceOf(Link::class, $link);
         $this->assertInstanceOf(Text::class, $text);
+        $this->assertInstanceOf(CheckBox::class, $checkbox);
         $this->assertInstanceOf(Input::class, $input);
     }
 
@@ -93,6 +97,8 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.ui.label'));
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.ui.link'));
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.ui.text'));
+        $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.checkbox'));
+        $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.input'));
     }
 
     public function test_registers_blade_component_with_custom_prefix_from_config(): void
@@ -114,6 +120,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertArrayHasKey('admin-label', $aliases);
         $this->assertArrayHasKey('admin-link', $aliases);
         $this->assertArrayHasKey('admin-text', $aliases);
+        $this->assertArrayHasKey('admin-checkbox', $aliases);
         $this->assertArrayHasKey('admin-input', $aliases);
     }
 
@@ -135,6 +142,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertArrayHasKey('w4-label', $aliases);
         $this->assertArrayHasKey('w4-link', $aliases);
         $this->assertArrayHasKey('w4-text', $aliases);
+        $this->assertArrayHasKey('w4-checkbox', $aliases);
         $this->assertArrayHasKey('w4-input', $aliases);
     }
 
@@ -314,6 +322,16 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
 
         $this->assertSame('audit-input-01', $inputPayload['data']['meta']['component_id']);
         $this->assertSame('audit-input-01', $inputPayload['data']['attributes']['data-component-id']);
+
+        $bladeCheckbox = new CheckBoxBladeComponent(
+            label: 'Acepto términos',
+            componentId: 'audit-checkbox-01'
+        );
+
+        $checkboxPayload = $this->app->make('w4.ui')->payload($bladeCheckbox->component());
+
+        $this->assertSame('audit-checkbox-01', $checkboxPayload['data']['meta']['component_id']);
+        $this->assertSame('audit-checkbox-01', $checkboxPayload['data']['attributes']['data-component-id']);
     }
 
     public function test_w4_debug_payload_returns_summary_keys(): void
@@ -654,6 +672,33 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertSame('false', $payload['theme']['attributes']['aria-hidden']);
     }
 
+    public function test_blade_checkbox_maps_props_to_state_and_theme_payload(): void
+    {
+        $bladeCheckbox = new CheckBoxBladeComponent(
+            label: 'Acepto términos',
+            theme: 'tailwind',
+            variant: 'primary',
+            size: 'md',
+            checked: true,
+            invalid: true,
+            focused: true,
+            componentId: 'checkbox-audit-01'
+        );
+
+        $payload = $this->app->make('w4.ui')->payload($bladeCheckbox->component());
+
+        $this->assertSame('checkbox', $payload['component']);
+        $this->assertSame('invalid', $payload['data']['state']);
+        $this->assertTrue($payload['data']['checked']);
+        $this->assertFalse($payload['data']['indeterminate']);
+        $this->assertSame('checkbox-audit-01', $payload['data']['meta']['component_id']);
+        $this->assertSame('checkbox-audit-01', $payload['data']['attributes']['data-component-id']);
+        $this->assertStringContainsString('border-rose-500', $payload['theme']['classes']['input']);
+        $this->assertSame('true', $payload['theme']['attributes']['aria-invalid']);
+        $this->assertSame('true', $payload['theme']['attributes']['aria-checked']);
+        $this->assertSame('true', $payload['theme']['attributes']['data-focused']);
+    }
+
     public function test_icon_button_resolves_classes_for_daisyui_bootstrap_and_tailwind(): void
     {
         $daisyPayload = $this->app->make('w4.ui')->payload(
@@ -802,6 +847,40 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertStringContainsString('text-blue-600', $tailwindPayload['theme']['classes']['root']);
         $this->assertStringContainsString('text-base', $tailwindPayload['theme']['classes']['root']);
         $this->assertSame('text', $tailwindPayload['theme']['attributes']['role']);
+    }
+
+    public function test_checkbox_resolves_classes_for_daisyui_bootstrap_and_tailwind(): void
+    {
+        $daisyPayload = $this->app->make('w4.ui')->payload(
+            CheckBox::make('Acepto términos')
+                ->theme('daisyui')
+                ->variant('primary')
+                ->checked(true)
+        );
+
+        $bootstrapPayload = $this->app->make('w4.ui')->payload(
+            CheckBox::make('Acepto términos')
+                ->theme('bootstrap')
+                ->variant('primary')
+                ->checked(true)
+        );
+
+        $tailwindPayload = $this->app->make('w4.ui')->payload(
+            CheckBox::make('Acepto términos')
+                ->theme('tailwind')
+                ->variant('primary')
+                ->checked(true)
+        );
+
+        $this->assertStringContainsString('checkbox-primary', $daisyPayload['theme']['classes']['input']);
+        $this->assertSame('true', $daisyPayload['theme']['attributes']['aria-checked']);
+
+        $this->assertStringContainsString('form-check-input', $bootstrapPayload['theme']['classes']['input']);
+        $this->assertSame('true', $bootstrapPayload['theme']['attributes']['aria-checked']);
+
+        $this->assertStringContainsString('text-blue-600', $tailwindPayload['theme']['classes']['input']);
+        $this->assertStringContainsString('border-blue-400', $tailwindPayload['theme']['classes']['input']);
+        $this->assertSame('true', $tailwindPayload['theme']['attributes']['aria-checked']);
     }
 
     public function test_tailwind_theme_resolvers_merge_variant_with_width_and_height_utilities(): void

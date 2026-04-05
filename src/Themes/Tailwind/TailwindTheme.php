@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Themes\Tailwind;
 
 use W4\UiFramework\Core\AbstractTheme;
+use W4\UiFramework\Themes\Tailwind\Components\Forms\CheckBoxThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\Forms\InputThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\UI\ButtonThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\UI\DividerThemeResolver;
@@ -26,6 +27,7 @@ class TailwindTheme extends AbstractTheme
         $this->registerResolver('link', new LinkThemeResolver());
         $this->registerResolver('text', new TextThemeResolver());
         $this->registerResolver('input', new InputThemeResolver());
+        $this->registerResolver('checkbox', new CheckBoxThemeResolver());
     }
 
     public function name(): string
