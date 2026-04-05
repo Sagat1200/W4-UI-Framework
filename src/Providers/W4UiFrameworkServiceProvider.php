@@ -13,6 +13,7 @@ use W4\UiFramework\Components\UI\Label\Label;
 use W4\UiFramework\Components\UI\Link\Link;
 use W4\UiFramework\Components\UI\Text\Text;
 use W4\UiFramework\Components\Forms\CheckBox\CheckBox;
+use W4\UiFramework\Components\Forms\FielError\FieldError;
 use W4\UiFramework\Components\Forms\Input\Input;
 use W4\UiFramework\Core\ComponentFactory;
 use W4\UiFramework\Core\ComponentRegistry;
@@ -37,6 +38,7 @@ use W4\UiFramework\View\Components\UI\Label as LabelBladeComponent;
 use W4\UiFramework\View\Components\UI\Link as LinkBladeComponent;
 use W4\UiFramework\View\Components\UI\Text as TextBladeComponent;
 use W4\UiFramework\View\Components\Forms\CheckBox as CheckBoxBladeComponent;
+use W4\UiFramework\View\Components\Forms\FieldError as FieldErrorBladeComponent;
 use W4\UiFramework\View\Components\Forms\Input as InputBladeComponent;
 
 class W4UiFrameworkServiceProvider extends ServiceProvider
@@ -59,6 +61,7 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
                 ->register('link', Link::class)
                 ->register('text', Text::class)
                 ->register('checkbox', CheckBox::class)
+                ->register('field-error', FieldError::class)
                 ->register('input', Input::class);
         });
 
@@ -141,6 +144,7 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
         Blade::component($this->componentAlias($prefix, 'link'), LinkBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'text'), TextBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'checkbox'), CheckBoxBladeComponent::class);
+        Blade::component($this->componentAlias($prefix, 'field-error'), FieldErrorBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'input'), InputBladeComponent::class);
     }
 

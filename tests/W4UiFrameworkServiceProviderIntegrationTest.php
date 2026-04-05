@@ -12,6 +12,7 @@ use W4\UiFramework\Components\UI\Label\Label;
 use W4\UiFramework\Components\UI\Link\Link;
 use W4\UiFramework\Components\UI\Text\Text;
 use W4\UiFramework\Components\Forms\CheckBox\CheckBox;
+use W4\UiFramework\Components\Forms\FielError\FieldError;
 use W4\UiFramework\Components\Forms\Input\Input;
 use W4\UiFramework\Core\ComponentFactory;
 use W4\UiFramework\Core\ComponentRegistry;
@@ -29,6 +30,7 @@ use W4\UiFramework\Themes\Tailwind\Components\UI\LinkThemeResolver as TailwindLi
 use W4\UiFramework\Themes\Tailwind\Components\UI\TextThemeResolver as TailwindTextThemeResolver;
 use W4\UiFramework\View\Components\Render;
 use W4\UiFramework\View\Components\Forms\CheckBox as CheckBoxBladeComponent;
+use W4\UiFramework\View\Components\Forms\FieldError as FieldErrorBladeComponent;
 use W4\UiFramework\View\Components\Forms\Input as InputBladeComponent;
 use W4\UiFramework\View\Components\UI\Button as ButtonBladeComponent;
 use W4\UiFramework\View\Components\UI\Divider as DividerBladeComponent;
@@ -63,6 +65,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $link = $factory->make('link');
         $text = $factory->make('text');
         $checkbox = $factory->make('checkbox');
+        $fieldError = $factory->make('field-error');
         $input = $factory->make('input');
 
         $this->assertInstanceOf(Button::class, $button);
@@ -74,6 +77,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertInstanceOf(Link::class, $link);
         $this->assertInstanceOf(Text::class, $text);
         $this->assertInstanceOf(CheckBox::class, $checkbox);
+        $this->assertInstanceOf(FieldError::class, $fieldError);
         $this->assertInstanceOf(Input::class, $input);
     }
 
@@ -98,6 +102,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.ui.link'));
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.ui.text'));
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.checkbox'));
+        $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.field-error'));
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.input'));
     }
 
@@ -121,6 +126,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertArrayHasKey('admin-link', $aliases);
         $this->assertArrayHasKey('admin-text', $aliases);
         $this->assertArrayHasKey('admin-checkbox', $aliases);
+        $this->assertArrayHasKey('admin-field-error', $aliases);
         $this->assertArrayHasKey('admin-input', $aliases);
     }
 
@@ -143,6 +149,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertArrayHasKey('w4-link', $aliases);
         $this->assertArrayHasKey('w4-text', $aliases);
         $this->assertArrayHasKey('w4-checkbox', $aliases);
+        $this->assertArrayHasKey('w4-field-error', $aliases);
         $this->assertArrayHasKey('w4-input', $aliases);
     }
 
@@ -332,6 +339,16 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
 
         $this->assertSame('audit-checkbox-01', $checkboxPayload['data']['meta']['component_id']);
         $this->assertSame('audit-checkbox-01', $checkboxPayload['data']['attributes']['data-component-id']);
+
+        $bladeFieldError = new FieldErrorBladeComponent(
+            message: 'Campo requerido',
+            componentId: 'audit-field-error-01'
+        );
+
+        $fieldErrorPayload = $this->app->make('w4.ui')->payload($bladeFieldError->component());
+
+        $this->assertSame('audit-field-error-01', $fieldErrorPayload['data']['meta']['component_id']);
+        $this->assertSame('audit-field-error-01', $fieldErrorPayload['data']['attributes']['data-component-id']);
     }
 
     public function test_w4_debug_payload_returns_summary_keys(): void
@@ -699,6 +716,33 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertSame('true', $payload['theme']['attributes']['data-focused']);
     }
 
+    public function test_blade_field_error_maps_props_to_state_and_theme_payload(): void
+    {
+        $bladeFieldError = new FieldErrorBladeComponent(
+            message: 'Campo requerido',
+            code: 'E_REQUIRED',
+            hint: 'Revisa este campo',
+            forField: 'email',
+            theme: 'tailwind',
+            variant: 'error',
+            active: true,
+            componentId: 'field-error-audit-01'
+        );
+
+        $payload = $this->app->make('w4.ui')->payload($bladeFieldError->component());
+
+        $this->assertSame('field-error', $payload['component']);
+        $this->assertSame('active', $payload['data']['state']);
+        $this->assertSame('Campo requerido', $payload['data']['message']);
+        $this->assertSame('E_REQUIRED', $payload['data']['code']);
+        $this->assertSame('Revisa este campo', $payload['data']['hint']);
+        $this->assertSame('field-error-audit-01', $payload['data']['meta']['component_id']);
+        $this->assertSame('field-error-audit-01', $payload['data']['attributes']['data-component-id']);
+        $this->assertSame('assertive', $payload['theme']['attributes']['aria-live']);
+        $this->assertSame('email', $payload['theme']['attributes']['data-for-field']);
+        $this->assertSame('E_REQUIRED', $payload['theme']['attributes']['data-error-code']);
+    }
+
     public function test_icon_button_resolves_classes_for_daisyui_bootstrap_and_tailwind(): void
     {
         $daisyPayload = $this->app->make('w4.ui')->payload(
@@ -881,6 +925,40 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertStringContainsString('text-blue-600', $tailwindPayload['theme']['classes']['input']);
         $this->assertStringContainsString('border-blue-400', $tailwindPayload['theme']['classes']['input']);
         $this->assertSame('true', $tailwindPayload['theme']['attributes']['aria-checked']);
+    }
+
+    public function test_field_error_resolves_classes_for_daisyui_bootstrap_and_tailwind(): void
+    {
+        $daisyPayload = $this->app->make('w4.ui')->payload(
+            FieldError::make('Campo requerido')
+                ->theme('daisyui')
+                ->variant('error')
+                ->activate()
+        );
+
+        $bootstrapPayload = $this->app->make('w4.ui')->payload(
+            FieldError::make('Campo requerido')
+                ->theme('bootstrap')
+                ->variant('error')
+                ->activate()
+        );
+
+        $tailwindPayload = $this->app->make('w4.ui')->payload(
+            FieldError::make('Campo requerido')
+                ->theme('tailwind')
+                ->variant('error')
+                ->activate()
+        );
+
+        $this->assertStringContainsString('text-error', $daisyPayload['theme']['classes']['root']);
+        $this->assertSame('assertive', $daisyPayload['theme']['attributes']['aria-live']);
+
+        $this->assertStringContainsString('invalid-feedback', $bootstrapPayload['theme']['classes']['root']);
+        $this->assertStringContainsString('text-danger', $bootstrapPayload['theme']['classes']['root']);
+        $this->assertSame('assertive', $bootstrapPayload['theme']['attributes']['aria-live']);
+
+        $this->assertStringContainsString('text-rose-600', $tailwindPayload['theme']['classes']['root']);
+        $this->assertSame('assertive', $tailwindPayload['theme']['attributes']['aria-live']);
     }
 
     public function test_tailwind_theme_resolvers_merge_variant_with_width_and_height_utilities(): void

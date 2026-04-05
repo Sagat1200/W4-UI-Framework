@@ -4,6 +4,7 @@ namespace W4\UiFramework\Themes\Bootstrap;
 
 use W4\UiFramework\Core\AbstractTheme;
 use W4\UiFramework\Themes\Bootstrap\Components\Forms\CheckBoxThemeResolver;
+use W4\UiFramework\Themes\Bootstrap\Components\Forms\FieldErrorThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\Forms\InputThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\UI\ButtonThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\UI\DividerThemeResolver;
@@ -13,6 +14,7 @@ use W4\UiFramework\Themes\Bootstrap\Components\UI\IconButtonThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\UI\LabelThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\UI\LinkThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\UI\TextThemeResolver;
+
 class BootstrapTheme extends AbstractTheme
 {
     public function __construct()
@@ -27,6 +29,7 @@ class BootstrapTheme extends AbstractTheme
         $this->registerResolver('text', new TextThemeResolver());
         $this->registerResolver('input', new InputThemeResolver());
         $this->registerResolver('checkbox', new CheckBoxThemeResolver());
+        $this->registerResolver('field-error', new FieldErrorThemeResolver());
     }
 
     public function name(): string

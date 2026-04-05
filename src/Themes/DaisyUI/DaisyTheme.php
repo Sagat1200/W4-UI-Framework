@@ -4,6 +4,7 @@ namespace W4\UiFramework\Themes\DaisyUI;
 
 use W4\UiFramework\Core\AbstractTheme;
 use W4\UiFramework\Themes\DaisyUI\Components\Forms\CheckBoxThemeResolver;
+use W4\UiFramework\Themes\DaisyUI\Components\Forms\FieldErrorThemeResolver;
 use W4\UiFramework\Themes\DaisyUI\Components\UI\ButtonThemeResolver;
 use W4\UiFramework\Themes\DaisyUI\Components\UI\DividerThemeResolver;
 use W4\UiFramework\Themes\DaisyUI\Components\UI\HeadingThemeResolver;
@@ -28,6 +29,7 @@ class DaisyTheme extends AbstractTheme
         $this->registerResolver('text', new TextThemeResolver());
         $this->registerResolver('input', new InputThemeResolver());
         $this->registerResolver('checkbox', new CheckBoxThemeResolver());
+        $this->registerResolver('field-error', new FieldErrorThemeResolver());
     }
 
     public function name(): string
