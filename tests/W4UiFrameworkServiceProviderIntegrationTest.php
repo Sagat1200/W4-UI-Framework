@@ -15,6 +15,7 @@ use W4\UiFramework\Components\Forms\CheckBox\CheckBox;
 use W4\UiFramework\Components\Forms\FielError\FieldError;
 use W4\UiFramework\Components\Forms\HelperText\HelperText;
 use W4\UiFramework\Components\Forms\Input\Input;
+use W4\UiFramework\Components\Forms\Radio\Radio;
 use W4\UiFramework\Core\ComponentFactory;
 use W4\UiFramework\Core\ComponentRegistry;
 use W4\UiFramework\Managers\RendererManager;
@@ -30,11 +31,13 @@ use W4\UiFramework\Themes\Tailwind\Components\UI\LabelThemeResolver as TailwindL
 use W4\UiFramework\Themes\Tailwind\Components\UI\LinkThemeResolver as TailwindLinkThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\UI\TextThemeResolver as TailwindTextThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\Forms\HelperTextThemeResolver as TailwindHelperTextThemeResolver;
+use W4\UiFramework\Themes\Tailwind\Components\Forms\RadioThemeResolver as TailwindRadioThemeResolver;
 use W4\UiFramework\View\Components\Render;
 use W4\UiFramework\View\Components\Forms\CheckBox as CheckBoxBladeComponent;
 use W4\UiFramework\View\Components\Forms\FieldError as FieldErrorBladeComponent;
 use W4\UiFramework\View\Components\Forms\HelperText as HelperTextBladeComponent;
 use W4\UiFramework\View\Components\Forms\Input as InputBladeComponent;
+use W4\UiFramework\View\Components\Forms\Radio as RadioBladeComponent;
 use W4\UiFramework\View\Components\UI\Button as ButtonBladeComponent;
 use W4\UiFramework\View\Components\UI\Divider as DividerBladeComponent;
 use W4\UiFramework\View\Components\UI\Heading as HeadingBladeComponent;
@@ -70,6 +73,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $checkbox = $factory->make('checkbox');
         $fieldError = $factory->make('field-error');
         $helperText = $factory->make('helper-text');
+        $radio = $factory->make('radio');
         $input = $factory->make('input');
 
         $this->assertInstanceOf(Button::class, $button);
@@ -83,6 +87,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertInstanceOf(CheckBox::class, $checkbox);
         $this->assertInstanceOf(FieldError::class, $fieldError);
         $this->assertInstanceOf(HelperText::class, $helperText);
+        $this->assertInstanceOf(Radio::class, $radio);
         $this->assertInstanceOf(Input::class, $input);
     }
 
@@ -109,6 +114,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.checkbox'));
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.field-error'));
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.helper-text'));
+        $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.radio'));
         $this->assertTrue($this->app->make('view')->exists('w4-ui::components.forms.input'));
     }
 
@@ -134,6 +140,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertArrayHasKey('admin-checkbox', $aliases);
         $this->assertArrayHasKey('admin-field-error', $aliases);
         $this->assertArrayHasKey('admin-helper-text', $aliases);
+        $this->assertArrayHasKey('admin-radio', $aliases);
         $this->assertArrayHasKey('admin-input', $aliases);
     }
 
@@ -158,6 +165,7 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertArrayHasKey('w4-checkbox', $aliases);
         $this->assertArrayHasKey('w4-field-error', $aliases);
         $this->assertArrayHasKey('w4-helper-text', $aliases);
+        $this->assertArrayHasKey('w4-radio', $aliases);
         $this->assertArrayHasKey('w4-input', $aliases);
     }
 
@@ -367,6 +375,16 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
 
         $this->assertSame('audit-helper-text-01', $helperTextPayload['data']['meta']['component_id']);
         $this->assertSame('audit-helper-text-01', $helperTextPayload['data']['attributes']['data-component-id']);
+
+        $bladeRadio = new RadioBladeComponent(
+            label: 'Opción auditada',
+            componentId: 'audit-radio-01'
+        );
+
+        $radioPayload = $this->app->make('w4.ui')->payload($bladeRadio->component());
+
+        $this->assertSame('audit-radio-01', $radioPayload['data']['meta']['component_id']);
+        $this->assertSame('audit-radio-01', $radioPayload['data']['attributes']['data-component-id']);
     }
 
     public function test_w4_debug_payload_returns_summary_keys(): void
@@ -790,6 +808,35 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertSame('true', $payload['theme']['attributes']['data-focused']);
     }
 
+    public function test_blade_radio_maps_props_to_state_and_theme_payload(): void
+    {
+        $bladeRadio = new RadioBladeComponent(
+            label: 'Plan Pro',
+            value: 'pro',
+            group: 'plan',
+            theme: 'tailwind',
+            variant: 'primary',
+            selected: true,
+            invalid: true,
+            focused: true,
+            componentId: 'radio-audit-01'
+        );
+
+        $payload = $this->app->make('w4.ui')->payload($bladeRadio->component());
+
+        $this->assertSame('radio', $payload['component']);
+        $this->assertSame('invalid', $payload['data']['state']);
+        $this->assertTrue($payload['data']['selected']);
+        $this->assertSame('pro', $payload['data']['value']);
+        $this->assertSame('plan', $payload['data']['group']);
+        $this->assertSame('radio-audit-01', $payload['data']['meta']['component_id']);
+        $this->assertSame('radio-audit-01', $payload['data']['attributes']['data-component-id']);
+        $this->assertStringContainsString('border-rose-500', $payload['theme']['classes']['input']);
+        $this->assertSame('true', $payload['theme']['attributes']['aria-invalid']);
+        $this->assertSame('true', $payload['theme']['attributes']['aria-checked']);
+        $this->assertSame('true', $payload['theme']['attributes']['data-focused']);
+    }
+
     public function test_icon_button_resolves_classes_for_daisyui_bootstrap_and_tailwind(): void
     {
         $daisyPayload = $this->app->make('w4.ui')->payload(
@@ -1044,6 +1091,40 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertSame('polite', $tailwindPayload['theme']['attributes']['aria-live']);
     }
 
+    public function test_radio_resolves_classes_for_daisyui_bootstrap_and_tailwind(): void
+    {
+        $daisyPayload = $this->app->make('w4.ui')->payload(
+            Radio::make('Pro')
+                ->theme('daisyui')
+                ->variant('primary')
+                ->selected(true)
+        );
+
+        $bootstrapPayload = $this->app->make('w4.ui')->payload(
+            Radio::make('Pro')
+                ->theme('bootstrap')
+                ->variant('primary')
+                ->selected(true)
+        );
+
+        $tailwindPayload = $this->app->make('w4.ui')->payload(
+            Radio::make('Pro')
+                ->theme('tailwind')
+                ->variant('primary')
+                ->selected(true)
+        );
+
+        $this->assertStringContainsString('radio-primary', $daisyPayload['theme']['classes']['input']);
+        $this->assertSame('true', $daisyPayload['theme']['attributes']['aria-checked']);
+
+        $this->assertStringContainsString('form-check-input', $bootstrapPayload['theme']['classes']['input']);
+        $this->assertSame('true', $bootstrapPayload['theme']['attributes']['aria-checked']);
+
+        $this->assertStringContainsString('text-blue-600', $tailwindPayload['theme']['classes']['input']);
+        $this->assertStringContainsString('border-blue-400', $tailwindPayload['theme']['classes']['input']);
+        $this->assertSame('true', $tailwindPayload['theme']['attributes']['aria-checked']);
+    }
+
     public function test_tailwind_theme_resolvers_merge_variant_with_width_and_height_utilities(): void
     {
         $inputResolver = new TailwindInputThemeResolver();
@@ -1164,5 +1245,16 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertStringContainsString('text-blue-600', $helperTextClasses['root']);
         $this->assertStringContainsString('text-sm', $helperTextClasses['root']);
         $this->assertStringContainsString('mt-2', $helperTextClasses['root']);
+
+        $radioResolver = new TailwindRadioThemeResolver();
+        $radioClasses = $radioResolver->classes([
+            'variant' => 'primary',
+            'size' => 'sm',
+            'attributes' => ['class' => 'mt-2'],
+        ]);
+
+        $this->assertStringContainsString('border-blue-400', $radioClasses['input']);
+        $this->assertStringContainsString('text-blue-600', $radioClasses['input']);
+        $this->assertStringContainsString('mt-2', $radioClasses['input']);
     }
 }

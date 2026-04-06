@@ -16,6 +16,7 @@ use W4\UiFramework\Components\Forms\CheckBox\CheckBox;
 use W4\UiFramework\Components\Forms\FielError\FieldError;
 use W4\UiFramework\Components\Forms\HelperText\HelperText;
 use W4\UiFramework\Components\Forms\Input\Input;
+use W4\UiFramework\Components\Forms\Radio\Radio;
 use W4\UiFramework\Core\ComponentFactory;
 use W4\UiFramework\Core\ComponentRegistry;
 use W4\UiFramework\Core\RendererPipeline;
@@ -42,6 +43,7 @@ use W4\UiFramework\View\Components\Forms\CheckBox as CheckBoxBladeComponent;
 use W4\UiFramework\View\Components\Forms\FieldError as FieldErrorBladeComponent;
 use W4\UiFramework\View\Components\Forms\HelperText as HelperTextBladeComponent;
 use W4\UiFramework\View\Components\Forms\Input as InputBladeComponent;
+use W4\UiFramework\View\Components\Forms\Radio as RadioBladeComponent;
 
 class W4UiFrameworkServiceProvider extends ServiceProvider
 {
@@ -65,6 +67,7 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
                 ->register('checkbox', CheckBox::class)
                 ->register('field-error', FieldError::class)
                 ->register('helper-text', HelperText::class)
+                ->register('radio', Radio::class)
                 ->register('input', Input::class);
         });
 
@@ -149,6 +152,7 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
         Blade::component($this->componentAlias($prefix, 'checkbox'), CheckBoxBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'field-error'), FieldErrorBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'helper-text'), HelperTextBladeComponent::class);
+        Blade::component($this->componentAlias($prefix, 'radio'), RadioBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'input'), InputBladeComponent::class);
     }
 

@@ -7,6 +7,7 @@ use W4\UiFramework\Themes\Tailwind\Components\Forms\CheckBoxThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\Forms\FieldErrorThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\Forms\HelperTextThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\Forms\InputThemeResolver;
+use W4\UiFramework\Themes\Tailwind\Components\Forms\RadioThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\UI\ButtonThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\UI\DividerThemeResolver;
 use W4\UiFramework\Themes\Tailwind\Components\UI\HeadingThemeResolver;
@@ -32,6 +33,7 @@ class TailwindTheme extends AbstractTheme
         $this->registerResolver('checkbox', new CheckBoxThemeResolver());
         $this->registerResolver('field-error', new FieldErrorThemeResolver());
         $this->registerResolver('helper-text', new HelperTextThemeResolver());
+        $this->registerResolver('radio', new RadioThemeResolver());
     }
 
     public function name(): string
