@@ -1,0 +1,4 @@
+@import "tailwindcss";
+@import "../daisy/ui/w4-daisyui-ui-safelist.css";
+@import "../daisy/forms/w4-daisyui-forms-safelist.css";
+@plugin "daisyui";
