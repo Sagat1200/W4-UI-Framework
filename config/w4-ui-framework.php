@@ -56,6 +56,13 @@ return [
      */
     'w4_ui_log' => env('W4_UI_LOG', false),
 
+
+    /*
+     * Configuración de ámbito de clases Css:
+     * Habilita ámbito en todos los componentes conforme a sus clases css.
+     * si se habilita, los componentes tendrán una clase de ámbito que se utilizará para aplicar estilos.
+     * Nota: El ámbito de clases css es útil para aplicar estilos a los componentes en base a su ámbito.
+     */
     'w4_ui_scope_enabled' => env('W4_UI_SCOPE_ENABLED', true),
     'w4_ui_scope_class' => env('W4_UI_SCOPE_CLASS', 'w4-scope'),
     'w4_ui_scope_theme_classes' => [
