@@ -31,12 +31,14 @@ class W4UiManager
             return '';
         }
 
-        return $this->viewFactory->make($viewName, [
+        $html = $this->viewFactory->make($viewName, [
             'data' => $payload['data'] ?? [],
             'theme' => $payload['theme'] ?? [],
             'component' => $component,
             'payload' => $payload,
         ])->render();
+
+        return $this->applyScopeWrapper($html, $payload);
     }
 
     public function view(ComponentInterface $component, ?string $renderer = null): View|string
@@ -72,6 +74,28 @@ class W4UiManager
         }
 
         return $payload;
+    }
+
+    protected function applyScopeWrapper(string $html, array $payload): string
+    {
+        if (! config('w4-ui-framework.w4_ui_scope_enabled', true)) {
+            return $html;
+        }
+
+        $baseScopeClass = trim((string) config('w4-ui-framework.w4_ui_scope_class', 'w4-scope'));
+        $payloadTheme = $payload['data']['theme'] ?? null;
+        $resolvedTheme = strtolower(trim((string) ($payloadTheme ?? config('w4-ui-framework.theme', ''))));
+        $themeScopeClasses = (array) config('w4-ui-framework.w4_ui_scope_theme_classes', []);
+        $themeScopeClass = trim((string) ($themeScopeClasses[$resolvedTheme] ?? ''));
+        $scopeClass = trim($baseScopeClass . ' ' . $themeScopeClass);
+
+        if ($scopeClass === '') {
+            return $html;
+        }
+
+        $escapedScopeClass = htmlspecialchars($scopeClass, ENT_QUOTES, 'UTF-8');
+
+        return '<div class="' . $escapedScopeClass . '">' . $html . '</div>';
     }
 
     protected function logDebugPayloadIfEnabled(array $payload, ?string $renderer = null, string $origin = 'payload'): void

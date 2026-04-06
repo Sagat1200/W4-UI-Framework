@@ -56,6 +56,13 @@ return [
      */
     'w4_ui_log' => env('W4_UI_LOG', false),
 
+    'w4_ui_scope_enabled' => env('W4_UI_SCOPE_ENABLED', true),
+    'w4_ui_scope_class' => env('W4_UI_SCOPE_CLASS', 'w4-scope'),
+    'w4_ui_scope_theme_classes' => [
+        'daisyui' => env('W4_UI_SCOPE_CLASS_DAISYUI', 'w4-scope-daisy'),
+        'tailwind' => env('W4_UI_SCOPE_CLASS_TAILWIND', 'w4-scope-tailwind'),
+    ],
+
     /*
      * Configuración de prefijo de componentes:
      * Por defecto es w4
