@@ -8,6 +8,7 @@ use W4\UiFramework\Themes\Bootstrap\Components\Forms\FieldErrorThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\Forms\HelperTextThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\Forms\InputThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\Forms\RadioThemeResolver;
+use W4\UiFramework\Themes\Bootstrap\Components\Forms\SelectThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\UI\ButtonThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\UI\DividerThemeResolver;
 use W4\UiFramework\Themes\Bootstrap\Components\UI\HeadingThemeResolver;
@@ -34,6 +35,7 @@ class BootstrapTheme extends AbstractTheme
         $this->registerResolver('field-error', new FieldErrorThemeResolver());
         $this->registerResolver('helper-text', new HelperTextThemeResolver());
         $this->registerResolver('radio', new RadioThemeResolver());
+        $this->registerResolver('select', new SelectThemeResolver());
     }
 
     public function name(): string
