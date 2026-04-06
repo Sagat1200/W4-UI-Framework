@@ -1,0 +1,45 @@
+/*Input*/
+@source inline("form-control w-full");
+@source inline("input input-bordered");
+@source inline("input-xs input-sm input-md input-lg input-xl");
+@source inline("input-neutral input-primary input-secondary input-accent input-success input-warning input-error");
+@source inline("label-text label-text-alt text-error");
+@source inline("opacity-75 ring");
+
+/*CheckBox*/
+@source inline("form-control");
+@source inline("label cursor-pointer justify-start gap-3");
+@source inline("checkbox checkbox-xs checkbox-sm checkbox-md checkbox-lg");
+@source inline("checkbox-neutral checkbox-primary checkbox-secondary checkbox-accent checkbox-success checkbox-warning checkbox-error checkbox-info");
+@source inline("label-text label-text-alt text-error");
+@source inline("opacity-75 ring scale-95");
+
+/*Radio*/
+@source inline("form-control");
+@source inline("label cursor-pointer justify-start gap-3");
+@source inline("radio radio-xs radio-sm radio-md radio-lg");
+@source inline("radio-neutral radio-primary radio-secondary radio-accent radio-success radio-warning radio-error radio-info");
+@source inline("label-text label-text-alt text-error");
+@source inline("opacity-75 ring scale-95");
+
+/*Select*/
+@source inline("form-control w-full");
+@source inline("select select-bordered");
+@source inline("select-xs select-sm select-md select-lg");
+@source inline("select-neutral select-primary select-secondary select-accent select-success select-warning select-error select-info");
+@source inline("label-text label-text-alt text-error");
+@source inline("opacity-75 ring");
+
+/*HelperText*/
+@source inline("label-text-alt");
+@source inline("text-base-content text-primary text-secondary text-accent text-success text-warning text-error text-info");
+@source inline("text-xs text-sm text-base text-lg text-xl");
+@source inline("opacity-50 font-medium hidden");
+@source inline("mr-1 inline-flex items-center inline");
+
+/*FieldError*/
+@source inline("label-text-alt text-error");
+@source inline("text-base-content text-primary text-secondary text-accent text-success text-warning text-error text-info");
+@source inline("text-xs text-sm text-base text-lg text-xl");
+@source inline("opacity-50 font-semibold hidden");
+@source inline("mr-1 font-semibold ml-1 text-xs opacity-80");
