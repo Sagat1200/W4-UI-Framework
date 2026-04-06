@@ -31,14 +31,12 @@ class W4UiManager
             return '';
         }
 
-        $html = $this->viewFactory->make($viewName, [
+        return $this->viewFactory->make($viewName, [
             'data' => $payload['data'] ?? [],
             'theme' => $payload['theme'] ?? [],
             'component' => $component,
             'payload' => $payload,
         ])->render();
-
-        return $this->applyScopeWrapper($html);
     }
 
     public function view(ComponentInterface $component, ?string $renderer = null): View|string
@@ -74,23 +72,6 @@ class W4UiManager
         }
 
         return $payload;
-    }
-
-    protected function applyScopeWrapper(string $html): string
-    {
-        if (! config('w4-ui-framework.w4_ui_scope_enabled', true)) {
-            return $html;
-        }
-
-        $scopeClass = trim((string) config('w4-ui-framework.w4_ui_scope_class', 'w4-scope'));
-
-        if ($scopeClass === '') {
-            return $html;
-        }
-
-        $escapedScopeClass = htmlspecialchars($scopeClass, ENT_QUOTES, 'UTF-8');
-
-        return '<div class="' . $escapedScopeClass . '">' . $html . '</div>';
     }
 
     protected function logDebugPayloadIfEnabled(array $payload, ?string $renderer = null, string $origin = 'payload'): void
