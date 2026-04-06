@@ -5,6 +5,7 @@ export default defineConfig({
   build: {
     outDir: 'resources/dist',
     emptyOutDir: false,
+    manifest: true,
     cssCodeSplit: true,
     rollupOptions: {
       input: {
