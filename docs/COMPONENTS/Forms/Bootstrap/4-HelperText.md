@@ -154,7 +154,76 @@ echo W4Ui::render(
 />
 ```
 
-### 4.4 Estados en Blade
+### 4.4 Ejemplos de renderizado por estado y evento
+
+Render helper con estado `enabled`:
+
+```php
+echo w4_render(
+    \W4\UiFramework\Components\Forms\HelperText\HelperText::make('Ayuda base')
+        ->theme('bootstrap')
+        ->state(\W4\UiFramework\Components\Forms\HelperText\HelperTextComponentState::ENABLED)
+);
+```
+
+Render helper con estado `active`:
+
+```php
+echo w4_render(
+    \W4\UiFramework\Components\Forms\HelperText\HelperText::make('Ayuda activa')
+        ->theme('bootstrap')
+        ->state(\W4\UiFramework\Components\Forms\HelperText\HelperTextComponentState::ACTIVE)
+);
+```
+
+Render helper con estado `disabled`:
+
+```php
+echo w4_render(
+    \W4\UiFramework\Components\Forms\HelperText\HelperText::make('Ayuda deshabilitada')
+        ->theme('bootstrap')
+        ->state(\W4\UiFramework\Components\Forms\HelperText\HelperTextComponentState::DISABLED)
+);
+```
+
+Render por evento `activate`:
+
+```php
+use W4\UiFramework\Components\Forms\HelperText\HelperTextComponentEvent;
+
+echo w4_render(
+    \W4\UiFramework\Components\Forms\HelperText\HelperText::make('Ayuda activada')
+        ->theme('bootstrap')
+        ->dispatch(HelperTextComponentEvent::ACTIVATE)
+);
+```
+
+Render por evento `hide`:
+
+```php
+use W4\UiFramework\Components\Forms\HelperText\HelperTextComponentEvent;
+
+echo w4_render(
+    \W4\UiFramework\Components\Forms\HelperText\HelperText::make('Ayuda oculta')
+        ->theme('bootstrap')
+        ->dispatch(HelperTextComponentEvent::HIDE)
+);
+```
+
+Render por evento `reset` después de activar:
+
+```php
+use W4\UiFramework\Components\Forms\HelperText\HelperTextComponentEvent;
+
+$helperText = \W4\UiFramework\Components\Forms\HelperText\HelperText::make('Reset')
+    ->theme('bootstrap')
+    ->dispatch(HelperTextComponentEvent::ACTIVATE)
+    ->dispatch(HelperTextComponentEvent::RESET);
+
+echo w4_render($helperText);
+```
+
+### 4.5 Ejemplos equivalentes en Blade (`x-w4-helper-text`)
 
 ```blade
 <x-w4-helper-text text="Activo" theme="bootstrap" :active="true" />
@@ -162,7 +231,9 @@ echo W4Ui::render(
 <x-w4-helper-text text="Oculto" theme="bootstrap" :hidden="true" />
 ```
 
-### 4.5 Auditoría con componentId
+Para volver al estado base (`reset`) en Blade, renderiza el helper-text sin `:active`, `:disabled` ni `:hidden`.
+
+### 4.6 Auditoría con componentId
 
 ```blade
 <x-w4-helper-text

@@ -98,6 +98,91 @@ echo W4Ui::render(
 />
 ```
 
+### 4.4 Ejemplos de renderizado por estado y evento
+
+Render helper con estado `enabled`:
+
+```php
+echo w4_render(
+    \W4\UiFramework\Components\Forms\Select\Select::make('Plan')
+        ->theme('tailwind')
+        ->options(['basic' => 'Basic', 'pro' => 'Pro'])
+        ->state(\W4\UiFramework\Components\Forms\Select\SelectComponentState::ENABLED)
+);
+```
+
+Render helper con estado `invalid`:
+
+```php
+echo w4_render(
+    \W4\UiFramework\Components\Forms\Select\Select::make('Plan')
+        ->theme('tailwind')
+        ->options(['basic' => 'Basic', 'pro' => 'Pro'])
+        ->state(\W4\UiFramework\Components\Forms\Select\SelectComponentState::INVALID)
+);
+```
+
+Render helper con estado `loading`:
+
+```php
+echo w4_render(
+    \W4\UiFramework\Components\Forms\Select\Select::make('Plan')
+        ->theme('tailwind')
+        ->options(['basic' => 'Basic', 'pro' => 'Pro'])
+        ->state(\W4\UiFramework\Components\Forms\Select\SelectComponentState::LOADING)
+);
+```
+
+Render por evento `set_invalid`:
+
+```php
+use W4\UiFramework\Components\Forms\Select\SelectComponentEvent;
+
+echo w4_render(
+    \W4\UiFramework\Components\Forms\Select\Select::make('Plan')
+        ->theme('tailwind')
+        ->options(['basic' => 'Basic', 'pro' => 'Pro'])
+        ->dispatch(SelectComponentEvent::SET_INVALID)
+);
+```
+
+Render por evento `start_loading`:
+
+```php
+use W4\UiFramework\Components\Forms\Select\SelectComponentEvent;
+
+echo w4_render(
+    \W4\UiFramework\Components\Forms\Select\Select::make('Plan')
+        ->theme('tailwind')
+        ->options(['basic' => 'Basic', 'pro' => 'Pro'])
+        ->dispatch(SelectComponentEvent::START_LOADING)
+);
+```
+
+Render por evento `reset` después de invalidar:
+
+```php
+use W4\UiFramework\Components\Forms\Select\SelectComponentEvent;
+
+$select = \W4\UiFramework\Components\Forms\Select\Select::make('Plan')
+    ->theme('tailwind')
+    ->options(['basic' => 'Basic', 'pro' => 'Pro'])
+    ->dispatch(SelectComponentEvent::SET_INVALID)
+    ->dispatch(SelectComponentEvent::RESET);
+
+echo w4_render($select);
+```
+
+### 4.5 Ejemplos equivalentes en Blade (`x-w4-select`)
+
+```blade
+<x-w4-select theme="tailwind" label="Plan" :options="['basic'=>'Basic','pro'=>'Pro']" :invalid="true" />
+<x-w4-select theme="tailwind" label="Plan" :options="['basic'=>'Basic','pro'=>'Pro']" :loading="true" />
+<x-w4-select theme="tailwind" label="Plan" :options="['basic'=>'Basic','pro'=>'Pro']" :disabled="true" />
+```
+
+Para volver al estado base (`reset`) en Blade, renderiza el select sin `:invalid`, `:loading`, `:disabled` ni `:readonly`.
+
 ## 5. 🧭 Ejemplos prácticos Tailwind
 
 ```blade

@@ -119,12 +119,96 @@ echo W4Ui::render(
 />
 ```
 
-### 4.4 Estados en Blade
+### 4.4 Ejemplos de renderizado por estado y evento
+
+Render helper con estado `enabled`:
+
+```php
+echo w4_render(
+    \W4\UiFramework\Components\Forms\Radio\Radio::make('Plan Pro')
+        ->theme('daisyui')
+        ->group('plan')
+        ->value('pro')
+        ->state(\W4\UiFramework\Components\Forms\Radio\RadioComponentState::ENABLED)
+);
+```
+
+Render helper con estado `invalid`:
+
+```php
+echo w4_render(
+    \W4\UiFramework\Components\Forms\Radio\Radio::make('Plan Pro')
+        ->theme('daisyui')
+        ->group('plan')
+        ->value('pro')
+        ->state(\W4\UiFramework\Components\Forms\Radio\RadioComponentState::INVALID)
+);
+```
+
+Render helper con estado `loading`:
+
+```php
+echo w4_render(
+    \W4\UiFramework\Components\Forms\Radio\Radio::make('Plan Pro')
+        ->theme('daisyui')
+        ->group('plan')
+        ->value('pro')
+        ->state(\W4\UiFramework\Components\Forms\Radio\RadioComponentState::LOADING)
+);
+```
+
+Render por evento `set_invalid`:
+
+```php
+use W4\UiFramework\Components\Forms\Radio\RadioComponentEvent;
+
+echo w4_render(
+    \W4\UiFramework\Components\Forms\Radio\Radio::make('Plan Pro')
+        ->theme('daisyui')
+        ->group('plan')
+        ->value('pro')
+        ->dispatch(RadioComponentEvent::SET_INVALID)
+);
+```
+
+Render por evento `start_loading`:
+
+```php
+use W4\UiFramework\Components\Forms\Radio\RadioComponentEvent;
+
+echo w4_render(
+    \W4\UiFramework\Components\Forms\Radio\Radio::make('Plan Pro')
+        ->theme('daisyui')
+        ->group('plan')
+        ->value('pro')
+        ->dispatch(RadioComponentEvent::START_LOADING)
+);
+```
+
+Render por evento `reset` después de invalidar:
+
+```php
+use W4\UiFramework\Components\Forms\Radio\RadioComponentEvent;
+
+$radio = \W4\UiFramework\Components\Forms\Radio\Radio::make('Plan Pro')
+    ->theme('daisyui')
+    ->group('plan')
+    ->value('pro')
+    ->dispatch(RadioComponentEvent::SET_INVALID)
+    ->dispatch(RadioComponentEvent::RESET);
+
+echo w4_render($radio);
+```
+
+### 4.5 Ejemplos equivalentes en Blade (`x-w4-radio`)
 
 ```blade
 <x-w4-radio label="Inválido" theme="daisyui" group="plan" value="pro" :invalid="true" />
 <x-w4-radio label="Deshabilitado" theme="daisyui" group="plan" value="pro" :disabled="true" />
+<x-w4-radio label="Cargando" theme="daisyui" group="plan" value="pro" :loading="true" />
 ```
+
+Para volver al estado base (`reset`) en Blade, renderiza el radio sin `:invalid`, `:loading`, `:disabled` ni `:readonly`.
 
 ## 5. 🧭 Ejemplos prácticos Daisy
 
