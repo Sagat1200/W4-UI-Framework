@@ -57,14 +57,6 @@ return [
     'w4_ui_log' => env('W4_UI_LOG', false),
 
     /*
-     * Configuración de ámbito de componentes:
-     * Habilita ámbito de componentes en todos los componentes.
-     * Nota: No se debe de utilizar en entorno de producción.
-     */
-    'w4_ui_scope_enabled' => env('W4_UI_SCOPE_ENABLED', true),
-    'w4_ui_scope_class' => env('W4_UI_SCOPE_CLASS', 'w4-scope'),
-
-    /*
      * Configuración de prefijo de componentes:
      * Por defecto es w4
      * Usted puede cambiarlo si desea utilizar un prefijo diferente.
