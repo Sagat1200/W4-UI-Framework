@@ -80,7 +80,7 @@ Regla práctica:
 
 - Reportar un problema por caso, evitando mezclar incidencias.
 - Adjuntar ejemplo mínimo ejecutable cuando sea posible.
-- Indicar si el problema ocurre en `bootstrap`, `daisyui` o `tailwind`.
+- Indicar si el problema ocurre con `w4native`.
 - Confirmar si el fallo persiste con configuración por defecto.
 
 ## Relación con documentación del proyecto

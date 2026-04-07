@@ -8,12 +8,9 @@ return [
     /*
      * Selección de tema:
      * Puedes seleccionar entre:
-     * - bootstrap
-     * - bootswatch
-     * - tailwind
-     * - daisyui
+     * - w4native
      */
-    'theme' => env('W4_UI_THEME', 'bootstrap'),
+    'theme' => env('W4_UI_THEME', 'w4native'),
 
     /*
      * Selección de render:
@@ -66,8 +63,7 @@ return [
     'w4_ui_scope_enabled' => env('W4_UI_SCOPE_ENABLED', true),
     'w4_ui_scope_class' => env('W4_UI_SCOPE_CLASS', 'w4-scope'),
     'w4_ui_scope_theme_classes' => [
-        'daisyui' => env('W4_UI_SCOPE_CLASS_DAISYUI', 'w4-scope-daisy'),
-        'tailwind' => env('W4_UI_SCOPE_CLASS_TAILWIND', 'w4-scope-tailwind'),
+        'w4native' => env('W4_UI_SCOPE_CLASS_W4NATIVE', 'w4-scope-native'),
     ],
 
     /*

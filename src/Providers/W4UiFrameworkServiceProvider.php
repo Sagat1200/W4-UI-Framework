@@ -27,9 +27,7 @@ use W4\UiFramework\Managers\RendererManager;
 use W4\UiFramework\Managers\ThemeManager;
 use W4\UiFramework\Renderers\BladeRenderer;
 use W4\UiFramework\Support\W4UiManager;
-use W4\UiFramework\Themes\Bootstrap\BootstrapTheme;
-use W4\UiFramework\Themes\DaisyUI\DaisyTheme;
-use W4\UiFramework\Themes\Tailwind\TailwindTheme;
+use W4\UiFramework\Themes\W4Native\W4NativeTheme;
 use W4\UiFramework\View\Components\Render as RenderComponent;
 // Componentes w4-component
 use W4\UiFramework\View\Components\UI\Button as ButtonBladeComponent;
@@ -83,9 +81,7 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
         $this->app->singleton(ThemeManager::class, function () {
             $manager = new ThemeManager();
 
-            $manager->register('bootstrap', new BootstrapTheme());
-            $manager->register('daisyui', new DaisyTheme());
-            $manager->register('tailwind', new TailwindTheme());
+            $manager->register('w4native', new W4NativeTheme());
 
             return $manager;
         });

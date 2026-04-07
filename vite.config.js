@@ -9,8 +9,7 @@ export default defineConfig({
     cssCodeSplit: true,
     rollupOptions: {
       input: {
-        'w4-daisyui': resolve(__dirname, 'resources/assets/css/build/w4-daisyui.css'),
-        'w4-tailwind': resolve(__dirname, 'resources/assets/css/build/w4-tailwind.css'),
+        'w4-native': resolve(__dirname, 'resources/assets/css/build/w4-native.css'),
       },
       output: {
         assetFileNames: 'css/[name][extname]',

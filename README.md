@@ -7,8 +7,7 @@ Paquete de abstraccion y contruccion de componentes de usuario y gestor de temas
 - Registro de componentes por alias (`button`, `input`).
 - Pipeline de renderizado (`theme resolver` + `renderer`).
 - Temas incluidos:
-  - `bootstrap`
-  - `daisyui`
+  - `w4native`
 - Renderer incluido:
   - `blade`
 - Helpers globales:
@@ -43,7 +42,7 @@ Archivo: `config/w4-ui-framework.php`
 
 ```php
 return [
-    'theme' => env('W4_UI_THEME', 'bootstrap'),
+    'theme' => env('W4_UI_THEME', 'w4native'),
     'renderer' => env('W4_UI_RENDERER', 'blade'),
 ];
 ```
@@ -51,14 +50,13 @@ return [
 Variables de entorno:
 
 ```env
-W4_UI_THEME=bootstrap
+W4_UI_THEME=w4native
 W4_UI_RENDERER=blade
 ```
 
-Temas soportados actualmente:
+Tema soportado actualmente:
 
-- `bootstrap`
-- `daisyui`
+- `w4native`
 
 ## Uso rápido
 
@@ -69,7 +67,7 @@ use W4\UiFramework\Components\UI\Button\Button;
 
 echo w4_render(
     Button::make('Guardar')
-        ->theme('daisyui')
+        ->theme('w4native')
         ->variant('primary')
 );
 ```
@@ -84,7 +82,7 @@ echo W4Ui::render(
     Input::make('Correo')
         ->name('email')
         ->type('email')
-        ->theme('bootstrap')
+        ->theme('w4native')
 );
 ```
 
@@ -94,7 +92,7 @@ echo W4Ui::render(
 <x-w4-button
     label="Guardar"
     variant="primary"
-    theme="daisyui"
+    theme="w4native"
 />
 
 <x-w4-input
@@ -102,7 +100,7 @@ echo W4Ui::render(
     name="email"
     type="email"
     placeholder="correo@dominio.com"
-    theme="daisyui"
+    theme="w4native"
 />
 ```
 
@@ -149,7 +147,7 @@ $input = Input::make('Correo')
 
 ## Tema global vs tema por componente
 
-- Si `W4_UI_THEME=daisyui`, no necesitas definir `theme="daisyui"` en cada componente.
+- Si `W4_UI_THEME=w4native`, no necesitas definir `theme="w4native"` en cada componente.
 - Define `theme` por componente cuando quieras forzar un tema puntual.
 
 ## Vistas Blade
@@ -175,8 +173,7 @@ composer test
 - `src/Providers/W4UiFrameworkServiceProvider.php`
 - `src/Support/W4UiManager.php`
 - `src/Renderers/BladeRenderer.php`
-- `src/Themes/Bootstrap/*`
-- `src/Themes/DaisyUI/*`
+- `src/Themes/W4Native/*`
 - `src/View/Components/*`
 - `src/Helpers/helpers.php`
 
