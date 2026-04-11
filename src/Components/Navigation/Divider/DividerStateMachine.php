@@ -3,8 +3,6 @@
 namespace W4\UiFramework\Components\Navigation\Divider;
 
 use RuntimeException;
-use W4\UiFramework\Components\Navigation\Divider\DividerComponentState;
-use W4\UiFramework\Components\Navigation\Divider\DividerComponentEvent;
 
 class DividerStateMachine
 {

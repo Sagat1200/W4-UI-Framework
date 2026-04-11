@@ -3,7 +3,6 @@
 namespace W4\UiFramework\Components\Navigation\Divider;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Navigation\Divider\DividerInteractState;
 use W4\UiFramework\Core\BaseComponent;
 use W4\UiFramework\Support\Traits\InteractsWithSize;
 use W4\UiFramework\Support\Traits\InteractsWithState;
