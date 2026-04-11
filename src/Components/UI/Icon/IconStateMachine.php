@@ -3,6 +3,8 @@
 namespace W4\UiFramework\Components\UI\Icon;
 
 use RuntimeException;
+use W4\UiFramework\Components\UI\Icon\IconComponentEvent;
+use W4\UiFramework\Components\UI\Icon\IconComponentState;
 
 class IconStateMachine
 {

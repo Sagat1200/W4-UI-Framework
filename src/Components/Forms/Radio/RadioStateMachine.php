@@ -3,6 +3,8 @@
 namespace W4\UiFramework\Components\Forms\Radio;
 
 use RuntimeException;
+use W4\UiFramework\Components\Forms\Radio\RadioComponentEvent;
+use W4\UiFramework\Components\Forms\Radio\RadioComponentState;
 
 class RadioStateMachine
 {

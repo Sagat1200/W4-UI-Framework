@@ -3,6 +3,10 @@
 namespace W4\UiFramework\Components\UI\Label;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\UI\Label\LabelComponentEvent;
+use W4\UiFramework\Components\UI\Label\LabelComponentState;
+use W4\UiFramework\Components\UI\Label\LabelInteractState;
+use W4\UiFramework\Components\UI\Label\LabelStateMachine;
 use W4\UiFramework\Core\BaseComponent;
 use W4\UiFramework\Support\Traits\InteractsWithSize;
 use W4\UiFramework\Support\Traits\InteractsWithState;

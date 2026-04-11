@@ -3,6 +3,8 @@
 namespace W4\UiFramework\Components\UI\Text;
 
 use RuntimeException;
+use W4\UiFramework\Components\UI\Text\TextComponentEvent;
+use W4\UiFramework\Components\UI\Text\TextComponentState;
 
 class TextStateMachine
 {

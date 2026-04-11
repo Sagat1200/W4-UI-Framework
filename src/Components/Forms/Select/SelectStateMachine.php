@@ -3,6 +3,8 @@
 namespace W4\UiFramework\Components\Forms\Select;
 
 use RuntimeException;
+use W4\UiFramework\Components\Forms\Select\SelectComponentEvent;
+use W4\UiFramework\Components\Forms\Select\SelectComponentState;
 
 class SelectStateMachine
 {

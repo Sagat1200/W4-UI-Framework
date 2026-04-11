@@ -3,6 +3,8 @@
 namespace W4\UiFramework\Components\UI\IconButton;
 
 use RuntimeException;
+use W4\UiFramework\Components\UI\IconButton\IconButtonComponentEvent;
+use W4\UiFramework\Components\UI\IconButton\IconButtonComponentState;
 
 class IconButtonStateMachine
 {

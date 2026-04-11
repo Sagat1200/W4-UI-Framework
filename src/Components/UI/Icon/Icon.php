@@ -3,6 +3,10 @@
 namespace W4\UiFramework\Components\UI\Icon;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\UI\Icon\IconComponentEvent;
+use W4\UiFramework\Components\UI\Icon\IconComponentState;
+use W4\UiFramework\Components\UI\Icon\IconInteractState;
+use W4\UiFramework\Components\UI\Icon\IconStateMachine;
 use W4\UiFramework\Core\BaseComponent;
 use W4\UiFramework\Support\Traits\InteractsWithSize;
 use W4\UiFramework\Support\Traits\InteractsWithState;

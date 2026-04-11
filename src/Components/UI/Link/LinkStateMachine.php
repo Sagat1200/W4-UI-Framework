@@ -3,6 +3,8 @@
 namespace W4\UiFramework\Components\UI\Link;
 
 use RuntimeException;
+use W4\UiFramework\Components\UI\Link\LinkComponentEvent;
+use W4\UiFramework\Components\UI\Link\LinkComponentState;
 
 class LinkStateMachine
 {

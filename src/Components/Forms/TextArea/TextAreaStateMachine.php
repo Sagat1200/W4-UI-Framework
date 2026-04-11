@@ -3,6 +3,8 @@
 namespace W4\UiFramework\Components\Forms\TextArea;
 
 use RuntimeException;
+use W4\UiFramework\Components\Forms\TextArea\TextAreaComponentEvent;
+use W4\UiFramework\Components\Forms\TextArea\TextAreaComponentState;
 
 class TextAreaStateMachine
 {

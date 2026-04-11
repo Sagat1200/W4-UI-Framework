@@ -3,6 +3,10 @@
 namespace W4\UiFramework\Components\Forms\Select;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Forms\Select\SelectComponentEvent;
+use W4\UiFramework\Components\Forms\Select\SelectComponentState;
+use W4\UiFramework\Components\Forms\Select\SelectInteractState;
+use W4\UiFramework\Components\Forms\Select\SelectStateMachine;
 use W4\UiFramework\Core\BaseComponent;
 use W4\UiFramework\Support\Traits\InteractsWithSize;
 use W4\UiFramework\Support\Traits\InteractsWithState;
@@ -181,7 +185,7 @@ class Select extends BaseComponent
 
         if ($this->multiple()) {
             $values = is_array($value) ? $value : [$value];
-            $this->selected(array_values(array_map(static fn ($item) => (string) $item, $values)));
+            $this->selected(array_values(array_map(static fn($item) => (string) $item, $values)));
 
             return $this;
         }

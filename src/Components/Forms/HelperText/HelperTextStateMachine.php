@@ -3,6 +3,8 @@
 namespace W4\UiFramework\Components\Forms\HelperText;
 
 use RuntimeException;
+use W4\UiFramework\Components\Forms\HelperText\HelperTextComponentEvent;
+use W4\UiFramework\Components\Forms\HelperText\HelperTextComponentState;
 
 class HelperTextStateMachine
 {

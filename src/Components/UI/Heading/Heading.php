@@ -3,6 +3,10 @@
 namespace W4\UiFramework\Components\UI\Heading;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\UI\Heading\HeadingComponentEvent;
+use W4\UiFramework\Components\UI\Heading\HeadingComponentState;
+use W4\UiFramework\Components\UI\Heading\HeadingInteractState;
+use W4\UiFramework\Components\UI\Heading\HeadingStateMachine;
 use W4\UiFramework\Core\BaseComponent;
 use W4\UiFramework\Support\Traits\InteractsWithSize;
 use W4\UiFramework\Support\Traits\InteractsWithState;

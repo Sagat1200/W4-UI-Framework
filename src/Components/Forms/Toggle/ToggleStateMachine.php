@@ -3,6 +3,8 @@
 namespace W4\UiFramework\Components\Forms\Toggle;
 
 use RuntimeException;
+use W4\UiFramework\Components\Forms\Toggle\ToggleComponentEvent;
+use W4\UiFramework\Components\Forms\Toggle\ToggleComponentState;
 
 class ToggleStateMachine
 {

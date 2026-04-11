@@ -3,6 +3,10 @@
 namespace W4\UiFramework\Components\UI\Text;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\UI\Text\TextComponentEvent;
+use W4\UiFramework\Components\UI\Text\TextComponentState;
+use W4\UiFramework\Components\UI\Text\TextInteractState;
+use W4\UiFramework\Components\UI\Text\TextStateMachine;
 use W4\UiFramework\Core\BaseComponent;
 use W4\UiFramework\Support\Traits\InteractsWithSize;
 use W4\UiFramework\Support\Traits\InteractsWithState;

@@ -3,6 +3,8 @@
 namespace W4\UiFramework\Components\Forms\Input;
 
 use RuntimeException;
+use W4\UiFramework\Components\Forms\Input\InputComponentEvent;
+use W4\UiFramework\Components\Forms\Input\InputComponentState;
 
 class InputStateMachine
 {

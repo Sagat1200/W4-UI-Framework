@@ -1,8 +1,12 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\Divider;
+namespace W4\UiFramework\Components\Layout\Divider;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Layout\Divider\DividerInteractState;
+use W4\UiFramework\Components\Layout\Divider\DividerStateMachine;
+use W4\UiFramework\Components\Layout\Divider\DividerComponentEvent;
+use W4\UiFramework\Components\Layout\Divider\DividerComponentState;
 use W4\UiFramework\Core\BaseComponent;
 use W4\UiFramework\Support\Traits\InteractsWithSize;
 use W4\UiFramework\Support\Traits\InteractsWithState;

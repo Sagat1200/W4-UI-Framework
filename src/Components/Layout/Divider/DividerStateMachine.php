@@ -1,8 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\Divider;
+namespace W4\UiFramework\Components\Layout\Divider;
 
 use RuntimeException;
+use W4\UiFramework\Components\Layout\Divider\DividerComponentEvent;
+use W4\UiFramework\Components\Layout\Divider\DividerComponentState;
 
 class DividerStateMachine
 {

@@ -3,6 +3,8 @@
 namespace W4\UiFramework\Components\UI\Button;
 
 use RuntimeException;
+use W4\UiFramework\Components\UI\Button\ButtonComponentEvent;
+use W4\UiFramework\Components\UI\Button\ButtonComponentState;
 
 class ButtonStateMachine
 {

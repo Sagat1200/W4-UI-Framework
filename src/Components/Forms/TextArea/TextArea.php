@@ -3,6 +3,10 @@
 namespace W4\UiFramework\Components\Forms\TextArea;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Forms\TextArea\TextAreaComponentEvent;
+use W4\UiFramework\Components\Forms\TextArea\TextAreaComponentState;
+use W4\UiFramework\Components\Forms\TextArea\TextAreaInteractState;
+use W4\UiFramework\Components\Forms\TextArea\TextAreaStateMachine;
 use W4\UiFramework\Core\BaseComponent;
 use W4\UiFramework\Support\Traits\InteractsWithSize;
 use W4\UiFramework\Support\Traits\InteractsWithState;
