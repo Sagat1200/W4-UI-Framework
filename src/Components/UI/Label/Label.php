@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\UI\Label;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\UI\Label\LabelAccessibilityState;
 use W4\UiFramework\Components\UI\Label\LabelComponentEvent;
 use W4\UiFramework\Components\UI\Label\LabelComponentState;
 use W4\UiFramework\Components\UI\Label\LabelInteractState;
@@ -24,6 +25,8 @@ class Label extends BaseComponent
 
     protected LabelInteractState $interactState;
 
+    protected LabelAccessibilityState $accessibilityState;
+
     protected LabelStateMachine $stateMachine;
 
     public function __construct()
@@ -34,7 +37,9 @@ class Label extends BaseComponent
         $this->size = 'md';
         $this->state = LabelComponentState::ENABLED;
         $this->interactState = new LabelInteractState();
+        $this->accessibilityState = new LabelAccessibilityState();
         $this->stateMachine = new LabelStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -75,6 +80,18 @@ class Label extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?LabelAccessibilityState $state = null): LabelAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(LabelComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -83,6 +100,7 @@ class Label extends BaseComponent
     public function dispatch(LabelComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -148,6 +166,8 @@ class Label extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -160,6 +180,18 @@ class Label extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaDisabled = $stateValue === LabelComponentState::DISABLED->value ? 'true' : 'false';
+        $this->accessibilityState->ariaHidden = $stateValue === LabelComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === LabelComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

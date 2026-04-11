@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\UI\Heading;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\UI\Heading\HeadingAccessibilityState;
 use W4\UiFramework\Components\UI\Heading\HeadingComponentEvent;
 use W4\UiFramework\Components\UI\Heading\HeadingComponentState;
 use W4\UiFramework\Components\UI\Heading\HeadingInteractState;
@@ -28,6 +29,8 @@ class Heading extends BaseComponent
 
     protected HeadingInteractState $interactState;
 
+    protected HeadingAccessibilityState $accessibilityState;
+
     protected HeadingStateMachine $stateMachine;
 
     public function __construct()
@@ -38,7 +41,9 @@ class Heading extends BaseComponent
         $this->size = 'md';
         $this->state = HeadingComponentState::ENABLED;
         $this->interactState = new HeadingInteractState();
+        $this->accessibilityState = new HeadingAccessibilityState();
         $this->stateMachine = new HeadingStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -76,6 +81,8 @@ class Heading extends BaseComponent
             $this->traitSize($this->sizeFromLevel($normalized));
         }
 
+        $this->syncAccessibilityState();
+
         return $this;
     }
 
@@ -101,6 +108,18 @@ class Heading extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?HeadingAccessibilityState $state = null): HeadingAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(HeadingComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -109,6 +128,7 @@ class Heading extends BaseComponent
     public function dispatch(HeadingComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -174,6 +194,8 @@ class Heading extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -186,7 +208,20 @@ class Heading extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaLevel = ltrim($this->level(), 'h');
+        $this->accessibilityState->ariaDisabled = $stateValue === HeadingComponentState::DISABLED->value ? 'true' : 'false';
+        $this->accessibilityState->ariaHidden = $stateValue === HeadingComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === HeadingComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 
     protected function sizeFromLevel(string $level): string

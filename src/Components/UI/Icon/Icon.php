@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\UI\Icon;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\UI\Icon\IconAccessibilityState;
 use W4\UiFramework\Components\UI\Icon\IconComponentEvent;
 use W4\UiFramework\Components\UI\Icon\IconComponentState;
 use W4\UiFramework\Components\UI\Icon\IconInteractState;
@@ -26,6 +27,8 @@ class Icon extends BaseComponent
 
     protected IconInteractState $interactState;
 
+    protected IconAccessibilityState $accessibilityState;
+
     protected IconStateMachine $stateMachine;
 
     public function __construct()
@@ -36,7 +39,9 @@ class Icon extends BaseComponent
         $this->size = 'md';
         $this->state = IconComponentState::ENABLED;
         $this->interactState = new IconInteractState();
+        $this->accessibilityState = new IconAccessibilityState();
         $this->stateMachine = new IconStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -73,6 +78,7 @@ class Icon extends BaseComponent
         }
 
         $this->decorative = $decorative;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -88,6 +94,18 @@ class Icon extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?IconAccessibilityState $state = null): IconAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(IconComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -96,6 +114,7 @@ class Icon extends BaseComponent
     public function dispatch(IconComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -162,6 +181,8 @@ class Icon extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -175,6 +196,18 @@ class Icon extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaDisabled = $stateValue === IconComponentState::DISABLED->value ? 'true' : 'false';
+        $this->accessibilityState->ariaHidden = $this->decorative() || $stateValue === IconComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === IconComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

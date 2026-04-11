@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\UI\Link;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\UI\Link\LinkAccessibilityState;
 use W4\UiFramework\Components\UI\Link\LinkComponentEvent;
 use W4\UiFramework\Components\UI\Link\LinkComponentState;
 use W4\UiFramework\Components\UI\Link\LinkInteractState;
@@ -23,6 +24,7 @@ class Link extends BaseComponent
     protected ?string $target = null;
     protected ?string $rel = null;
     protected LinkInteractState $interactState;
+    protected LinkAccessibilityState $accessibilityState;
     protected LinkStateMachine $stateMachine;
 
     public function __construct()
@@ -33,7 +35,9 @@ class Link extends BaseComponent
         $this->size = 'md';
         $this->state = LinkComponentState::ENABLED;
         $this->interactState = new LinkInteractState();
+        $this->accessibilityState = new LinkAccessibilityState();
         $this->stateMachine = new LinkStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -96,6 +100,18 @@ class Link extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?LinkAccessibilityState $state = null): LinkAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(LinkComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -104,6 +120,7 @@ class Link extends BaseComponent
     public function dispatch(LinkComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -171,6 +188,8 @@ class Link extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -185,6 +204,18 @@ class Link extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaDisabled = $stateValue === LinkComponentState::DISABLED->value ? 'true' : 'false';
+        $this->accessibilityState->ariaHidden = $stateValue === LinkComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === LinkComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

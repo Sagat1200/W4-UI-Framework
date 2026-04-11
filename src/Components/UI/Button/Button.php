@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\UI\Button;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\UI\Button\ButtonAccessibilityState;
 use W4\UiFramework\Components\UI\Button\ButtonComponentEvent;
 use W4\UiFramework\Components\UI\Button\ButtonComponentState;
 use W4\UiFramework\Components\UI\Button\ButtonInteractState;
@@ -21,6 +22,7 @@ class Button extends BaseComponent
     protected ?string $icon = null;
 
     protected ButtonInteractState $interactState;
+    protected ButtonAccessibilityState $accessibilityState;
     protected ButtonStateMachine $stateMachine;
 
     public function __construct()
@@ -31,7 +33,9 @@ class Button extends BaseComponent
         $this->size = 'md';
         $this->state = ButtonComponentState::ENABLED;
         $this->interactState = new ButtonInteractState();
+        $this->accessibilityState = new ButtonAccessibilityState();
         $this->stateMachine = new ButtonStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -61,6 +65,18 @@ class Button extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?ButtonAccessibilityState $state = null): ButtonAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(ButtonComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -69,6 +85,7 @@ class Button extends BaseComponent
     public function dispatch(ButtonComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -138,6 +155,8 @@ class Button extends BaseComponent
             'icon' => $this->icon(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -149,6 +168,20 @@ class Button extends BaseComponent
             'icon' => $this->icon(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaPressed = $stateValue === ButtonComponentState::ACTIVE->value ? 'true' : 'false';
+        $this->accessibilityState->ariaDisabled = $stateValue === ButtonComponentState::DISABLED->value ? 'true' : 'false';
+        $this->accessibilityState->ariaReadOnly = $stateValue === ButtonComponentState::READONLY->value ? 'true' : 'false';
+        $this->accessibilityState->ariaBusy = $stateValue === ButtonComponentState::LOADING->value;
+        $this->accessibilityState->ariaHidden = false;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

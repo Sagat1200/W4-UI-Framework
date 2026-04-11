@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\UI\IconButton;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\UI\IconButton\IconButtonAccessibilityState;
 use W4\UiFramework\Components\UI\IconButton\IconButtonComponentEvent;
 use W4\UiFramework\Components\UI\IconButton\IconButtonComponentState;
 use W4\UiFramework\Components\UI\IconButton\IconButtonInteractState;
@@ -22,6 +23,8 @@ class IconButton extends BaseComponent
 
     protected IconButtonInteractState $interactState;
 
+    protected IconButtonAccessibilityState $accessibilityState;
+
     protected IconButtonStateMachine $stateMachine;
 
     public function __construct()
@@ -32,7 +35,9 @@ class IconButton extends BaseComponent
         $this->size = 'md';
         $this->state = IconButtonComponentState::ENABLED;
         $this->interactState = new IconButtonInteractState();
+        $this->accessibilityState = new IconButtonAccessibilityState();
         $this->stateMachine = new IconButtonStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -62,6 +67,18 @@ class IconButton extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?IconButtonAccessibilityState $state = null): IconButtonAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(IconButtonComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -70,6 +87,7 @@ class IconButton extends BaseComponent
     public function dispatch(IconButtonComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -139,6 +157,8 @@ class IconButton extends BaseComponent
             'icon' => $this->icon(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -150,6 +170,20 @@ class IconButton extends BaseComponent
             'icon' => $this->icon(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaPressed = $stateValue === IconButtonComponentState::ACTIVE->value ? 'true' : 'false';
+        $this->accessibilityState->ariaDisabled = $stateValue === IconButtonComponentState::DISABLED->value ? 'true' : 'false';
+        $this->accessibilityState->ariaReadOnly = $stateValue === IconButtonComponentState::READONLY->value ? 'true' : 'false';
+        $this->accessibilityState->ariaBusy = $stateValue === IconButtonComponentState::LOADING->value;
+        $this->accessibilityState->ariaHidden = false;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }
