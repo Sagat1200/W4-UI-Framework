@@ -67,8 +67,8 @@ debería poder renderizarse de forma consistente en los stacks soportados sin ca
 1. Crear un sistema universal de componentes para Laravel.
 2. Soportar múltiples familias visuales, inicialmente:
 
-   * W4Native-Swatch
-   * W4Native-Daisy
+   * W4-Native-Swatch
+   * W4-Native-Daisy
 3. Soportar múltiples estrategias de renderizado:
 
    * Blade
