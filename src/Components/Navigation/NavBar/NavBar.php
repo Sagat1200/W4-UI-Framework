@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Navigation\NavBar;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Navigation\NavBar\NavBarAccessibilityState;
 use W4\UiFramework\Components\Navigation\NavBar\NavBarComponentEvent;
 use W4\UiFramework\Components\Navigation\NavBar\NavBarComponentState;
 use W4\UiFramework\Components\Navigation\NavBar\NavBarInteractState;
@@ -34,6 +35,8 @@ class NavBar extends BaseComponent
 
     protected NavBarInteractState $interactState;
 
+    protected NavBarAccessibilityState $accessibilityState;
+
     protected NavBarStateMachine $stateMachine;
 
     public function __construct()
@@ -44,7 +47,9 @@ class NavBar extends BaseComponent
         $this->size = 'md';
         $this->state = NavBarComponentState::ENABLED;
         $this->interactState = new NavBarInteractState();
+        $this->accessibilityState = new NavBarAccessibilityState();
         $this->stateMachine = new NavBarStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -124,6 +129,7 @@ class NavBar extends BaseComponent
 
         $this->mobileExpanded = $mobileExpanded;
         $this->interactState()->mobileExpanded = $mobileExpanded;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -150,6 +156,18 @@ class NavBar extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?NavBarAccessibilityState $state = null): NavBarAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(NavBarComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -158,6 +176,7 @@ class NavBar extends BaseComponent
     public function dispatch(NavBarComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -255,6 +274,8 @@ class NavBar extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -272,6 +293,18 @@ class NavBar extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaExpanded = $this->mobileExpanded() ? 'true' : 'false';
+        $this->accessibilityState->ariaHidden = $stateValue === NavBarComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === NavBarComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

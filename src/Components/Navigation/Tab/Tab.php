@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Navigation\Tab;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Navigation\Tab\TabAccessibilityState;
 use W4\UiFramework\Components\Navigation\Tab\TabComponentEvent;
 use W4\UiFramework\Components\Navigation\Tab\TabComponentState;
 use W4\UiFramework\Components\Navigation\Tab\TabInteractState;
@@ -32,6 +33,8 @@ class Tab extends BaseComponent
 
     protected TabInteractState $interactState;
 
+    protected TabAccessibilityState $accessibilityState;
+
     protected TabStateMachine $stateMachine;
 
     public function __construct()
@@ -42,7 +45,9 @@ class Tab extends BaseComponent
         $this->size = 'md';
         $this->state = TabComponentState::ENABLED;
         $this->interactState = new TabInteractState();
+        $this->accessibilityState = new TabAccessibilityState();
         $this->stateMachine = new TabStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -80,6 +85,7 @@ class Tab extends BaseComponent
 
         $this->selected = $selected;
         $this->interactState()->selected = $selected;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -128,6 +134,18 @@ class Tab extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?TabAccessibilityState $state = null): TabAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(TabComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -136,6 +154,7 @@ class Tab extends BaseComponent
     public function dispatch(TabComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -231,6 +250,8 @@ class Tab extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -247,6 +268,19 @@ class Tab extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+        $isSelected = $this->selected() || $stateValue === TabComponentState::SELECTED->value;
+
+        $this->accessibilityState->ariaSelected = $isSelected;
+        $this->accessibilityState->ariaHidden = $stateValue === TabComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === TabComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

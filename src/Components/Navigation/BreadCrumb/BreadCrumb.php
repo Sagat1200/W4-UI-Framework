@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Navigation\BreadCrumb;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Navigation\BreadCrumb\BreadCrumbAccessibilityState;
 use W4\UiFramework\Components\Navigation\BreadCrumb\BreadCrumbComponentEvent;
 use W4\UiFramework\Components\Navigation\BreadCrumb\BreadCrumbComponentState;
 use W4\UiFramework\Components\Navigation\BreadCrumb\BreadCrumbInteractState;
@@ -32,6 +33,8 @@ class BreadCrumb extends BaseComponent
 
     protected BreadCrumbInteractState $interactState;
 
+    protected BreadCrumbAccessibilityState $accessibilityState;
+
     protected BreadCrumbStateMachine $stateMachine;
 
     public function __construct()
@@ -42,7 +45,9 @@ class BreadCrumb extends BaseComponent
         $this->size = 'md';
         $this->state = BreadCrumbComponentState::ENABLED;
         $this->interactState = new BreadCrumbInteractState();
+        $this->accessibilityState = new BreadCrumbAccessibilityState();
         $this->stateMachine = new BreadCrumbStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -111,6 +116,7 @@ class BreadCrumb extends BaseComponent
 
         $this->collapsed = $collapsed;
         $this->interactState()->collapsed = $collapsed;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -137,6 +143,18 @@ class BreadCrumb extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?BreadCrumbAccessibilityState $state = null): BreadCrumbAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(BreadCrumbComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -145,6 +163,7 @@ class BreadCrumb extends BaseComponent
     public function dispatch(BreadCrumbComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -233,6 +252,8 @@ class BreadCrumb extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -249,6 +270,18 @@ class BreadCrumb extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaHidden = $stateValue === BreadCrumbComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === BreadCrumbComponentState::ACTIVE->value;
+        $this->accessibilityState->ariaExpanded = $this->collapsed() ? 'false' : 'true';
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

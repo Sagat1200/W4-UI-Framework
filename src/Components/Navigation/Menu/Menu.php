@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Navigation\Menu;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Navigation\Menu\MenuAccessibilityState;
 use W4\UiFramework\Components\Navigation\Menu\MenuComponentEvent;
 use W4\UiFramework\Components\Navigation\Menu\MenuComponentState;
 use W4\UiFramework\Components\Navigation\Menu\MenuInteractState;
@@ -32,6 +33,8 @@ class Menu extends BaseComponent
 
     protected MenuInteractState $interactState;
 
+    protected MenuAccessibilityState $accessibilityState;
+
     protected MenuStateMachine $stateMachine;
 
     public function __construct()
@@ -42,7 +45,9 @@ class Menu extends BaseComponent
         $this->size = 'md';
         $this->state = MenuComponentState::ENABLED;
         $this->interactState = new MenuInteractState();
+        $this->accessibilityState = new MenuAccessibilityState();
         $this->stateMachine = new MenuStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -88,6 +93,7 @@ class Menu extends BaseComponent
         }
 
         $this->orientation = $orientation;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -100,6 +106,7 @@ class Menu extends BaseComponent
 
         $this->opened = $opened;
         $this->interactState()->opened = $opened;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -137,6 +144,18 @@ class Menu extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?MenuAccessibilityState $state = null): MenuAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(MenuComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -145,6 +164,7 @@ class Menu extends BaseComponent
     public function dispatch(MenuComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -241,6 +261,8 @@ class Menu extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -257,6 +279,20 @@ class Menu extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+        $isOpen = $this->opened() || $stateValue === MenuComponentState::OPEN->value;
+
+        $this->accessibilityState->ariaOrientation = $this->orientation();
+        $this->accessibilityState->ariaExpanded = $isOpen ? 'true' : 'false';
+        $this->accessibilityState->ariaHidden = ! $isOpen || $stateValue === MenuComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === MenuComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

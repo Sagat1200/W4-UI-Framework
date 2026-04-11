@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Navigation\DropDown;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Navigation\DropDown\DropDownAccessibilityState;
 use W4\UiFramework\Components\Navigation\DropDown\DropDownComponentEvent;
 use W4\UiFramework\Components\Navigation\DropDown\DropDownComponentState;
 use W4\UiFramework\Components\Navigation\DropDown\DropDownInteractState;
@@ -32,6 +33,8 @@ class DropDown extends BaseComponent
 
     protected DropDownInteractState $interactState;
 
+    protected DropDownAccessibilityState $accessibilityState;
+
     protected DropDownStateMachine $stateMachine;
 
     public function __construct()
@@ -42,7 +45,9 @@ class DropDown extends BaseComponent
         $this->size = 'md';
         $this->state = DropDownComponentState::ENABLED;
         $this->interactState = new DropDownInteractState();
+        $this->accessibilityState = new DropDownAccessibilityState();
         $this->stateMachine = new DropDownStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -100,6 +105,7 @@ class DropDown extends BaseComponent
 
         $this->opened = $opened;
         $this->interactState()->opened = $opened;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -137,6 +143,18 @@ class DropDown extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?DropDownAccessibilityState $state = null): DropDownAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(DropDownComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -145,6 +163,7 @@ class DropDown extends BaseComponent
     public function dispatch(DropDownComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -241,6 +260,8 @@ class DropDown extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -257,6 +278,19 @@ class DropDown extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+        $isOpen = $this->opened() || $stateValue === DropDownComponentState::OPEN->value;
+
+        $this->accessibilityState->ariaExpanded = $isOpen;
+        $this->accessibilityState->ariaHidden = ! $isOpen || $stateValue === DropDownComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === DropDownComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

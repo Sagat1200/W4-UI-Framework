@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Navigation\SideBar;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Navigation\SideBar\SideBarAccessibilityState;
 use W4\UiFramework\Components\Navigation\SideBar\SideBarComponentEvent;
 use W4\UiFramework\Components\Navigation\SideBar\SideBarComponentState;
 use W4\UiFramework\Components\Navigation\SideBar\SideBarInteractState;
@@ -32,6 +33,8 @@ class SideBar extends BaseComponent
 
     protected SideBarInteractState $interactState;
 
+    protected SideBarAccessibilityState $accessibilityState;
+
     protected SideBarStateMachine $stateMachine;
 
     public function __construct()
@@ -42,7 +45,9 @@ class SideBar extends BaseComponent
         $this->size = 'md';
         $this->state = SideBarComponentState::ENABLED;
         $this->interactState = new SideBarInteractState();
+        $this->accessibilityState = new SideBarAccessibilityState();
         $this->stateMachine = new SideBarStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -100,6 +105,7 @@ class SideBar extends BaseComponent
 
         $this->collapsed = $collapsed;
         $this->interactState()->expanded = ! $collapsed;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -137,6 +143,18 @@ class SideBar extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?SideBarAccessibilityState $state = null): SideBarAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(SideBarComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -145,6 +163,7 @@ class SideBar extends BaseComponent
     public function dispatch(SideBarComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -241,6 +260,8 @@ class SideBar extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -257,6 +278,19 @@ class SideBar extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+        $isExpanded = ! $this->collapsed() && $stateValue !== SideBarComponentState::COLLAPSED->value;
+
+        $this->accessibilityState->ariaExpanded = $isExpanded ? 'true' : 'false';
+        $this->accessibilityState->ariaHidden = ! $isExpanded || $stateValue === SideBarComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === SideBarComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }
