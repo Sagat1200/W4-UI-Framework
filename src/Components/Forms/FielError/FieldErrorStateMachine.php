@@ -3,6 +3,8 @@
 namespace W4\UiFramework\Components\Forms\FielError;
 
 use RuntimeException;
+use W4\UiFramework\Components\Forms\FielError\FieldErrorComponentEvent;
+use W4\UiFramework\Components\Forms\FielError\FieldErrorComponentState;
 
 class FieldErrorStateMachine
 {

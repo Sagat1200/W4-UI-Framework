@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Divider;
+namespace W4\UiFramework\Components\Navigation\Divider;
 
 enum DividerComponentState: string
 {
