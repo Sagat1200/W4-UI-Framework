@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Forms\Radio;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Forms\Radio\RadioAccessibilityState;
 use W4\UiFramework\Components\Forms\Radio\RadioComponentEvent;
 use W4\UiFramework\Components\Forms\Radio\RadioComponentState;
 use W4\UiFramework\Components\Forms\Radio\RadioInteractState;
@@ -32,6 +33,8 @@ class Radio extends BaseComponent
 
     protected RadioInteractState $interactState;
 
+    protected RadioAccessibilityState $accessibilityState;
+
     protected RadioStateMachine $stateMachine;
 
     public function __construct()
@@ -42,7 +45,9 @@ class Radio extends BaseComponent
         $this->size = 'md';
         $this->state = RadioComponentState::ENABLED;
         $this->interactState = new RadioInteractState();
+        $this->accessibilityState = new RadioAccessibilityState();
         $this->stateMachine = new RadioStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -90,6 +95,7 @@ class Radio extends BaseComponent
         }
 
         $this->selected = $selected;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -127,6 +133,18 @@ class Radio extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?RadioAccessibilityState $state = null): RadioAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(RadioComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -135,6 +153,7 @@ class Radio extends BaseComponent
     public function dispatch(RadioComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -228,6 +247,8 @@ class Radio extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -244,6 +265,20 @@ class Radio extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaHidden = $stateValue === RadioComponentState::DISABLED->value;
+        $this->accessibilityState->ariaBusy = $stateValue === RadioComponentState::LOADING->value;
+        $this->accessibilityState->ariaInvalid = $stateValue === RadioComponentState::INVALID->value;
+        $this->accessibilityState->ariaReadonly = $stateValue === RadioComponentState::READONLY->value;
+        $this->accessibilityState->ariaChecked = $this->selected() ? 'true' : 'false';
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

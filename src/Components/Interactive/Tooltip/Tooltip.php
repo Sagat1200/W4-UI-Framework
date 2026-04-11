@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Interactive\Tooltip;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Interactive\Tooltip\TooltipAccessibilityState;
 use W4\UiFramework\Components\Interactive\Tooltip\TooltipComponentEvent;
 use W4\UiFramework\Components\Interactive\Tooltip\TooltipComponentState;
 use W4\UiFramework\Components\Interactive\Tooltip\TooltipInteractState;
@@ -32,6 +33,8 @@ class Tooltip extends BaseComponent
 
     protected TooltipInteractState $interactState;
 
+    protected TooltipAccessibilityState $accessibilityState;
+
     protected TooltipStateMachine $stateMachine;
 
     public function __construct()
@@ -42,7 +45,9 @@ class Tooltip extends BaseComponent
         $this->size = 'md';
         $this->state = TooltipComponentState::ENABLED;
         $this->interactState = new TooltipInteractState();
+        $this->accessibilityState = new TooltipAccessibilityState();
         $this->stateMachine = new TooltipStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -91,6 +96,7 @@ class Tooltip extends BaseComponent
 
         $this->opened = $opened;
         $this->interactState()->opened = $opened;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -128,6 +134,18 @@ class Tooltip extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?TooltipAccessibilityState $state = null): TooltipAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(TooltipComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -136,6 +154,7 @@ class Tooltip extends BaseComponent
     public function dispatch(TooltipComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -232,6 +251,8 @@ class Tooltip extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -248,6 +269,18 @@ class Tooltip extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $isOpen = $this->opened() || $stateValue === TooltipComponentState::OPEN->value;
+        $this->accessibilityState->ariaHidden = ! $isOpen || $stateValue === TooltipComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === TooltipComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

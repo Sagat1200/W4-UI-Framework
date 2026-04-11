@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Layout\Panel;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Layout\Panel\PanelAccessibilityState;
 use W4\UiFramework\Components\Layout\Panel\PanelComponentEvent;
 use W4\UiFramework\Components\Layout\Panel\PanelComponentState;
 use W4\UiFramework\Components\Layout\Panel\PanelInteractState;
@@ -34,6 +35,8 @@ class Panel extends BaseComponent
 
     protected PanelInteractState $interactState;
 
+    protected PanelAccessibilityState $accessibilityState;
+
     protected PanelStateMachine $stateMachine;
 
     public function __construct()
@@ -44,7 +47,9 @@ class Panel extends BaseComponent
         $this->size = 'md';
         $this->state = PanelComponentState::ENABLED;
         $this->interactState = new PanelInteractState();
+        $this->accessibilityState = new PanelAccessibilityState();
         $this->stateMachine = new PanelStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -140,6 +145,18 @@ class Panel extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?PanelAccessibilityState $state = null): PanelAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(PanelComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -148,6 +165,7 @@ class Panel extends BaseComponent
     public function dispatch(PanelComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -241,6 +259,8 @@ class Panel extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -258,6 +278,18 @@ class Panel extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+        $isExpanded = $this->interactState()->expanded;
+        $this->accessibilityState->ariaHidden = $stateValue === PanelComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === PanelComponentState::ACTIVE->value;
+        $this->accessibilityState->ariaExpanded = $this->collapsible() ? ($isExpanded ? 'true' : 'false') : null;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

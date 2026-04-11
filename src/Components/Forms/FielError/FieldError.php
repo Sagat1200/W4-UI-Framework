@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Forms\FielError;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Forms\FielError\FieldErrorAccessibilityState;
 use W4\UiFramework\Components\Forms\FielError\FieldErrorComponentEvent;
 use W4\UiFramework\Components\Forms\FielError\FieldErrorComponentState;
 use W4\UiFramework\Components\Forms\FielError\FieldErrorInteractState;
@@ -28,6 +29,8 @@ class FieldError extends BaseComponent
 
     protected FieldErrorInteractState $interactState;
 
+    protected FieldErrorAccessibilityState $accessibilityState;
+
     protected FieldErrorStateMachine $stateMachine;
 
     public function __construct()
@@ -38,7 +41,9 @@ class FieldError extends BaseComponent
         $this->size = 'md';
         $this->state = FieldErrorComponentState::ENABLED;
         $this->interactState = new FieldErrorInteractState();
+        $this->accessibilityState = new FieldErrorAccessibilityState();
         $this->stateMachine = new FieldErrorStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -101,6 +106,18 @@ class FieldError extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?FieldErrorAccessibilityState $state = null): FieldErrorAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(FieldErrorComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -109,6 +126,7 @@ class FieldError extends BaseComponent
     public function dispatch(FieldErrorComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -176,6 +194,8 @@ class FieldError extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -190,6 +210,17 @@ class FieldError extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaHidden = $stateValue === FieldErrorComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === FieldErrorComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

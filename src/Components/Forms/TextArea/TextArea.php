@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Forms\TextArea;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Forms\TextArea\TextAreaAccessibilityState;
 use W4\UiFramework\Components\Forms\TextArea\TextAreaComponentEvent;
 use W4\UiFramework\Components\Forms\TextArea\TextAreaComponentState;
 use W4\UiFramework\Components\Forms\TextArea\TextAreaInteractState;
@@ -36,6 +37,8 @@ class TextArea extends BaseComponent
 
     protected TextAreaInteractState $interactState;
 
+    protected TextAreaAccessibilityState $accessibilityState;
+
     protected TextAreaStateMachine $stateMachine;
 
     public function __construct()
@@ -46,7 +49,9 @@ class TextArea extends BaseComponent
         $this->size = 'md';
         $this->state = TextAreaComponentState::ENABLED;
         $this->interactState = new TextAreaInteractState();
+        $this->accessibilityState = new TextAreaAccessibilityState();
         $this->stateMachine = new TextAreaStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -153,6 +158,18 @@ class TextArea extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?TextAreaAccessibilityState $state = null): TextAreaAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(TextAreaComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -161,6 +178,7 @@ class TextArea extends BaseComponent
     public function dispatch(TextAreaComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -237,6 +255,8 @@ class TextArea extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -255,6 +275,19 @@ class TextArea extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaHidden = $stateValue === TextAreaComponentState::DISABLED->value;
+        $this->accessibilityState->ariaBusy = $stateValue === TextAreaComponentState::LOADING->value;
+        $this->accessibilityState->ariaInvalid = $stateValue === TextAreaComponentState::INVALID->value;
+        $this->accessibilityState->ariaReadonly = $stateValue === TextAreaComponentState::READONLY->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

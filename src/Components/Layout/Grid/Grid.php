@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Layout\Grid;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Layout\Grid\GridAccessibilityState;
 use W4\UiFramework\Components\Layout\Grid\GridComponentEvent;
 use W4\UiFramework\Components\Layout\Grid\GridComponentState;
 use W4\UiFramework\Components\Layout\Grid\GridInteractState;
@@ -36,6 +37,8 @@ class Grid extends BaseComponent
 
     protected GridInteractState $interactState;
 
+    protected GridAccessibilityState $accessibilityState;
+
     protected GridStateMachine $stateMachine;
 
     public function __construct()
@@ -46,7 +49,9 @@ class Grid extends BaseComponent
         $this->size = 'md';
         $this->state = GridComponentState::ENABLED;
         $this->interactState = new GridInteractState();
+        $this->accessibilityState = new GridAccessibilityState();
         $this->stateMachine = new GridStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -163,6 +168,18 @@ class Grid extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?GridAccessibilityState $state = null): GridAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(GridComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -171,6 +188,7 @@ class Grid extends BaseComponent
     public function dispatch(GridComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -261,6 +279,8 @@ class Grid extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -279,6 +299,17 @@ class Grid extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+        $this->accessibilityState->ariaHidden = $stateValue === GridComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === GridComponentState::ACTIVE->value;
+        $this->accessibilityState->ariaColCount = $this->columns();
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

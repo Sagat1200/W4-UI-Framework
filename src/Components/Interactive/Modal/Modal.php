@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Interactive\Modal;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Interactive\Modal\ModalAccessibilityState;
 use W4\UiFramework\Components\Interactive\Modal\ModalComponentEvent;
 use W4\UiFramework\Components\Interactive\Modal\ModalComponentState;
 use W4\UiFramework\Components\Interactive\Modal\ModalInteractState;
@@ -32,6 +33,8 @@ class Modal extends BaseComponent
 
     protected ModalInteractState $interactState;
 
+    protected ModalAccessibilityState $accessibilityState;
+
     protected ModalStateMachine $stateMachine;
 
     public function __construct()
@@ -42,7 +45,9 @@ class Modal extends BaseComponent
         $this->size = 'md';
         $this->state = ModalComponentState::ENABLED;
         $this->interactState = new ModalInteractState();
+        $this->accessibilityState = new ModalAccessibilityState();
         $this->stateMachine = new ModalStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -91,6 +96,7 @@ class Modal extends BaseComponent
 
         $this->opened = $opened;
         $this->interactState()->opened = $opened;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -128,6 +134,18 @@ class Modal extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?ModalAccessibilityState $state = null): ModalAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(ModalComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -136,6 +154,7 @@ class Modal extends BaseComponent
     public function dispatch(ModalComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -232,6 +251,8 @@ class Modal extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -248,6 +269,18 @@ class Modal extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $isOpen = $this->opened() || $stateValue === ModalComponentState::OPEN->value;
+        $this->accessibilityState->ariaHidden = ! $isOpen || $stateValue === ModalComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === ModalComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

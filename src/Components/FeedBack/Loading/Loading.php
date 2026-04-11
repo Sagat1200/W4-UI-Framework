@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\FeedBack\Loading;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\FeedBack\Loading\LoadingAccessibilityState;
 use W4\UiFramework\Components\FeedBack\Loading\LoadingComponentEvent;
 use W4\UiFramework\Components\FeedBack\Loading\LoadingComponentState;
 use W4\UiFramework\Components\FeedBack\Loading\LoadingInteractState;
@@ -32,6 +33,8 @@ class Loading extends BaseComponent
 
     protected LoadingInteractState $interactState;
 
+    protected LoadingAccessibilityState $accessibilityState;
+
     protected LoadingStateMachine $stateMachine;
 
     public function __construct()
@@ -42,7 +45,9 @@ class Loading extends BaseComponent
         $this->size = 'md';
         $this->state = LoadingComponentState::ENABLED;
         $this->interactState = new LoadingInteractState();
+        $this->accessibilityState = new LoadingAccessibilityState();
         $this->stateMachine = new LoadingStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -102,6 +107,7 @@ class Loading extends BaseComponent
 
         $this->loading = $loading;
         $this->interactState()->loading = $loading;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -128,6 +134,18 @@ class Loading extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?LoadingAccessibilityState $state = null): LoadingAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(LoadingComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -136,6 +154,7 @@ class Loading extends BaseComponent
     public function dispatch(LoadingComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -224,6 +243,8 @@ class Loading extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -240,6 +261,17 @@ class Loading extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaHidden = $stateValue === LoadingComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $this->loading() || $stateValue === LoadingComponentState::LOADING->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

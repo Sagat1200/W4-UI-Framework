@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Forms\Toggle;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Forms\Toggle\ToggleAccessibilityState;
 use W4\UiFramework\Components\Forms\Toggle\ToggleComponentEvent;
 use W4\UiFramework\Components\Forms\Toggle\ToggleComponentState;
 use W4\UiFramework\Components\Forms\Toggle\ToggleInteractState;
@@ -30,6 +31,8 @@ class Toggle extends BaseComponent
 
     protected ToggleInteractState $interactState;
 
+    protected ToggleAccessibilityState $accessibilityState;
+
     protected ToggleStateMachine $stateMachine;
 
     public function __construct()
@@ -40,7 +43,9 @@ class Toggle extends BaseComponent
         $this->size = 'md';
         $this->state = ToggleComponentState::ENABLED;
         $this->interactState = new ToggleInteractState();
+        $this->accessibilityState = new ToggleAccessibilityState();
         $this->stateMachine = new ToggleStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -77,6 +82,7 @@ class Toggle extends BaseComponent
         }
 
         $this->checked = $checked;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -114,6 +120,18 @@ class Toggle extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?ToggleAccessibilityState $state = null): ToggleAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(ToggleComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -122,6 +140,7 @@ class Toggle extends BaseComponent
     public function dispatch(ToggleComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -222,6 +241,8 @@ class Toggle extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -237,6 +258,20 @@ class Toggle extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaHidden = $stateValue === ToggleComponentState::DISABLED->value;
+        $this->accessibilityState->ariaBusy = $stateValue === ToggleComponentState::LOADING->value;
+        $this->accessibilityState->ariaInvalid = $stateValue === ToggleComponentState::INVALID->value;
+        $this->accessibilityState->ariaReadonly = $stateValue === ToggleComponentState::READONLY->value;
+        $this->accessibilityState->ariaChecked = $this->checked() ? 'true' : 'false';
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

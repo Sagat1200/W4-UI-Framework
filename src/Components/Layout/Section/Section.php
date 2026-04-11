@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Layout\Section;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Layout\Section\SectionAccessibilityState;
 use W4\UiFramework\Components\Layout\Section\SectionComponentEvent;
 use W4\UiFramework\Components\Layout\Section\SectionComponentState;
 use W4\UiFramework\Components\Layout\Section\SectionInteractState;
@@ -34,6 +35,8 @@ class Section extends BaseComponent
 
     protected SectionInteractState $interactState;
 
+    protected SectionAccessibilityState $accessibilityState;
+
     protected SectionStateMachine $stateMachine;
 
     public function __construct()
@@ -44,7 +47,9 @@ class Section extends BaseComponent
         $this->size = 'md';
         $this->state = SectionComponentState::ENABLED;
         $this->interactState = new SectionInteractState();
+        $this->accessibilityState = new SectionAccessibilityState();
         $this->stateMachine = new SectionStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -140,6 +145,18 @@ class Section extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?SectionAccessibilityState $state = null): SectionAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(SectionComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -148,6 +165,7 @@ class Section extends BaseComponent
     public function dispatch(SectionComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -241,6 +259,8 @@ class Section extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -258,6 +278,18 @@ class Section extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+        $isExpanded = $this->interactState()->expanded;
+        $this->accessibilityState->ariaHidden = $stateValue === SectionComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === SectionComponentState::ACTIVE->value;
+        $this->accessibilityState->ariaExpanded = $this->collapsible() ? ($isExpanded ? 'true' : 'false') : null;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

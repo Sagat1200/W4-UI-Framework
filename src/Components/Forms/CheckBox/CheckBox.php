@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Forms\CheckBox;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Forms\CheckBox\CheckBoxAccessibilityState;
 use W4\UiFramework\Components\Forms\CheckBox\CheckBoxComponentEvent;
 use W4\UiFramework\Components\Forms\CheckBox\CheckBoxInteractState;
 use W4\UiFramework\Components\Forms\CheckBox\CheckBoxStateMachine;
@@ -31,6 +32,8 @@ class CheckBox extends BaseComponent
 
     protected CheckBoxInteractState $interactState;
 
+    protected CheckBoxAccessibilityState $accessibilityState;
+
     protected CheckBoxStateMachine $stateMachine;
 
     public function __construct()
@@ -41,7 +44,9 @@ class CheckBox extends BaseComponent
         $this->size = 'md';
         $this->state = CheckBoxComponentState::ENABLED;
         $this->interactState = new CheckBoxInteractState();
+        $this->accessibilityState = new CheckBoxAccessibilityState();
         $this->stateMachine = new CheckBoxStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -82,6 +87,7 @@ class CheckBox extends BaseComponent
         if ($checked) {
             $this->indeterminate = false;
         }
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -97,6 +103,7 @@ class CheckBox extends BaseComponent
         if ($indeterminate) {
             $this->checked = false;
         }
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -134,6 +141,18 @@ class CheckBox extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?CheckBoxAccessibilityState $state = null): CheckBoxAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(CheckBoxComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -142,6 +161,7 @@ class CheckBox extends BaseComponent
     public function dispatch(CheckBoxComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -271,6 +291,8 @@ class CheckBox extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -287,6 +309,23 @@ class CheckBox extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaHidden = $stateValue === CheckBoxComponentState::DISABLED->value
+            || $stateValue === CheckBoxComponentState::LOADING->value;
+        $this->accessibilityState->ariaBusy = $stateValue === CheckBoxComponentState::LOADING->value;
+        $this->accessibilityState->ariaInvalid = $stateValue === CheckBoxComponentState::INVALID->value;
+        $this->accessibilityState->ariaReadonly = $stateValue === CheckBoxComponentState::READONLY->value;
+        $this->accessibilityState->ariaChecked = $this->indeterminate()
+            ? 'mixed'
+            : ($this->checked() ? 'true' : 'false');
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

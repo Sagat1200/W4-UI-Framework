@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Forms\Input;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Forms\Input\InputAccessibilityState;
 use W4\UiFramework\Components\Forms\Input\InputComponentEvent;
 use W4\UiFramework\Components\Forms\Input\InputComponentState;
 use W4\UiFramework\Components\Forms\Input\InputInteractState;
@@ -29,6 +30,7 @@ class Input extends BaseComponent
     protected ?string $errorMessage = null;
 
     protected InputInteractState $interactState;
+    protected InputAccessibilityState $accessibilityState;
     protected InputStateMachine $stateMachine;
 
     public function __construct()
@@ -39,7 +41,9 @@ class Input extends BaseComponent
         $this->size = 'md';
         $this->state = InputComponentState::ENABLED;
         $this->interactState = new InputInteractState();
+        $this->accessibilityState = new InputAccessibilityState();
         $this->stateMachine = new InputStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -113,6 +117,18 @@ class Input extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?InputAccessibilityState $state = null): InputAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(InputComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -121,6 +137,7 @@ class Input extends BaseComponent
     public function dispatch(InputComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -194,6 +211,8 @@ class Input extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -209,6 +228,19 @@ class Input extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaHidden = $stateValue === InputComponentState::DISABLED->value;
+        $this->accessibilityState->ariaBusy = $stateValue === InputComponentState::LOADING->value;
+        $this->accessibilityState->ariaInvalid = $stateValue === InputComponentState::INVALID->value;
+        $this->accessibilityState->ariaReadonly = $stateValue === InputComponentState::READONLY->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

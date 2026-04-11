@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Layout\Card;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Layout\Card\CardAccessibilityState;
 use W4\UiFramework\Components\Layout\Card\CardComponentEvent;
 use W4\UiFramework\Components\Layout\Card\CardComponentState;
 use W4\UiFramework\Components\Layout\Card\CardInteractState;
@@ -36,6 +37,8 @@ class Card extends BaseComponent
 
     protected CardInteractState $interactState;
 
+    protected CardAccessibilityState $accessibilityState;
+
     protected CardStateMachine $stateMachine;
 
     public function __construct()
@@ -46,7 +49,9 @@ class Card extends BaseComponent
         $this->size = 'md';
         $this->state = CardComponentState::ENABLED;
         $this->interactState = new CardInteractState();
+        $this->accessibilityState = new CardAccessibilityState();
         $this->stateMachine = new CardStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -153,6 +158,18 @@ class Card extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?CardAccessibilityState $state = null): CardAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(CardComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -161,6 +178,7 @@ class Card extends BaseComponent
     public function dispatch(CardComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -255,6 +273,8 @@ class Card extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -273,6 +293,16 @@ class Card extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+        $this->accessibilityState->ariaHidden = $stateValue === CardComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === CardComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

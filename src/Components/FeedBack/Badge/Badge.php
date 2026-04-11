@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\FeedBack\Badge;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\FeedBack\Badge\BadgeAccessibilityState;
 use W4\UiFramework\Components\FeedBack\Badge\BadgeComponentEvent;
 use W4\UiFramework\Components\FeedBack\Badge\BadgeComponentState;
 use W4\UiFramework\Components\FeedBack\Badge\BadgeInteractState;
@@ -32,6 +33,8 @@ class Badge extends BaseComponent
 
     protected BadgeInteractState $interactState;
 
+    protected BadgeAccessibilityState $accessibilityState;
+
     protected BadgeStateMachine $stateMachine;
 
     public function __construct()
@@ -42,7 +45,9 @@ class Badge extends BaseComponent
         $this->size = 'md';
         $this->state = BadgeComponentState::ENABLED;
         $this->interactState = new BadgeInteractState();
+        $this->accessibilityState = new BadgeAccessibilityState();
         $this->stateMachine = new BadgeStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -113,6 +118,7 @@ class Badge extends BaseComponent
 
         $this->highlighted = $highlighted;
         $this->interactState()->highlighted = $highlighted;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -128,6 +134,18 @@ class Badge extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?BadgeAccessibilityState $state = null): BadgeAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(BadgeComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -136,6 +154,7 @@ class Badge extends BaseComponent
     public function dispatch(BadgeComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -224,6 +243,8 @@ class Badge extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -240,6 +261,17 @@ class Badge extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaHidden = $stateValue === BadgeComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === BadgeComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Layout\Container;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Layout\Container\ContainerAccessibilityState;
 use W4\UiFramework\Components\Layout\Container\ContainerComponentEvent;
 use W4\UiFramework\Components\Layout\Container\ContainerComponentState;
 use W4\UiFramework\Components\Layout\Container\ContainerInteractState;
@@ -32,6 +33,8 @@ class Container extends BaseComponent
 
     protected ContainerInteractState $interactState;
 
+    protected ContainerAccessibilityState $accessibilityState;
+
     protected ContainerStateMachine $stateMachine;
 
     public function __construct()
@@ -42,7 +45,9 @@ class Container extends BaseComponent
         $this->size = 'md';
         $this->state = ContainerComponentState::ENABLED;
         $this->interactState = new ContainerInteractState();
+        $this->accessibilityState = new ContainerAccessibilityState();
         $this->stateMachine = new ContainerStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -128,6 +133,18 @@ class Container extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?ContainerAccessibilityState $state = null): ContainerAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(ContainerComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -136,6 +153,7 @@ class Container extends BaseComponent
     public function dispatch(ContainerComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -224,6 +242,8 @@ class Container extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -240,6 +260,16 @@ class Container extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+        $this->accessibilityState->ariaHidden = $stateValue === ContainerComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === ContainerComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

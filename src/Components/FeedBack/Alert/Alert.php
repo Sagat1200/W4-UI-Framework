@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\FeedBack\Alert;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\FeedBack\Alert\AlertAccessibilityState;
 use W4\UiFramework\Components\FeedBack\Alert\AlertComponentEvent;
 use W4\UiFramework\Components\FeedBack\Alert\AlertComponentState;
 use W4\UiFramework\Components\FeedBack\Alert\AlertInteractState;
@@ -32,6 +33,8 @@ class Alert extends BaseComponent
 
     protected AlertInteractState $interactState;
 
+    protected AlertAccessibilityState $accessibilityState;
+
     protected AlertStateMachine $stateMachine;
 
     public function __construct()
@@ -42,7 +45,9 @@ class Alert extends BaseComponent
         $this->size = 'md';
         $this->state = AlertComponentState::ENABLED;
         $this->interactState = new AlertInteractState();
+        $this->accessibilityState = new AlertAccessibilityState();
         $this->stateMachine = new AlertStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -90,6 +95,7 @@ class Alert extends BaseComponent
         }
 
         $this->dismissible = $dismissible;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -102,6 +108,7 @@ class Alert extends BaseComponent
 
         $this->dismissed = $dismissed;
         $this->interactState()->dismissed = $dismissed;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -128,6 +135,18 @@ class Alert extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?AlertAccessibilityState $state = null): AlertAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(AlertComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -136,6 +155,7 @@ class Alert extends BaseComponent
     public function dispatch(AlertComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -216,6 +236,8 @@ class Alert extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -232,6 +254,17 @@ class Alert extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaHidden = $this->dismissed() || $stateValue === AlertComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === AlertComponentState::ACTIVE->value;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Forms\Select;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Forms\Select\SelectAccessibilityState;
 use W4\UiFramework\Components\Forms\Select\SelectComponentEvent;
 use W4\UiFramework\Components\Forms\Select\SelectComponentState;
 use W4\UiFramework\Components\Forms\Select\SelectInteractState;
@@ -34,6 +35,8 @@ class Select extends BaseComponent
 
     protected SelectInteractState $interactState;
 
+    protected SelectAccessibilityState $accessibilityState;
+
     protected SelectStateMachine $stateMachine;
 
     public function __construct()
@@ -44,7 +47,9 @@ class Select extends BaseComponent
         $this->size = 'md';
         $this->state = SelectComponentState::ENABLED;
         $this->interactState = new SelectInteractState();
+        $this->accessibilityState = new SelectAccessibilityState();
         $this->stateMachine = new SelectStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -124,6 +129,7 @@ class Select extends BaseComponent
         if ($multiple && is_string($this->selected)) {
             $this->selected = [$this->selected];
         }
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -161,6 +167,18 @@ class Select extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?SelectAccessibilityState $state = null): SelectAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(SelectComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -169,6 +187,7 @@ class Select extends BaseComponent
     public function dispatch(SelectComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -281,6 +300,8 @@ class Select extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -298,6 +319,21 @@ class Select extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaHidden = $stateValue === SelectComponentState::DISABLED->value;
+        $this->accessibilityState->ariaBusy = $stateValue === SelectComponentState::LOADING->value;
+        $this->accessibilityState->ariaInvalid = $stateValue === SelectComponentState::INVALID->value;
+        $this->accessibilityState->ariaReadonly = $stateValue === SelectComponentState::READONLY->value;
+        $this->accessibilityState->ariaExpanded = false;
+        $this->accessibilityState->ariaMultiSelectable = $this->multiple();
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

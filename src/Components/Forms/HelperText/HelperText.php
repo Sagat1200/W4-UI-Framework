@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Forms\HelperText;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Forms\HelperText\HelperTextAccessibilityState;
 use W4\UiFramework\Core\BaseComponent;
 use W4\UiFramework\Support\Traits\InteractsWithSize;
 use W4\UiFramework\Support\Traits\InteractsWithState;
@@ -26,6 +27,8 @@ class HelperText extends BaseComponent
 
     protected HelperTextInteractState $interactState;
 
+    protected HelperTextAccessibilityState $accessibilityState;
+
     protected HelperTextStateMachine $stateMachine;
 
     public function __construct()
@@ -36,7 +39,9 @@ class HelperText extends BaseComponent
         $this->size = 'sm';
         $this->state = HelperTextComponentState::ENABLED;
         $this->interactState = new HelperTextInteractState();
+        $this->accessibilityState = new HelperTextAccessibilityState();
         $this->stateMachine = new HelperTextStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -88,6 +93,18 @@ class HelperText extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?HelperTextAccessibilityState $state = null): HelperTextAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(HelperTextComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -96,6 +113,7 @@ class HelperText extends BaseComponent
     public function dispatch(HelperTextComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -162,6 +180,8 @@ class HelperText extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -175,6 +195,17 @@ class HelperText extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+
+        $this->accessibilityState->ariaHidden = $stateValue === HelperTextComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = false;
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }

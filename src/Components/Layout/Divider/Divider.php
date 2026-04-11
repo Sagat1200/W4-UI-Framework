@@ -3,6 +3,7 @@
 namespace W4\UiFramework\Components\Layout\Divider;
 
 use InvalidArgumentException;
+use W4\UiFramework\Components\Layout\Divider\DividerAccessibilityState;
 use W4\UiFramework\Components\Layout\Divider\DividerInteractState;
 use W4\UiFramework\Components\Layout\Divider\DividerStateMachine;
 use W4\UiFramework\Components\Layout\Divider\DividerComponentEvent;
@@ -24,6 +25,8 @@ class Divider extends BaseComponent
 
     protected DividerInteractState $interactState;
 
+    protected DividerAccessibilityState $accessibilityState;
+
     protected DividerStateMachine $stateMachine;
 
     public function __construct()
@@ -34,7 +37,9 @@ class Divider extends BaseComponent
         $this->size = 'md';
         $this->state = DividerComponentState::ENABLED;
         $this->interactState = new DividerInteractState();
+        $this->accessibilityState = new DividerAccessibilityState();
         $this->stateMachine = new DividerStateMachine();
+        $this->syncAccessibilityState();
     }
 
     public function componentName(): string
@@ -67,6 +72,7 @@ class Divider extends BaseComponent
         }
 
         $this->orientation = $normalized;
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -82,6 +88,18 @@ class Divider extends BaseComponent
         return $this;
     }
 
+    public function accessibilityState(?DividerAccessibilityState $state = null): DividerAccessibilityState|static
+    {
+        if ($state === null) {
+            return $this->accessibilityState;
+        }
+
+        $this->accessibilityState = $state;
+        $this->attributes($this->accessibilityState->toAttributes());
+
+        return $this;
+    }
+
     public function can(DividerComponentEvent $event): bool
     {
         return $this->stateMachine->canTransition($this->currentState(), $event);
@@ -90,6 +108,7 @@ class Divider extends BaseComponent
     public function dispatch(DividerComponentEvent $event): static
     {
         $this->state($this->stateMachine->transition($this->currentState(), $event));
+        $this->syncAccessibilityState();
 
         return $this;
     }
@@ -155,6 +174,8 @@ class Divider extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
     }
 
@@ -167,6 +188,17 @@ class Divider extends BaseComponent
             'size' => $this->size(),
             'state' => $this->stateValue(),
             'interact_state' => $this->interactState()->toArray(),
+            'accessibility_state' => $this->accessibilityState()->toArray(),
+            'accessibility_attributes' => $this->accessibilityState()->toAttributes(),
         ]);
+    }
+
+    protected function syncAccessibilityState(): void
+    {
+        $stateValue = (string) $this->stateValue();
+        $this->accessibilityState->ariaHidden = $stateValue === DividerComponentState::HIDDEN->value;
+        $this->accessibilityState->ariaBusy = $stateValue === DividerComponentState::ACTIVE->value;
+        $this->accessibilityState->ariaOrientation = $this->orientation();
+        $this->attributes($this->accessibilityState->toAttributes());
     }
 }
