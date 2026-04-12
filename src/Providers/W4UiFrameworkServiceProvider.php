@@ -4,20 +4,22 @@ namespace W4\UiFramework\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use W4\UiFramework\Components\UI\Button\Button;
-use W4\UiFramework\Components\UI\Divider\Divider;
-use W4\UiFramework\Components\UI\Heading\Heading;
-use W4\UiFramework\Components\UI\Icon\Icon;
-use W4\UiFramework\Components\UI\IconButton\IconButton;
-use W4\UiFramework\Components\UI\Label\Label;
-use W4\UiFramework\Components\UI\Link\Link;
-use W4\UiFramework\Components\UI\Text\Text;
 use W4\UiFramework\Components\Forms\CheckBox\CheckBox;
 use W4\UiFramework\Components\Forms\FielError\FieldError;
 use W4\UiFramework\Components\Forms\HelperText\HelperText;
 use W4\UiFramework\Components\Forms\Input\Input;
 use W4\UiFramework\Components\Forms\Radio\Radio;
 use W4\UiFramework\Components\Forms\Select\Select;
+use W4\UiFramework\Components\Forms\TextArea\TextArea;
+use W4\UiFramework\Components\Forms\Toggle\Toggle;
+use W4\UiFramework\Components\Layout\Divider\Divider;
+use W4\UiFramework\Components\UI\Button\Button;
+use W4\UiFramework\Components\UI\Heading\Heading;
+use W4\UiFramework\Components\UI\Icon\Icon;
+use W4\UiFramework\Components\UI\IconButton\IconButton;
+use W4\UiFramework\Components\UI\Label\Label;
+use W4\UiFramework\Components\UI\Link\Link;
+use W4\UiFramework\Components\UI\Text\Text;
 use W4\UiFramework\Core\ComponentFactory;
 use W4\UiFramework\Core\ComponentRegistry;
 use W4\UiFramework\Core\RendererPipeline;
@@ -27,23 +29,24 @@ use W4\UiFramework\Managers\RendererManager;
 use W4\UiFramework\Managers\ThemeManager;
 use W4\UiFramework\Renderers\BladeRenderer;
 use W4\UiFramework\Support\W4UiManager;
-use W4\UiFramework\Themes\W4Native\W4NativeTheme;
-use W4\UiFramework\View\Components\Render as RenderComponent;
-// Componentes w4-component
-use W4\UiFramework\View\Components\UI\Button as ButtonBladeComponent;
-use W4\UiFramework\View\Components\UI\Divider as DividerBladeComponent;
-use W4\UiFramework\View\Components\UI\Heading as HeadingBladeComponent;
-use W4\UiFramework\View\Components\UI\Icon as IconBladeComponent;
-use W4\UiFramework\View\Components\UI\IconButton as IconButtonBladeComponent;
-use W4\UiFramework\View\Components\UI\Label as LabelBladeComponent;
-use W4\UiFramework\View\Components\UI\Link as LinkBladeComponent;
-use W4\UiFramework\View\Components\UI\Text as TextBladeComponent;
+use W4\UiFramework\Themes\W4NativeDaisy\W4NativeDaisyTheme;
 use W4\UiFramework\View\Components\Forms\CheckBox as CheckBoxBladeComponent;
 use W4\UiFramework\View\Components\Forms\FieldError as FieldErrorBladeComponent;
 use W4\UiFramework\View\Components\Forms\HelperText as HelperTextBladeComponent;
 use W4\UiFramework\View\Components\Forms\Input as InputBladeComponent;
 use W4\UiFramework\View\Components\Forms\Radio as RadioBladeComponent;
 use W4\UiFramework\View\Components\Forms\Select as SelectBladeComponent;
+use W4\UiFramework\View\Components\Forms\TextArea as TextAreaBladeComponent;
+use W4\UiFramework\View\Components\Forms\Toggle as ToggleBladeComponent;
+use W4\UiFramework\View\Components\Layout\Divider as DividerBladeComponent;
+use W4\UiFramework\View\Components\Render as RenderComponent;
+use W4\UiFramework\View\Components\UI\Button as ButtonBladeComponent;
+use W4\UiFramework\View\Components\UI\Heading as HeadingBladeComponent;
+use W4\UiFramework\View\Components\UI\Icon as IconBladeComponent;
+use W4\UiFramework\View\Components\UI\IconButton as IconButtonBladeComponent;
+use W4\UiFramework\View\Components\UI\Label as LabelBladeComponent;
+use W4\UiFramework\View\Components\UI\Link as LinkBladeComponent;
+use W4\UiFramework\View\Components\UI\Text as TextBladeComponent;
 
 class W4UiFrameworkServiceProvider extends ServiceProvider
 {
@@ -69,7 +72,10 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
                 ->register('helper-text', HelperText::class)
                 ->register('radio', Radio::class)
                 ->register('select', Select::class)
-                ->register('input', Input::class);
+                ->register('input', Input::class)
+                ->register('textarea', TextArea::class)
+                ->register('text-area', TextArea::class)
+                ->register('toggle', Toggle::class);
         });
 
         $this->app->singleton(ComponentFactory::class, function ($app) {
@@ -81,7 +87,7 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
         $this->app->singleton(ThemeManager::class, function () {
             $manager = new ThemeManager();
 
-            $manager->register('w4native', new W4NativeTheme());
+            $manager->register('w4native', new W4NativeDaisyTheme());
 
             return $manager;
         });
@@ -154,6 +160,8 @@ class W4UiFrameworkServiceProvider extends ServiceProvider
         Blade::component($this->componentAlias($prefix, 'radio'), RadioBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'select'), SelectBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'input'), InputBladeComponent::class);
+        Blade::component($this->componentAlias($prefix, 'text-area'), TextAreaBladeComponent::class);
+        Blade::component($this->componentAlias($prefix, 'toggle'), ToggleBladeComponent::class);
     }
 
     protected function resolveComponentPrefix(): string

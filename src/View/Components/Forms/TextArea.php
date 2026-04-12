@@ -2,13 +2,13 @@
 
 namespace W4\UiFramework\View\Components\Forms;
 
-use W4\UiFramework\Components\Forms\Input\Input as InputComponent;
-use W4\UiFramework\Components\Forms\Input\InputComponentEvent;
-use W4\UiFramework\Components\Forms\Input\InputInteractState;
+use W4\UiFramework\Components\Forms\TextArea\TextArea as TextAreaComponent;
+use W4\UiFramework\Components\Forms\TextArea\TextAreaComponentEvent;
+use W4\UiFramework\Components\Forms\TextArea\TextAreaInteractState;
 use W4\UiFramework\Contracts\ComponentInterface;
 use W4\UiFramework\View\Components\BaseW4BladeComponent;
 
-class Input extends BaseW4BladeComponent
+class TextArea extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,9 +17,11 @@ class Input extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public string $type = 'text',
         public ?string $value = null,
         public ?string $placeholder = null,
+        public int $rows = 3,
+        public ?int $cols = null,
+        public string $resize = 'vertical',
         public ?string $helperText = null,
         public ?string $errorMessage = null,
         public string $variant = 'default',
@@ -46,47 +48,52 @@ class Input extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $input = InputComponent::make($this->label)
-            ->type($this->type)
+        $textArea = TextAreaComponent::make($this->label)
             ->variant($this->variant)
-            ->size($this->size);
+            ->size($this->size)
+            ->rows($this->rows)
+            ->resize($this->resize);
 
         if ($this->value !== null) {
-            $input->value($this->value);
+            $textArea->value($this->value);
         }
 
         if ($this->placeholder !== null) {
-            $input->placeholder($this->placeholder);
+            $textArea->placeholder($this->placeholder);
+        }
+
+        if ($this->cols !== null) {
+            $textArea->cols($this->cols);
         }
 
         if ($this->helperText !== null) {
-            $input->helperText($this->helperText);
+            $textArea->helperText($this->helperText);
         }
 
         if ($this->errorMessage !== null) {
-            $input->errorMessage($this->errorMessage);
+            $textArea->errorMessage($this->errorMessage);
         }
 
         if ($this->loading) {
-            $input->dispatch(InputComponentEvent::START_LOADING);
+            $textArea->dispatch(TextAreaComponentEvent::START_LOADING);
         } elseif ($this->disabled) {
-            $input->dispatch(InputComponentEvent::DISABLE);
+            $textArea->dispatch(TextAreaComponentEvent::DISABLE);
         } elseif ($this->readonly) {
-            $input->dispatch(InputComponentEvent::SET_READONLY);
+            $textArea->dispatch(TextAreaComponentEvent::SET_READONLY);
         } elseif ($this->invalid || $this->errorMessage) {
-            $input->dispatch(InputComponentEvent::SET_INVALID);
+            $textArea->dispatch(TextAreaComponentEvent::SET_INVALID);
         } elseif ($this->valid) {
-            $input->dispatch(InputComponentEvent::SET_VALID);
+            $textArea->dispatch(TextAreaComponentEvent::SET_VALID);
         }
 
-        $input->interactState(new InputInteractState(
+        $textArea->interactState(new TextAreaInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
             filled: $this->filled || (($this->value ?? '') !== ''),
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $input->accessibilityState();
+            $accessibilityState = $textArea->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -96,9 +103,9 @@ class Input extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $input->accessibilityState($accessibilityState);
+            $textArea->accessibilityState($accessibilityState);
         }
 
-        return $input;
+        return $textArea;
     }
 }

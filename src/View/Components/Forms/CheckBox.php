@@ -33,6 +33,8 @@ class CheckBox extends BaseW4BladeComponent
         public bool $focused = false,
         public bool $hovered = false,
         public bool $pressed = false,
+        public ?string $ariaLabel = null,
+        public ?string $ariaDescribedBy = null,
     ) {
         parent::__construct(
             id: $id,
@@ -81,6 +83,20 @@ class CheckBox extends BaseW4BladeComponent
             hovered: $this->hovered,
             pressed: $this->pressed,
         ));
+
+        if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
+            $accessibilityState = $checkbox->accessibilityState();
+
+            if ($this->ariaLabel !== null) {
+                $accessibilityState->ariaLabel = $this->ariaLabel;
+            }
+
+            if ($this->ariaDescribedBy !== null) {
+                $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
+            }
+
+            $checkbox->accessibilityState($accessibilityState);
+        }
 
         return $checkbox;
     }

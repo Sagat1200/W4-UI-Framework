@@ -18,38 +18,26 @@
     $label = $data['label'] ?? null;
     $helperText = $data['helper_text'] ?? null;
     $errorMessage = $data['error_message'] ?? null;
+    $value = $data['value'] ?? '';
+    $hasId = ($attrs['id'] ?? $data['id'] ?? null) !== null;
 @endphp
 
 <div class="{{ $rootClass }}">
     @if($label)
-        <label
-            for="{{ $attrs['id'] ?? $data['id'] ?? null }}"
-            class="{{ $labelClass }}"
-        >
+        <label @if($hasId) for="{{ $attrs['id'] ?? $data['id'] }}" @endif class="{{ $labelClass }}">
             {{ $label }}
         </label>
     @endif
 
-    <input
-        @foreach($attrs as $attr => $value)
-            @if(is_bool($value))
-                @if($value) {{ $attr }} @endif
-            @elseif($value !== null)
-                {{ $attr }}="{{ e($value) }}"
-            @endif
-        @endforeach
-        class="{{ $inputClass }}"
-    >
+    <textarea @foreach($attrs as $attr => $valueAttr) @if(is_bool($valueAttr)) @if($valueAttr) {{ $attr }} @endif
+    @elseif($valueAttr !== null) {{ $attr }}="{{ e($valueAttr) }}" @endif @endforeach
+        class="{{ $inputClass }}">{{ $value }}</textarea>
 
-    @if($helperText && ! $errorMessage)
-        <small class="{{ $helperClass }}">
-            {{ $helperText }}
-        </small>
+    @if($helperText && !$errorMessage)
+        <small class="{{ $helperClass }}">{{ $helperText }}</small>
     @endif
 
     @if($errorMessage)
-        <small class="{{ $errorClass }}">
-            {{ $errorMessage }}
-        </small>
+        <small class="{{ $errorClass }}">{{ $errorMessage }}</small>
     @endif
 </div>

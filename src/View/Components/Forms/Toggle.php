@@ -2,13 +2,13 @@
 
 namespace W4\UiFramework\View\Components\Forms;
 
-use W4\UiFramework\Components\Forms\Input\Input as InputComponent;
-use W4\UiFramework\Components\Forms\Input\InputComponentEvent;
-use W4\UiFramework\Components\Forms\Input\InputInteractState;
+use W4\UiFramework\Components\Forms\Toggle\Toggle as ToggleComponent;
+use W4\UiFramework\Components\Forms\Toggle\ToggleComponentEvent;
+use W4\UiFramework\Components\Forms\Toggle\ToggleInteractState;
 use W4\UiFramework\Contracts\ComponentInterface;
 use W4\UiFramework\View\Components\BaseW4BladeComponent;
 
-class Input extends BaseW4BladeComponent
+class Toggle extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,13 +17,12 @@ class Input extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public string $type = 'text',
         public ?string $value = null,
-        public ?string $placeholder = null,
         public ?string $helperText = null,
         public ?string $errorMessage = null,
         public string $variant = 'default',
         public string $size = 'md',
+        public bool $checked = false,
         public bool $disabled = false,
         public bool $loading = false,
         public bool $readonly = false,
@@ -31,7 +30,7 @@ class Input extends BaseW4BladeComponent
         public bool $valid = false,
         public bool $focused = false,
         public bool $hovered = false,
-        public bool $filled = false,
+        public bool $pressed = false,
         public ?string $ariaLabel = null,
         public ?string $ariaDescribedBy = null,
     ) {
@@ -46,47 +45,43 @@ class Input extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $input = InputComponent::make($this->label)
-            ->type($this->type)
+        $toggle = ToggleComponent::make($this->label)
             ->variant($this->variant)
-            ->size($this->size);
+            ->size($this->size)
+            ->checked($this->checked);
 
         if ($this->value !== null) {
-            $input->value($this->value);
-        }
-
-        if ($this->placeholder !== null) {
-            $input->placeholder($this->placeholder);
+            $toggle->value($this->value);
         }
 
         if ($this->helperText !== null) {
-            $input->helperText($this->helperText);
+            $toggle->helperText($this->helperText);
         }
 
         if ($this->errorMessage !== null) {
-            $input->errorMessage($this->errorMessage);
+            $toggle->errorMessage($this->errorMessage);
         }
 
         if ($this->loading) {
-            $input->dispatch(InputComponentEvent::START_LOADING);
+            $toggle->dispatch(ToggleComponentEvent::START_LOADING);
         } elseif ($this->disabled) {
-            $input->dispatch(InputComponentEvent::DISABLE);
+            $toggle->dispatch(ToggleComponentEvent::DISABLE);
         } elseif ($this->readonly) {
-            $input->dispatch(InputComponentEvent::SET_READONLY);
+            $toggle->dispatch(ToggleComponentEvent::SET_READONLY);
         } elseif ($this->invalid || $this->errorMessage) {
-            $input->dispatch(InputComponentEvent::SET_INVALID);
+            $toggle->dispatch(ToggleComponentEvent::SET_INVALID);
         } elseif ($this->valid) {
-            $input->dispatch(InputComponentEvent::SET_VALID);
+            $toggle->dispatch(ToggleComponentEvent::SET_VALID);
         }
 
-        $input->interactState(new InputInteractState(
+        $toggle->interactState(new ToggleInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            filled: $this->filled || (($this->value ?? '') !== ''),
+            pressed: $this->pressed,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $input->accessibilityState();
+            $accessibilityState = $toggle->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -96,9 +91,9 @@ class Input extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $input->accessibilityState($accessibilityState);
+            $toggle->accessibilityState($accessibilityState);
         }
 
-        return $input;
+        return $toggle;
     }
 }

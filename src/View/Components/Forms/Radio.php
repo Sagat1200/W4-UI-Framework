@@ -33,6 +33,8 @@ class Radio extends BaseW4BladeComponent
         public bool $focused = false,
         public bool $hovered = false,
         public bool $pressed = false,
+        public ?string $ariaLabel = null,
+        public ?string $ariaDescribedBy = null,
     ) {
         parent::__construct(
             id: $id,
@@ -84,6 +86,20 @@ class Radio extends BaseW4BladeComponent
             hovered: $this->hovered,
             pressed: $this->pressed,
         ));
+
+        if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
+            $accessibilityState = $radio->accessibilityState();
+
+            if ($this->ariaLabel !== null) {
+                $accessibilityState->ariaLabel = $this->ariaLabel;
+            }
+
+            if ($this->ariaDescribedBy !== null) {
+                $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
+            }
+
+            $radio->accessibilityState($accessibilityState);
+        }
 
         return $radio;
     }

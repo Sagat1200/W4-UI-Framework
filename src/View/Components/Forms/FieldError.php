@@ -28,6 +28,8 @@ class FieldError extends BaseW4BladeComponent
         public bool $hidden = false,
         public bool $focused = false,
         public bool $hovered = false,
+        public ?string $ariaLabel = null,
+        public ?string $ariaDescribedBy = null,
     ) {
         parent::__construct(
             id: $id,
@@ -76,6 +78,20 @@ class FieldError extends BaseW4BladeComponent
             focused: $this->focused,
             hovered: $this->hovered,
         ));
+
+        if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
+            $accessibilityState = $fieldError->accessibilityState();
+
+            if ($this->ariaLabel !== null) {
+                $accessibilityState->ariaLabel = $this->ariaLabel;
+            }
+
+            if ($this->ariaDescribedBy !== null) {
+                $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
+            }
+
+            $fieldError->accessibilityState($accessibilityState);
+        }
 
         return $fieldError;
     }

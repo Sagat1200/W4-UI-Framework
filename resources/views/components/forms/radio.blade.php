@@ -4,6 +4,9 @@
 
     $classes = $theme['classes'] ?? [];
     $attrs = $theme['attributes'] ?? [];
+    $componentAttrs = is_array($data['attributes'] ?? null) ? $data['attributes'] : [];
+    $accessibilityAttrs = is_array($data['accessibility_attributes'] ?? null) ? $data['accessibility_attributes'] : [];
+    $attrs = array_merge($attrs, $componentAttrs, $accessibilityAttrs);
     unset($attrs['class']);
 
     $rootClass = $classes['root'] ?? '';
