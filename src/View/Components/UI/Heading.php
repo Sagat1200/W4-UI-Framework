@@ -1,12 +1,12 @@
 <?php
 
-namespace W4\UiFramework\View\Components\UI;
+namespace W4\UI\Framework\View\Components\UI;
 
-use W4\UiFramework\Components\UI\Heading\Heading as HeadingComponent;
-use W4\UiFramework\Components\UI\Heading\HeadingComponentEvent;
-use W4\UiFramework\Components\UI\Heading\HeadingInteractState;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\View\Components\BaseW4BladeComponent;
+use W4\UI\Framework\Components\UI\Heading\Heading as HeadingComponent;
+use W4\UI\Framework\Components\UI\Heading\HeadingComponentEvent;
+use W4\UI\Framework\Components\UI\Heading\HeadingInteractState;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
 class Heading extends BaseW4BladeComponent
 {

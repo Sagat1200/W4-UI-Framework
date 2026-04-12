@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Core;
+namespace W4\UI\Framework\Core;
 
 use InvalidArgumentException;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\Managers\RendererManager;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\Managers\RendererManager;
 
 class RendererPipeline
 {

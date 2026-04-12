@@ -1,13 +1,13 @@
 <?php
 
-namespace W4\UiFramework\Core;
+namespace W4\UI\Framework\Core;
 
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\Support\Traits\InteractsWithAttributes;
-use W4\UiFramework\Support\Traits\InteractsWithIdentity;
-use W4\UiFramework\Support\Traits\InteractsWithLabel;
-use W4\UiFramework\Support\Traits\InteractsWithMetadata;
-use W4\UiFramework\Support\Traits\InteractsWithTheme;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\Support\Traits\InteractsWithAttributes;
+use W4\UI\Framework\Support\Traits\InteractsWithIdentity;
+use W4\UI\Framework\Support\Traits\InteractsWithLabel;
+use W4\UI\Framework\Support\Traits\InteractsWithMetadata;
+use W4\UI\Framework\Support\Traits\InteractsWithTheme;
 
 abstract class BaseComponent implements ComponentInterface
 {

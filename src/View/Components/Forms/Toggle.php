@@ -1,12 +1,12 @@
 <?php
 
-namespace W4\UiFramework\View\Components\Forms;
+namespace W4\UI\Framework\View\Components\Forms;
 
-use W4\UiFramework\Components\Forms\Toggle\Toggle as ToggleComponent;
-use W4\UiFramework\Components\Forms\Toggle\ToggleComponentEvent;
-use W4\UiFramework\Components\Forms\Toggle\ToggleInteractState;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\View\Components\BaseW4BladeComponent;
+use W4\UI\Framework\Components\Forms\Toggle\Toggle as ToggleComponent;
+use W4\UI\Framework\Components\Forms\Toggle\ToggleComponentEvent;
+use W4\UI\Framework\Components\Forms\Toggle\ToggleInteractState;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
 class Toggle extends BaseW4BladeComponent
 {

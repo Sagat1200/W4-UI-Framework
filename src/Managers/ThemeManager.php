@@ -1,8 +1,8 @@
 <?php
 
-namespace W4\UiFramework\Managers;
+namespace W4\UI\Framework\Managers;
 
-use W4\UiFramework\Contracts\ThemeInterface;
+use W4\UI\Framework\Contracts\ThemeInterface;
 
 class ThemeManager
 {

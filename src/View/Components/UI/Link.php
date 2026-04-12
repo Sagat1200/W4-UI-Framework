@@ -1,12 +1,12 @@
 <?php
 
-namespace W4\UiFramework\View\Components\UI;
+namespace W4\UI\Framework\View\Components\UI;
 
-use W4\UiFramework\Components\UI\Link\Link as LinkComponent;
-use W4\UiFramework\Components\UI\Link\LinkComponentEvent;
-use W4\UiFramework\Components\UI\Link\LinkInteractState;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\View\Components\BaseW4BladeComponent;
+use W4\UI\Framework\Components\UI\Link\Link as LinkComponent;
+use W4\UI\Framework\Components\UI\Link\LinkComponentEvent;
+use W4\UI\Framework\Components\UI\Link\LinkInteractState;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
 class Link extends BaseW4BladeComponent
 {

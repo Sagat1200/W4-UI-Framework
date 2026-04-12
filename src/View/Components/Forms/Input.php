@@ -1,12 +1,12 @@
 <?php
 
-namespace W4\UiFramework\View\Components\Forms;
+namespace W4\UI\Framework\View\Components\Forms;
 
-use W4\UiFramework\Components\Forms\Input\Input as InputComponent;
-use W4\UiFramework\Components\Forms\Input\InputComponentEvent;
-use W4\UiFramework\Components\Forms\Input\InputInteractState;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\View\Components\BaseW4BladeComponent;
+use W4\UI\Framework\Components\Forms\Input\Input as InputComponent;
+use W4\UI\Framework\Components\Forms\Input\InputComponentEvent;
+use W4\UI\Framework\Components\Forms\Input\InputInteractState;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
 class Input extends BaseW4BladeComponent
 {

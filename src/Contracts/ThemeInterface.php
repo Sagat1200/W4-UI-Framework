@@ -1,8 +1,8 @@
 <?php
 
-namespace W4\UiFramework\Contracts;
+namespace W4\UI\Framework\Contracts;
 
-use W4\UiFramework\Contracts\ComponentThemeResolverInterface;
+use W4\UI\Framework\Contracts\ComponentThemeResolverInterface;
 
 interface ThemeInterface
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace W4\UiFramework\View\Components\UI;
+namespace W4\UI\Framework\View\Components\UI;
 
-use W4\UiFramework\Components\UI\Icon\Icon as IconComponent;
-use W4\UiFramework\Components\UI\Icon\IconComponentEvent;
-use W4\UiFramework\Components\UI\Icon\IconInteractState;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\View\Components\BaseW4BladeComponent;
+use W4\UI\Framework\Components\UI\Icon\Icon as IconComponent;
+use W4\UI\Framework\Components\UI\Icon\IconComponentEvent;
+use W4\UI\Framework\Components\UI\Icon\IconInteractState;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
 class Icon extends BaseW4BladeComponent
 {

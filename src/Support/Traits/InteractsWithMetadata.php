@@ -1,8 +1,8 @@
 <?php
 
-namespace W4\UiFramework\Support\Traits;
+namespace W4\UI\Framework\Support\Traits;
 
-use W4\UiFramework\Support\ComponentMetadata;
+use W4\UI\Framework\Support\ComponentMetadata;
 
 trait InteractsWithMetadata
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Support;
+namespace W4\UI\Framework\Support;
 
 class ClassBag
 {

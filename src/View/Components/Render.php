@@ -1,11 +1,11 @@
 <?php
 
-namespace W4\UiFramework\View\Components;
+namespace W4\UI\Framework\View\Components;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\Support\W4UiManager;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\Support\W4UiManager;
 
 class Render extends Component
 {

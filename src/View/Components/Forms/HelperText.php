@@ -1,12 +1,12 @@
 <?php
 
-namespace W4\UiFramework\View\Components\Forms;
+namespace W4\UI\Framework\View\Components\Forms;
 
-use W4\UiFramework\Components\Forms\HelperText\HelperText as HelperTextComponent;
-use W4\UiFramework\Components\Forms\HelperText\HelperTextComponentEvent;
-use W4\UiFramework\Components\Forms\HelperText\HelperTextInteractState;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\View\Components\BaseW4BladeComponent;
+use W4\UI\Framework\Components\Forms\HelperText\HelperText as HelperTextComponent;
+use W4\UI\Framework\Components\Forms\HelperText\HelperTextComponentEvent;
+use W4\UI\Framework\Components\Forms\HelperText\HelperTextInteractState;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
 class HelperText extends BaseW4BladeComponent
 {

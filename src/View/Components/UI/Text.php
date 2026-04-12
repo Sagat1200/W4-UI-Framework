@@ -1,12 +1,12 @@
 <?php
 
-namespace W4\UiFramework\View\Components\UI;
+namespace W4\UI\Framework\View\Components\UI;
 
-use W4\UiFramework\Components\UI\Text\Text as TextComponent;
-use W4\UiFramework\Components\UI\Text\TextComponentEvent;
-use W4\UiFramework\Components\UI\Text\TextInteractState;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\View\Components\BaseW4BladeComponent;
+use W4\UI\Framework\Components\UI\Text\Text as TextComponent;
+use W4\UI\Framework\Components\UI\Text\TextComponentEvent;
+use W4\UI\Framework\Components\UI\Text\TextInteractState;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
 class Text extends BaseW4BladeComponent
 {

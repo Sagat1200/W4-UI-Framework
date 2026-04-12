@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Contracts;
+namespace W4\UI\Framework\Contracts;
 
 interface ComponentInterface
 {

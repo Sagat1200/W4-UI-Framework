@@ -1,9 +1,9 @@
 <?php
 
-namespace W4\UiFramework\Managers;
+namespace W4\UI\Framework\Managers;
 
 use InvalidArgumentException;
-use W4\UiFramework\Contracts\RendererInterface;
+use W4\UI\Framework\Contracts\RendererInterface;
 
 class RendererManager
 {

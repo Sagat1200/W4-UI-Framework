@@ -1,12 +1,12 @@
 <?php
 
-namespace W4\UiFramework\Support;
+namespace W4\UI\Framework\Support;
 
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\Core\RuntimeRenderer;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\Core\RuntimeRenderer;
 
 class W4UiManager
 {

@@ -1,54 +1,54 @@
 <?php
 
-namespace W4\UiFramework\Providers;
+namespace W4\UI\Framework\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use W4\UiFramework\Components\Forms\CheckBox\CheckBox;
-use W4\UiFramework\Components\Forms\FielError\FieldError;
-use W4\UiFramework\Components\Forms\HelperText\HelperText;
-use W4\UiFramework\Components\Forms\Input\Input;
-use W4\UiFramework\Components\Forms\Radio\Radio;
-use W4\UiFramework\Components\Forms\Select\Select;
-use W4\UiFramework\Components\Forms\TextArea\TextArea;
-use W4\UiFramework\Components\Forms\Toggle\Toggle;
-use W4\UiFramework\Components\Layout\Divider\Divider;
-use W4\UiFramework\Components\UI\Button\Button;
-use W4\UiFramework\Components\UI\Heading\Heading;
-use W4\UiFramework\Components\UI\Icon\Icon;
-use W4\UiFramework\Components\UI\IconButton\IconButton;
-use W4\UiFramework\Components\UI\Label\Label;
-use W4\UiFramework\Components\UI\Link\Link;
-use W4\UiFramework\Components\UI\Text\Text;
-use W4\UiFramework\Core\ComponentFactory;
-use W4\UiFramework\Core\ComponentRegistry;
-use W4\UiFramework\Core\RendererPipeline;
-use W4\UiFramework\Core\RuntimeRenderer;
-use W4\UiFramework\Core\ThemeResolverPipeline;
-use W4\UiFramework\Managers\RendererManager;
-use W4\UiFramework\Managers\ThemeManager;
-use W4\UiFramework\Renderers\BladeRenderer;
-use W4\UiFramework\Support\W4UiManager;
-use W4\UiFramework\Themes\W4NativeDaisy\W4NativeDaisyTheme;
-use W4\UiFramework\View\Components\Forms\CheckBox as CheckBoxBladeComponent;
-use W4\UiFramework\View\Components\Forms\FieldError as FieldErrorBladeComponent;
-use W4\UiFramework\View\Components\Forms\HelperText as HelperTextBladeComponent;
-use W4\UiFramework\View\Components\Forms\Input as InputBladeComponent;
-use W4\UiFramework\View\Components\Forms\Radio as RadioBladeComponent;
-use W4\UiFramework\View\Components\Forms\Select as SelectBladeComponent;
-use W4\UiFramework\View\Components\Forms\TextArea as TextAreaBladeComponent;
-use W4\UiFramework\View\Components\Forms\Toggle as ToggleBladeComponent;
-use W4\UiFramework\View\Components\Layout\Divider as DividerBladeComponent;
-use W4\UiFramework\View\Components\Render as RenderComponent;
-use W4\UiFramework\View\Components\UI\Button as ButtonBladeComponent;
-use W4\UiFramework\View\Components\UI\Heading as HeadingBladeComponent;
-use W4\UiFramework\View\Components\UI\Icon as IconBladeComponent;
-use W4\UiFramework\View\Components\UI\IconButton as IconButtonBladeComponent;
-use W4\UiFramework\View\Components\UI\Label as LabelBladeComponent;
-use W4\UiFramework\View\Components\UI\Link as LinkBladeComponent;
-use W4\UiFramework\View\Components\UI\Text as TextBladeComponent;
+use W4\UI\Framework\Components\Forms\CheckBox\CheckBox;
+use W4\UI\Framework\Components\Forms\FielError\FieldError;
+use W4\UI\Framework\Components\Forms\HelperText\HelperText;
+use W4\UI\Framework\Components\Forms\Input\Input;
+use W4\UI\Framework\Components\Forms\Radio\Radio;
+use W4\UI\Framework\Components\Forms\Select\Select;
+use W4\UI\Framework\Components\Forms\TextArea\TextArea;
+use W4\UI\Framework\Components\Forms\Toggle\Toggle;
+use W4\UI\Framework\Components\Layout\Divider\Divider;
+use W4\UI\Framework\Components\UI\Button\Button;
+use W4\UI\Framework\Components\UI\Heading\Heading;
+use W4\UI\Framework\Components\UI\Icon\Icon;
+use W4\UI\Framework\Components\UI\IconButton\IconButton;
+use W4\UI\Framework\Components\UI\Label\Label;
+use W4\UI\Framework\Components\UI\Link\Link;
+use W4\UI\Framework\Components\UI\Text\Text;
+use W4\UI\Framework\Core\ComponentFactory;
+use W4\UI\Framework\Core\ComponentRegistry;
+use W4\UI\Framework\Core\RendererPipeline;
+use W4\UI\Framework\Core\RuntimeRenderer;
+use W4\UI\Framework\Core\ThemeResolverPipeline;
+use W4\UI\Framework\Managers\RendererManager;
+use W4\UI\Framework\Managers\ThemeManager;
+use W4\UI\Framework\Renderers\BladeRenderer;
+use W4\UI\Framework\Support\W4UiManager;
+use W4\UI\Framework\Themes\W4NativeDaisy\W4NativeDaisyTheme;
+use W4\UI\Framework\View\Components\Forms\CheckBox as CheckBoxBladeComponent;
+use W4\UI\Framework\View\Components\Forms\FieldError as FieldErrorBladeComponent;
+use W4\UI\Framework\View\Components\Forms\HelperText as HelperTextBladeComponent;
+use W4\UI\Framework\View\Components\Forms\Input as InputBladeComponent;
+use W4\UI\Framework\View\Components\Forms\Radio as RadioBladeComponent;
+use W4\UI\Framework\View\Components\Forms\Select as SelectBladeComponent;
+use W4\UI\Framework\View\Components\Forms\TextArea as TextAreaBladeComponent;
+use W4\UI\Framework\View\Components\Forms\Toggle as ToggleBladeComponent;
+use W4\UI\Framework\View\Components\Layout\Divider as DividerBladeComponent;
+use W4\UI\Framework\View\Components\Render as RenderComponent;
+use W4\UI\Framework\View\Components\UI\Button as ButtonBladeComponent;
+use W4\UI\Framework\View\Components\UI\Heading as HeadingBladeComponent;
+use W4\UI\Framework\View\Components\UI\Icon as IconBladeComponent;
+use W4\UI\Framework\View\Components\UI\IconButton as IconButtonBladeComponent;
+use W4\UI\Framework\View\Components\UI\Label as LabelBladeComponent;
+use W4\UI\Framework\View\Components\UI\Link as LinkBladeComponent;
+use W4\UI\Framework\View\Components\UI\Text as TextBladeComponent;
 
-class W4UiFrameworkServiceProvider extends ServiceProvider
+class W4UIFrameworkServiceProvider extends ServiceProvider
 {
     public function register(): void
     {

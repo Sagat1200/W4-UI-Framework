@@ -1,7 +1,7 @@
 <?php
 
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\Support\W4UiManager;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\Support\W4UiManager;
 
 if (! function_exists('w4_render')) {
     function w4_render(ComponentInterface $component, ?string $renderer = null): string

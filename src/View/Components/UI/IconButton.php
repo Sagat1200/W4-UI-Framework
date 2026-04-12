@@ -1,12 +1,12 @@
 <?php
 
-namespace W4\UiFramework\View\Components\UI;
+namespace W4\UI\Framework\View\Components\UI;
 
-use W4\UiFramework\Components\UI\IconButton\IconButton as IconButtonComponent;
-use W4\UiFramework\Components\UI\IconButton\IconButtonComponentEvent;
-use W4\UiFramework\Components\UI\IconButton\IconButtonInteractState;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\View\Components\BaseW4BladeComponent;
+use W4\UI\Framework\Components\UI\IconButton\IconButton as IconButtonComponent;
+use W4\UI\Framework\Components\UI\IconButton\IconButtonComponentEvent;
+use W4\UI\Framework\Components\UI\IconButton\IconButtonInteractState;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
 class IconButton extends BaseW4BladeComponent
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace W4\UiFramework\Core;
+namespace W4\UI\Framework\Core;
 
-use W4\UiFramework\Contracts\ComponentThemeResolverInterface;
-use W4\UiFramework\Contracts\ThemeInterface;
+use W4\UI\Framework\Contracts\ComponentThemeResolverInterface;
+use W4\UI\Framework\Contracts\ThemeInterface;
 
 abstract class AbstractTheme implements ThemeInterface
 {

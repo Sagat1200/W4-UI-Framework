@@ -1,12 +1,12 @@
 <?php
 
-namespace W4\UiFramework\View\Components\Forms;
+namespace W4\UI\Framework\View\Components\Forms;
 
-use W4\UiFramework\Components\Forms\Radio\Radio as RadioComponent;
-use W4\UiFramework\Components\Forms\Radio\RadioComponentEvent;
-use W4\UiFramework\Components\Forms\Radio\RadioInteractState;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\View\Components\BaseW4BladeComponent;
+use W4\UI\Framework\Components\Forms\Radio\Radio as RadioComponent;
+use W4\UI\Framework\Components\Forms\Radio\RadioComponentEvent;
+use W4\UI\Framework\Components\Forms\Radio\RadioInteractState;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
 class Radio extends BaseW4BladeComponent
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace W4\UiFramework\Core;
+namespace W4\UI\Framework\Core;
 
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\Contracts\RendererInterface;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\Contracts\RendererInterface;
 
 abstract class AbstractRenderer implements RendererInterface
 {

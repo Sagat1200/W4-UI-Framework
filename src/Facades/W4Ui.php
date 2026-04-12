@@ -1,13 +1,13 @@
 <?php
 
-namespace W4\UiFramework\Facades;
+namespace W4\UI\Framework\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static string render(\W4\UiFramework\Contracts\ComponentInterface $component, ?string $renderer = null)
- * @method static \Illuminate\Contracts\View\View|string view(\W4\UiFramework\Contracts\ComponentInterface $component, ?string $renderer = null)
- * @method static mixed payload(\W4\UiFramework\Contracts\ComponentInterface $component, ?string $renderer = null)
+ * @method static string render(\W4\UI\Framework\Contracts\ComponentInterface $component, ?string $renderer = null)
+ * @method static \Illuminate\Contracts\View\View|string view(\W4\UI\Framework\Contracts\ComponentInterface $component, ?string $renderer = null)
+ * @method static mixed payload(\W4\UI\Framework\Contracts\ComponentInterface $component, ?string $renderer = null)
  */
 class W4Ui extends Facade
 {

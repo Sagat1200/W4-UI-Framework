@@ -1,9 +1,9 @@
 <?php
 
-namespace W4\UiFramework\Core;
+namespace W4\UI\Framework\Core;
 
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\Managers\ThemeManager;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\Managers\ThemeManager;
 
 class ThemeResolverPipeline
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace W4\UiFramework\Renderers;
+namespace W4\UI\Framework\Renderers;
 
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\Core\AbstractRenderer;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\Core\AbstractRenderer;
 
 class BladeRenderer extends AbstractRenderer
 {

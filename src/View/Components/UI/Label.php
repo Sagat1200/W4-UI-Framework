@@ -1,12 +1,12 @@
 <?php
 
-namespace W4\UiFramework\View\Components\UI;
+namespace W4\UI\Framework\View\Components\UI;
 
-use W4\UiFramework\Components\UI\Label\Label as LabelComponent;
-use W4\UiFramework\Components\UI\Label\LabelComponentEvent;
-use W4\UiFramework\Components\UI\Label\LabelInteractState;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\View\Components\BaseW4BladeComponent;
+use W4\UI\Framework\Components\UI\Label\Label as LabelComponent;
+use W4\UI\Framework\Components\UI\Label\LabelComponentEvent;
+use W4\UI\Framework\Components\UI\Label\LabelInteractState;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
 class Label extends BaseW4BladeComponent
 {

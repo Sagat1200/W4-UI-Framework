@@ -1,12 +1,12 @@
 <?php
 
-namespace W4\UiFramework\View\Components\Layout;
+namespace W4\UI\Framework\View\Components\Layout;
 
-use W4\UiFramework\Components\Layout\Divider\Divider as DividerComponent;
-use W4\UiFramework\Components\Layout\Divider\DividerComponentEvent;
-use W4\UiFramework\Components\Layout\Divider\DividerInteractState;
-use W4\UiFramework\Contracts\ComponentInterface;
-use W4\UiFramework\View\Components\BaseW4BladeComponent;
+use W4\UI\Framework\Components\Layout\Divider\Divider as DividerComponent;
+use W4\UI\Framework\Components\Layout\Divider\DividerComponentEvent;
+use W4\UI\Framework\Components\Layout\Divider\DividerInteractState;
+use W4\UI\Framework\Contracts\ComponentInterface;
+use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
 class Divider extends BaseW4BladeComponent
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace W4\UiFramework\Themes\W4NativeDaisy;
+namespace W4\UI\Framework\Themes\W4NativeDaisy;
 
-use W4\UiFramework\Core\AbstractTheme;
+use W4\UI\Framework\Core\AbstractTheme;
 
 class W4NativeDaisyTheme extends AbstractTheme
 {
