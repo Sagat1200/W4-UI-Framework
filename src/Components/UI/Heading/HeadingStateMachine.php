@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Heading;
+namespace W4\UI\Framework\Components\UI\Heading;
 
 use RuntimeException;
-use W4\UiFramework\Components\UI\Heading\HeadingComponentEvent;
-use W4\UiFramework\Components\UI\Heading\HeadingComponentState;
+use W4\UI\Framework\Components\UI\Heading\HeadingComponentEvent;
+use W4\UI\Framework\Components\UI\Heading\HeadingComponentState;
 
 class HeadingStateMachine
 {

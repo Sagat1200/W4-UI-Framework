@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\CheckBox;
+namespace W4\UI\Framework\Components\Forms\CheckBox;
 
 use RuntimeException;
-use W4\UiFramework\Components\Forms\CheckBox\CheckBoxComponentEvent;
-use W4\UiFramework\Components\Forms\CheckBox\CheckBoxComponentState;
+use W4\UI\Framework\Components\Forms\CheckBox\CheckBoxComponentEvent;
+use W4\UI\Framework\Components\Forms\CheckBox\CheckBoxComponentState;
 
 class CheckBoxStateMachine
 {

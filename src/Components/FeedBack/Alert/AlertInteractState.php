@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\FeedBack\Alert;
+namespace W4\UI\Framework\Components\FeedBack\Alert;
 
 class AlertInteractState
 {

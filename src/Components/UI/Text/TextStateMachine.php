@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Text;
+namespace W4\UI\Framework\Components\UI\Text;
 
 use RuntimeException;
-use W4\UiFramework\Components\UI\Text\TextComponentEvent;
-use W4\UiFramework\Components\UI\Text\TextComponentState;
+use W4\UI\Framework\Components\UI\Text\TextComponentEvent;
+use W4\UI\Framework\Components\UI\Text\TextComponentState;
 
 class TextStateMachine
 {

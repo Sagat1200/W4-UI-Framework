@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Divider;
+namespace W4\UI\Framework\Components\Layout\Divider;
 
 class DividerAccessibilityState
 {

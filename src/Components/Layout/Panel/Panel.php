@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Panel;
+namespace W4\UI\Framework\Components\Layout\Panel;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Layout\Panel\PanelAccessibilityState;
-use W4\UiFramework\Components\Layout\Panel\PanelComponentEvent;
-use W4\UiFramework\Components\Layout\Panel\PanelComponentState;
-use W4\UiFramework\Components\Layout\Panel\PanelInteractState;
-use W4\UiFramework\Components\Layout\Panel\PanelStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Layout\Panel\PanelAccessibilityState;
+use W4\UI\Framework\Components\Layout\Panel\PanelComponentEvent;
+use W4\UI\Framework\Components\Layout\Panel\PanelComponentState;
+use W4\UI\Framework\Components\Layout\Panel\PanelInteractState;
+use W4\UI\Framework\Components\Layout\Panel\PanelStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Panel extends BaseComponent
 {

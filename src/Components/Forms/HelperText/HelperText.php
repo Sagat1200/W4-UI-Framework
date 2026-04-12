@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\HelperText;
+namespace W4\UI\Framework\Components\Forms\HelperText;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Forms\HelperText\HelperTextAccessibilityState;
+use W4\UI\Framework\Components\Forms\HelperText\HelperTextAccessibilityState;
 use W4\UiFramework\Core\BaseComponent;
 use W4\UiFramework\Support\Traits\InteractsWithSize;
 use W4\UiFramework\Support\Traits\InteractsWithState;
 use W4\UiFramework\Support\Traits\InteractsWithVariant;
-use W4\UiFramework\Components\Forms\HelperText\HelperTextComponentEvent;
-use W4\UiFramework\Components\Forms\HelperText\HelperTextComponentState;
-use W4\UiFramework\Components\Forms\HelperText\HelperTextInteractState;
-use W4\UiFramework\Components\Forms\HelperText\HelperTextStateMachine;
+use W4\UI\Framework\Components\Forms\HelperText\HelperTextComponentEvent;
+use W4\UI\Framework\Components\Forms\HelperText\HelperTextComponentState;
+use W4\UI\Framework\Components\Forms\HelperText\HelperTextInteractState;
+use W4\UI\Framework\Components\Forms\HelperText\HelperTextStateMachine;
 
 class HelperText extends BaseComponent
 {

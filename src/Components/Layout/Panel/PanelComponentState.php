@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Panel;
+namespace W4\UI\Framework\Components\Layout\Panel;
 
 enum PanelComponentState: string
 {

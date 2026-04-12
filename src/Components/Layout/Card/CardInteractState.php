@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Card;
+namespace W4\UI\Framework\Components\Layout\Card;
 
 class CardInteractState
 {

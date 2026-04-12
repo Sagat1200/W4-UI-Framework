@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\Tab;
+namespace W4\UI\Framework\Components\Navigation\Tab;
 
 enum TabComponentState: string
 {

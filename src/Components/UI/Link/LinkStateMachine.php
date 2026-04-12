@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Link;
+namespace W4\UI\Framework\Components\UI\Link;
 
 use RuntimeException;
-use W4\UiFramework\Components\UI\Link\LinkComponentEvent;
-use W4\UiFramework\Components\UI\Link\LinkComponentState;
+use W4\UI\Framework\Components\UI\Link\LinkComponentEvent;
+use W4\UI\Framework\Components\UI\Link\LinkComponentState;
 
 class LinkStateMachine
 {

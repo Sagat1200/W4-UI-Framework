@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\TextArea;
+namespace W4\UI\Framework\Components\Forms\TextArea;
 
 use RuntimeException;
-use W4\UiFramework\Components\Forms\TextArea\TextAreaComponentEvent;
-use W4\UiFramework\Components\Forms\TextArea\TextAreaComponentState;
+use W4\UI\Framework\Components\Forms\TextArea\TextAreaComponentEvent;
+use W4\UI\Framework\Components\Forms\TextArea\TextAreaComponentState;
 
 class TextAreaStateMachine
 {

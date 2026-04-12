@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Icon;
+namespace W4\UI\Framework\Components\UI\Icon;
 
 use RuntimeException;
-use W4\UiFramework\Components\UI\Icon\IconComponentEvent;
-use W4\UiFramework\Components\UI\Icon\IconComponentState;
+use W4\UI\Framework\Components\UI\Icon\IconComponentEvent;
+use W4\UI\Framework\Components\UI\Icon\IconComponentState;
 
 class IconStateMachine
 {

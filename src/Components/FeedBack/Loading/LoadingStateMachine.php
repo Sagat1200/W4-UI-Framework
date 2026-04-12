@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\FeedBack\Loading;
+namespace W4\UI\Framework\Components\FeedBack\Loading;
 
 use RuntimeException;
-use W4\UiFramework\Components\FeedBack\Loading\LoadingComponentEvent;
-use W4\UiFramework\Components\FeedBack\Loading\LoadingComponentState;
+use W4\UI\Framework\Components\FeedBack\Loading\LoadingComponentEvent;
+use W4\UI\Framework\Components\FeedBack\Loading\LoadingComponentState;
 
 class LoadingStateMachine
 {

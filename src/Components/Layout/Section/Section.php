@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Section;
+namespace W4\UI\Framework\Components\Layout\Section;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Layout\Section\SectionAccessibilityState;
-use W4\UiFramework\Components\Layout\Section\SectionComponentEvent;
-use W4\UiFramework\Components\Layout\Section\SectionComponentState;
-use W4\UiFramework\Components\Layout\Section\SectionInteractState;
-use W4\UiFramework\Components\Layout\Section\SectionStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Layout\Section\SectionAccessibilityState;
+use W4\UI\Framework\Components\Layout\Section\SectionComponentEvent;
+use W4\UI\Framework\Components\Layout\Section\SectionComponentState;
+use W4\UI\Framework\Components\Layout\Section\SectionInteractState;
+use W4\UI\Framework\Components\Layout\Section\SectionStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Section extends BaseComponent
 {

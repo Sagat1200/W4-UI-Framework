@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\FeedBack\Loading;
+namespace W4\UI\Framework\Components\FeedBack\Loading;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\FeedBack\Loading\LoadingAccessibilityState;
-use W4\UiFramework\Components\FeedBack\Loading\LoadingComponentEvent;
-use W4\UiFramework\Components\FeedBack\Loading\LoadingComponentState;
-use W4\UiFramework\Components\FeedBack\Loading\LoadingInteractState;
-use W4\UiFramework\Components\FeedBack\Loading\LoadingStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\FeedBack\Loading\LoadingAccessibilityState;
+use W4\UI\Framework\Components\FeedBack\Loading\LoadingComponentEvent;
+use W4\UI\Framework\Components\FeedBack\Loading\LoadingComponentState;
+use W4\UI\Framework\Components\FeedBack\Loading\LoadingInteractState;
+use W4\UI\Framework\Components\FeedBack\Loading\LoadingStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Loading extends BaseComponent
 {

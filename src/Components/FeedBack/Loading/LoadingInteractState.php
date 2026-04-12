@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\FeedBack\Loading;
+namespace W4\UI\Framework\Components\FeedBack\Loading;
 
 class LoadingInteractState
 {

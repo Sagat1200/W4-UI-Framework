@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Link;
+namespace W4\UI\Framework\Components\UI\Link;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\UI\Link\LinkAccessibilityState;
-use W4\UiFramework\Components\UI\Link\LinkComponentEvent;
-use W4\UiFramework\Components\UI\Link\LinkComponentState;
-use W4\UiFramework\Components\UI\Link\LinkInteractState;
-use W4\UiFramework\Components\UI\Link\LinkStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\UI\Link\LinkAccessibilityState;
+use W4\UI\Framework\Components\UI\Link\LinkComponentEvent;
+use W4\UI\Framework\Components\UI\Link\LinkComponentState;
+use W4\UI\Framework\Components\UI\Link\LinkInteractState;
+use W4\UI\Framework\Components\UI\Link\LinkStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Link extends BaseComponent
 {

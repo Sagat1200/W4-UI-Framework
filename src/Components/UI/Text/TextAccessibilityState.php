@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Text;
+namespace W4\UI\Framework\Components\UI\Text;
 
 class TextAccessibilityState
 {

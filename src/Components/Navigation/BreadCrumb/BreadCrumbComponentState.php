@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\BreadCrumb;
+namespace W4\UI\Framework\Components\Navigation\BreadCrumb;
 
 enum BreadCrumbComponentState: string
 {

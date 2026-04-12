@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Container;
+namespace W4\UI\Framework\Components\Layout\Container;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Layout\Container\ContainerAccessibilityState;
-use W4\UiFramework\Components\Layout\Container\ContainerComponentEvent;
-use W4\UiFramework\Components\Layout\Container\ContainerComponentState;
-use W4\UiFramework\Components\Layout\Container\ContainerInteractState;
-use W4\UiFramework\Components\Layout\Container\ContainerStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Layout\Container\ContainerAccessibilityState;
+use W4\UI\Framework\Components\Layout\Container\ContainerComponentEvent;
+use W4\UI\Framework\Components\Layout\Container\ContainerComponentState;
+use W4\UI\Framework\Components\Layout\Container\ContainerInteractState;
+use W4\UI\Framework\Components\Layout\Container\ContainerStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Container extends BaseComponent
 {

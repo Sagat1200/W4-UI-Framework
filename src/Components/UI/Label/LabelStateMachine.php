@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Label;
+namespace W4\UI\Framework\Components\UI\Label;
 
 use RuntimeException;
-use W4\UiFramework\Components\UI\Label\LabelComponentEvent;
-use W4\UiFramework\Components\UI\Label\LabelComponentState;
+use W4\UI\Framework\Components\UI\Label\LabelComponentEvent;
+use W4\UI\Framework\Components\UI\Label\LabelComponentState;
 
 class LabelStateMachine
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Section;
+namespace W4\UI\Framework\Components\Layout\Section;
 
 use RuntimeException;
-use W4\UiFramework\Components\Layout\Section\SectionComponentEvent;
-use W4\UiFramework\Components\Layout\Section\SectionComponentState;
+use W4\UI\Framework\Components\Layout\Section\SectionComponentEvent;
+use W4\UI\Framework\Components\Layout\Section\SectionComponentState;
 
 class SectionStateMachine
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\FielError;
+namespace W4\UI\Framework\Components\Forms\FielError;
 
 enum FieldErrorComponentEvent: string
 {

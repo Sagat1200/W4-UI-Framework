@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\Input;
+namespace W4\UI\Framework\Components\Forms\Input;
 
 enum InputComponentEvent: string
 {

@@ -10,7 +10,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "W4\\UiFramework\\": "src/"
+            "W4\\UI\\Framework\\": "src/"
         },
         "files": [
       "src/Helpers/helpers.php"
@@ -18,7 +18,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "W4\\UiFramework\\Tests\\": "tests/"
+            "W4\\UI\\Framework\\Tests\\": "tests/"
         }
     },
     "authors": [
@@ -41,11 +41,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                "W4\\UiFramework\\Providers\\W4UiFrameworkServiceProvider" 
+                "W4\\UI\\Framework\\Providers\\W4UiFrameworkServiceProvider" 
             ]
         },
       "aliases": {
-        "W4Ui": "W4\\UiFramework\\Facades\\W4Ui"
+        "W4Ui": "W4\\UI\\Framework\\Facades\\W4Ui"
       }
     },
     "config": {

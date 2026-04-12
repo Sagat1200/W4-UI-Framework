@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\Tab;
+namespace W4\UI\Framework\Components\Navigation\Tab;
 
 use RuntimeException;
-use W4\UiFramework\Components\Navigation\Tab\TabComponentEvent;
-use W4\UiFramework\Components\Navigation\Tab\TabComponentState;
+use W4\UI\Framework\Components\Navigation\Tab\TabComponentEvent;
+use W4\UI\Framework\Components\Navigation\Tab\TabComponentState;
 
 class TabStateMachine
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Label;
+namespace W4\UI\Framework\Components\UI\Label;
 
 class LabelAccessibilityState
 {

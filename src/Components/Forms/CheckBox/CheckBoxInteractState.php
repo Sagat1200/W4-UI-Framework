@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\CheckBox;
+namespace W4\UI\Framework\Components\Forms\CheckBox;
 
 class CheckBoxInteractState
 {

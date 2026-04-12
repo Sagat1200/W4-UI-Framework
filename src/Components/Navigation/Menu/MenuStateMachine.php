@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\Menu;
+namespace W4\UI\Framework\Components\Navigation\Menu;
 
 use RuntimeException;
-use W4\UiFramework\Components\Navigation\Menu\MenuComponentEvent;
-use W4\UiFramework\Components\Navigation\Menu\MenuComponentState;
+use W4\UI\Framework\Components\Navigation\Menu\MenuComponentEvent;
+use W4\UI\Framework\Components\Navigation\Menu\MenuComponentState;
 
 class MenuStateMachine
 {

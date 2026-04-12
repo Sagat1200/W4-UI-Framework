@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\IconButton;
+namespace W4\UI\Framework\Components\UI\IconButton;
 
 use RuntimeException;
-use W4\UiFramework\Components\UI\IconButton\IconButtonComponentEvent;
-use W4\UiFramework\Components\UI\IconButton\IconButtonComponentState;
+use W4\UI\Framework\Components\UI\IconButton\IconButtonComponentEvent;
+use W4\UI\Framework\Components\UI\IconButton\IconButtonComponentState;
 
 class IconButtonStateMachine
 {

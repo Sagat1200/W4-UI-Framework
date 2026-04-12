@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\Select;
+namespace W4\UI\Framework\Components\Forms\Select;
 
 use RuntimeException;
-use W4\UiFramework\Components\Forms\Select\SelectComponentEvent;
-use W4\UiFramework\Components\Forms\Select\SelectComponentState;
+use W4\UI\Framework\Components\Forms\Select\SelectComponentEvent;
+use W4\UI\Framework\Components\Forms\Select\SelectComponentState;
 
 class SelectStateMachine
 {

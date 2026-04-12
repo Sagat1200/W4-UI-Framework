@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\Toggle;
+namespace W4\UI\Framework\Components\Forms\Toggle;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Forms\Toggle\ToggleAccessibilityState;
-use W4\UiFramework\Components\Forms\Toggle\ToggleComponentEvent;
-use W4\UiFramework\Components\Forms\Toggle\ToggleComponentState;
-use W4\UiFramework\Components\Forms\Toggle\ToggleInteractState;
-use W4\UiFramework\Components\Forms\Toggle\ToggleStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Forms\Toggle\ToggleAccessibilityState;
+use W4\UI\Framework\Components\Forms\Toggle\ToggleComponentEvent;
+use W4\UI\Framework\Components\Forms\Toggle\ToggleComponentState;
+use W4\UI\Framework\Components\Forms\Toggle\ToggleInteractState;
+use W4\UI\Framework\Components\Forms\Toggle\ToggleStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Toggle extends BaseComponent
 {

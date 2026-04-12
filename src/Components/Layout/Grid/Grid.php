@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Grid;
+namespace W4\UI\Framework\Components\Layout\Grid;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Layout\Grid\GridAccessibilityState;
-use W4\UiFramework\Components\Layout\Grid\GridComponentEvent;
-use W4\UiFramework\Components\Layout\Grid\GridComponentState;
-use W4\UiFramework\Components\Layout\Grid\GridInteractState;
-use W4\UiFramework\Components\Layout\Grid\GridStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Layout\Grid\GridAccessibilityState;
+use W4\UI\Framework\Components\Layout\Grid\GridComponentEvent;
+use W4\UI\Framework\Components\Layout\Grid\GridComponentState;
+use W4\UI\Framework\Components\Layout\Grid\GridInteractState;
+use W4\UI\Framework\Components\Layout\Grid\GridStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Grid extends BaseComponent
 {

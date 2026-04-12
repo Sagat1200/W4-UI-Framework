@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Panel;
+namespace W4\UI\Framework\Components\Layout\Panel;
 
 use RuntimeException;
-use W4\UiFramework\Components\Layout\Panel\PanelComponentEvent;
-use W4\UiFramework\Components\Layout\Panel\PanelComponentState;
+use W4\UI\Framework\Components\Layout\Panel\PanelComponentEvent;
+use W4\UI\Framework\Components\Layout\Panel\PanelComponentState;
 
 class PanelStateMachine
 {

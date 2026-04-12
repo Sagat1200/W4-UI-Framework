@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\TextArea;
+namespace W4\UI\Framework\Components\Forms\TextArea;
 
 class TextAreaAccessibilityState
 {

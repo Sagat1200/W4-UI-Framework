@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\FeedBack\Alert;
+namespace W4\UI\Framework\Components\FeedBack\Alert;
 
 use RuntimeException;
-use W4\UiFramework\Components\FeedBack\Alert\AlertComponentEvent;
-use W4\UiFramework\Components\FeedBack\Alert\AlertComponentState;
+use W4\UI\Framework\Components\FeedBack\Alert\AlertComponentEvent;
+use W4\UI\Framework\Components\FeedBack\Alert\AlertComponentState;
 
 class AlertStateMachine
 {

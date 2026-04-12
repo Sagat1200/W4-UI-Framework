@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\Input;
+namespace W4\UI\Framework\Components\Forms\Input;
 
 use RuntimeException;
-use W4\UiFramework\Components\Forms\Input\InputComponentEvent;
-use W4\UiFramework\Components\Forms\Input\InputComponentState;
+use W4\UI\Framework\Components\Forms\Input\InputComponentEvent;
+use W4\UI\Framework\Components\Forms\Input\InputComponentState;
 
 class InputStateMachine
 {

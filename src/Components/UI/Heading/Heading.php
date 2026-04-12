@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Heading;
+namespace W4\UI\Framework\Components\UI\Heading;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\UI\Heading\HeadingAccessibilityState;
-use W4\UiFramework\Components\UI\Heading\HeadingComponentEvent;
-use W4\UiFramework\Components\UI\Heading\HeadingComponentState;
-use W4\UiFramework\Components\UI\Heading\HeadingInteractState;
-use W4\UiFramework\Components\UI\Heading\HeadingStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\UI\Heading\HeadingAccessibilityState;
+use W4\UI\Framework\Components\UI\Heading\HeadingComponentEvent;
+use W4\UI\Framework\Components\UI\Heading\HeadingComponentState;
+use W4\UI\Framework\Components\UI\Heading\HeadingInteractState;
+use W4\UI\Framework\Components\UI\Heading\HeadingStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Heading extends BaseComponent
 {

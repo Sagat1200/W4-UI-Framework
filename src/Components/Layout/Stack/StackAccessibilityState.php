@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Stack;
+namespace W4\UI\Framework\Components\Layout\Stack;
 
 class StackAccessibilityState
 {

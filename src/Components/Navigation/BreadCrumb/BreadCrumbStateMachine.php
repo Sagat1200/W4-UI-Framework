@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\BreadCrumb;
+namespace W4\UI\Framework\Components\Navigation\BreadCrumb;
 
 use RuntimeException;
-use W4\UiFramework\Components\Navigation\BreadCrumb\BreadCrumbComponentEvent;
-use W4\UiFramework\Components\Navigation\BreadCrumb\BreadCrumbComponentState;
+use W4\UI\Framework\Components\Navigation\BreadCrumb\BreadCrumbComponentEvent;
+use W4\UI\Framework\Components\Navigation\BreadCrumb\BreadCrumbComponentState;
 
 class BreadCrumbStateMachine
 {

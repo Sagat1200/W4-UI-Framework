@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Container;
+namespace W4\UI\Framework\Components\Layout\Container;
 
 use RuntimeException;
-use W4\UiFramework\Components\Layout\Container\ContainerComponentEvent;
-use W4\UiFramework\Components\Layout\Container\ContainerComponentState;
+use W4\UI\Framework\Components\Layout\Container\ContainerComponentEvent;
+use W4\UI\Framework\Components\Layout\Container\ContainerComponentState;
 
 class ContainerStateMachine
 {

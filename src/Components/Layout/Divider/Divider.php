@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Divider;
+namespace W4\UI\Framework\Components\Layout\Divider;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Layout\Divider\DividerAccessibilityState;
-use W4\UiFramework\Components\Layout\Divider\DividerInteractState;
-use W4\UiFramework\Components\Layout\Divider\DividerStateMachine;
-use W4\UiFramework\Components\Layout\Divider\DividerComponentEvent;
-use W4\UiFramework\Components\Layout\Divider\DividerComponentState;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Layout\Divider\DividerAccessibilityState;
+use W4\UI\Framework\Components\Layout\Divider\DividerInteractState;
+use W4\UI\Framework\Components\Layout\Divider\DividerStateMachine;
+use W4\UI\Framework\Components\Layout\Divider\DividerComponentEvent;
+use W4\UI\Framework\Components\Layout\Divider\DividerComponentState;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Divider extends BaseComponent
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\NavBar;
+namespace W4\UI\Framework\Components\Navigation\NavBar;
 
 enum NavBarComponentEvent: string
 {

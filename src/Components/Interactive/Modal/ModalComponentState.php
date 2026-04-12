@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Interactive\Modal;
+namespace W4\UI\Framework\Components\Interactive\Modal;
 
 enum ModalComponentState: string
 {

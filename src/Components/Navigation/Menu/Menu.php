@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\Menu;
+namespace W4\UI\Framework\Components\Navigation\Menu;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Navigation\Menu\MenuAccessibilityState;
-use W4\UiFramework\Components\Navigation\Menu\MenuComponentEvent;
-use W4\UiFramework\Components\Navigation\Menu\MenuComponentState;
-use W4\UiFramework\Components\Navigation\Menu\MenuInteractState;
-use W4\UiFramework\Components\Navigation\Menu\MenuStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Navigation\Menu\MenuAccessibilityState;
+use W4\UI\Framework\Components\Navigation\Menu\MenuComponentEvent;
+use W4\UI\Framework\Components\Navigation\Menu\MenuComponentState;
+use W4\UI\Framework\Components\Navigation\Menu\MenuInteractState;
+use W4\UI\Framework\Components\Navigation\Menu\MenuStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Menu extends BaseComponent
 {

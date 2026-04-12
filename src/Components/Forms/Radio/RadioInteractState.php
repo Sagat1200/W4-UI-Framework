@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\Radio;
+namespace W4\UI\Framework\Components\Forms\Radio;
 
 class RadioInteractState
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\HelperText;
+namespace W4\UI\Framework\Components\Forms\HelperText;
 
 enum HelperTextComponentState: string
 {

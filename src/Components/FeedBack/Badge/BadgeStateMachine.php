@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\FeedBack\Badge;
+namespace W4\UI\Framework\Components\FeedBack\Badge;
 
 use RuntimeException;
-use W4\UiFramework\Components\FeedBack\Badge\BadgeComponentEvent;
-use W4\UiFramework\Components\FeedBack\Badge\BadgeComponentState;
+use W4\UI\Framework\Components\FeedBack\Badge\BadgeComponentEvent;
+use W4\UI\Framework\Components\FeedBack\Badge\BadgeComponentState;
 
 class BadgeStateMachine
 {

@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\DropDown;
+namespace W4\UI\Framework\Components\Navigation\DropDown;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Navigation\DropDown\DropDownAccessibilityState;
-use W4\UiFramework\Components\Navigation\DropDown\DropDownComponentEvent;
-use W4\UiFramework\Components\Navigation\DropDown\DropDownComponentState;
-use W4\UiFramework\Components\Navigation\DropDown\DropDownInteractState;
-use W4\UiFramework\Components\Navigation\DropDown\DropDownStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Navigation\DropDown\DropDownAccessibilityState;
+use W4\UI\Framework\Components\Navigation\DropDown\DropDownComponentEvent;
+use W4\UI\Framework\Components\Navigation\DropDown\DropDownComponentState;
+use W4\UI\Framework\Components\Navigation\DropDown\DropDownInteractState;
+use W4\UI\Framework\Components\Navigation\DropDown\DropDownStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class DropDown extends BaseComponent
 {

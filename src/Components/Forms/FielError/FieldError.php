@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\FielError;
+namespace W4\UI\Framework\Components\Forms\FielError;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Forms\FielError\FieldErrorAccessibilityState;
-use W4\UiFramework\Components\Forms\FielError\FieldErrorComponentEvent;
-use W4\UiFramework\Components\Forms\FielError\FieldErrorComponentState;
-use W4\UiFramework\Components\Forms\FielError\FieldErrorInteractState;
-use W4\UiFramework\Components\Forms\FielError\FieldErrorStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Forms\FielError\FieldErrorAccessibilityState;
+use W4\UI\Framework\Components\Forms\FielError\FieldErrorComponentEvent;
+use W4\UI\Framework\Components\Forms\FielError\FieldErrorComponentState;
+use W4\UI\Framework\Components\Forms\FielError\FieldErrorInteractState;
+use W4\UI\Framework\Components\Forms\FielError\FieldErrorStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class FieldError extends BaseComponent
 {

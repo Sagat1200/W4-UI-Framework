@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\FielError;
+namespace W4\UI\Framework\Components\Forms\FielError;
 
 use RuntimeException;
-use W4\UiFramework\Components\Forms\FielError\FieldErrorComponentEvent;
-use W4\UiFramework\Components\Forms\FielError\FieldErrorComponentState;
+use W4\UI\Framework\Components\Forms\FielError\FieldErrorComponentEvent;
+use W4\UI\Framework\Components\Forms\FielError\FieldErrorComponentState;
 
 class FieldErrorStateMachine
 {

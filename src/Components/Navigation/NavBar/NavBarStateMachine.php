@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\NavBar;
+namespace W4\UI\Framework\Components\Navigation\NavBar;
 
 use RuntimeException;
-use W4\UiFramework\Components\Navigation\NavBar\NavBarComponentEvent;
-use W4\UiFramework\Components\Navigation\NavBar\NavBarComponentState;
+use W4\UI\Framework\Components\Navigation\NavBar\NavBarComponentEvent;
+use W4\UI\Framework\Components\Navigation\NavBar\NavBarComponentState;
 
 class NavBarStateMachine
 {

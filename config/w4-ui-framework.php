@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Configuración de W4-Ui-Framework:
+ * Configuración de W4-UI-Framework:
  */
 
 return [

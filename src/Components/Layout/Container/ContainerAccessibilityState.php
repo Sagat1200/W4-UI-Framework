@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Container;
+namespace W4\UI\Framework\Components\Layout\Container;
 
 class ContainerAccessibilityState
 {

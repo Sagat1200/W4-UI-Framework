@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Text;
+namespace W4\UI\Framework\Components\UI\Text;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\UI\Text\TextAccessibilityState;
-use W4\UiFramework\Components\UI\Text\TextComponentEvent;
-use W4\UiFramework\Components\UI\Text\TextComponentState;
-use W4\UiFramework\Components\UI\Text\TextInteractState;
-use W4\UiFramework\Components\UI\Text\TextStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\UI\Text\TextAccessibilityState;
+use W4\UI\Framework\Components\UI\Text\TextComponentEvent;
+use W4\UI\Framework\Components\UI\Text\TextComponentState;
+use W4\UI\Framework\Components\UI\Text\TextInteractState;
+use W4\UI\Framework\Components\UI\Text\TextStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Text extends BaseComponent
 {

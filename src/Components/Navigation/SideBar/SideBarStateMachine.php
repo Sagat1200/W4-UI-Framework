@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\SideBar;
+namespace W4\UI\Framework\Components\Navigation\SideBar;
 
 use RuntimeException;
-use W4\UiFramework\Components\Navigation\SideBar\SideBarComponentEvent;
-use W4\UiFramework\Components\Navigation\SideBar\SideBarComponentState;
+use W4\UI\Framework\Components\Navigation\SideBar\SideBarComponentEvent;
+use W4\UI\Framework\Components\Navigation\SideBar\SideBarComponentState;
 
 class SideBarStateMachine
 {

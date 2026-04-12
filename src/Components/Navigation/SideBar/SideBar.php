@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\SideBar;
+namespace W4\UI\Framework\Components\Navigation\SideBar;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Navigation\SideBar\SideBarAccessibilityState;
-use W4\UiFramework\Components\Navigation\SideBar\SideBarComponentEvent;
-use W4\UiFramework\Components\Navigation\SideBar\SideBarComponentState;
-use W4\UiFramework\Components\Navigation\SideBar\SideBarInteractState;
-use W4\UiFramework\Components\Navigation\SideBar\SideBarStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Navigation\SideBar\SideBarAccessibilityState;
+use W4\UI\Framework\Components\Navigation\SideBar\SideBarComponentEvent;
+use W4\UI\Framework\Components\Navigation\SideBar\SideBarComponentState;
+use W4\UI\Framework\Components\Navigation\SideBar\SideBarInteractState;
+use W4\UI\Framework\Components\Navigation\SideBar\SideBarStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class SideBar extends BaseComponent
 {

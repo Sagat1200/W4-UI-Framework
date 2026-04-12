@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\BreadCrumb;
+namespace W4\UI\Framework\Components\Navigation\BreadCrumb;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Navigation\BreadCrumb\BreadCrumbAccessibilityState;
-use W4\UiFramework\Components\Navigation\BreadCrumb\BreadCrumbComponentEvent;
-use W4\UiFramework\Components\Navigation\BreadCrumb\BreadCrumbComponentState;
-use W4\UiFramework\Components\Navigation\BreadCrumb\BreadCrumbInteractState;
-use W4\UiFramework\Components\Navigation\BreadCrumb\BreadCrumbStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Navigation\BreadCrumb\BreadCrumbAccessibilityState;
+use W4\UI\Framework\Components\Navigation\BreadCrumb\BreadCrumbComponentEvent;
+use W4\UI\Framework\Components\Navigation\BreadCrumb\BreadCrumbComponentState;
+use W4\UI\Framework\Components\Navigation\BreadCrumb\BreadCrumbInteractState;
+use W4\UI\Framework\Components\Navigation\BreadCrumb\BreadCrumbStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class BreadCrumb extends BaseComponent
 {

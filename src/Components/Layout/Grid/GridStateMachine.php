@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Grid;
+namespace W4\UI\Framework\Components\Layout\Grid;
 
 use RuntimeException;
-use W4\UiFramework\Components\Layout\Grid\GridComponentEvent;
-use W4\UiFramework\Components\Layout\Grid\GridComponentState;
+use W4\UI\Framework\Components\Layout\Grid\GridComponentEvent;
+use W4\UI\Framework\Components\Layout\Grid\GridComponentState;
 
 class GridStateMachine
 {

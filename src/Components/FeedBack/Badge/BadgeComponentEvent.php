@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\FeedBack\Badge;
+namespace W4\UI\Framework\Components\FeedBack\Badge;
 
 enum BadgeComponentEvent: string
 {

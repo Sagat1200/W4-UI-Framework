@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Label;
+namespace W4\UI\Framework\Components\UI\Label;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\UI\Label\LabelAccessibilityState;
-use W4\UiFramework\Components\UI\Label\LabelComponentEvent;
-use W4\UiFramework\Components\UI\Label\LabelComponentState;
-use W4\UiFramework\Components\UI\Label\LabelInteractState;
-use W4\UiFramework\Components\UI\Label\LabelStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\UI\Label\LabelAccessibilityState;
+use W4\UI\Framework\Components\UI\Label\LabelComponentEvent;
+use W4\UI\Framework\Components\UI\Label\LabelComponentState;
+use W4\UI\Framework\Components\UI\Label\LabelInteractState;
+use W4\UI\Framework\Components\UI\Label\LabelStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Label extends BaseComponent
 {

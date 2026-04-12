@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Card;
+namespace W4\UI\Framework\Components\Layout\Card;
 
 use RuntimeException;
-use W4\UiFramework\Components\Layout\Card\CardComponentEvent;
-use W4\UiFramework\Components\Layout\Card\CardComponentState;
+use W4\UI\Framework\Components\Layout\Card\CardComponentEvent;
+use W4\UI\Framework\Components\Layout\Card\CardComponentState;
 
 class CardStateMachine
 {

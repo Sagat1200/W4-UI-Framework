@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Button;
+namespace W4\UI\Framework\Components\UI\Button;
 
 use RuntimeException;
-use W4\UiFramework\Components\UI\Button\ButtonComponentEvent;
-use W4\UiFramework\Components\UI\Button\ButtonComponentState;
+use W4\UI\Framework\Components\UI\Button\ButtonComponentEvent;
+use W4\UI\Framework\Components\UI\Button\ButtonComponentState;
 
 class ButtonStateMachine
 {

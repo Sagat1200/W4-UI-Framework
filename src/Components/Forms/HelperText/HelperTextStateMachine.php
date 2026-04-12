@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\HelperText;
+namespace W4\UI\Framework\Components\Forms\HelperText;
 
 use RuntimeException;
-use W4\UiFramework\Components\Forms\HelperText\HelperTextComponentEvent;
-use W4\UiFramework\Components\Forms\HelperText\HelperTextComponentState;
+use W4\UI\Framework\Components\Forms\HelperText\HelperTextComponentEvent;
+use W4\UI\Framework\Components\Forms\HelperText\HelperTextComponentState;
 
 class HelperTextStateMachine
 {

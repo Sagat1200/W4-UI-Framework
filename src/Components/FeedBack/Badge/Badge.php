@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\FeedBack\Badge;
+namespace W4\UI\Framework\Components\FeedBack\Badge;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\FeedBack\Badge\BadgeAccessibilityState;
-use W4\UiFramework\Components\FeedBack\Badge\BadgeComponentEvent;
-use W4\UiFramework\Components\FeedBack\Badge\BadgeComponentState;
-use W4\UiFramework\Components\FeedBack\Badge\BadgeInteractState;
-use W4\UiFramework\Components\FeedBack\Badge\BadgeStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\FeedBack\Badge\BadgeAccessibilityState;
+use W4\UI\Framework\Components\FeedBack\Badge\BadgeComponentEvent;
+use W4\UI\Framework\Components\FeedBack\Badge\BadgeComponentState;
+use W4\UI\Framework\Components\FeedBack\Badge\BadgeInteractState;
+use W4\UI\Framework\Components\FeedBack\Badge\BadgeStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Badge extends BaseComponent
 {

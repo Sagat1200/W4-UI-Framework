@@ -1,16 +1,16 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\CheckBox;
+namespace W4\UI\Framework\Components\Forms\CheckBox;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Forms\CheckBox\CheckBoxAccessibilityState;
-use W4\UiFramework\Components\Forms\CheckBox\CheckBoxComponentEvent;
-use W4\UiFramework\Components\Forms\CheckBox\CheckBoxInteractState;
-use W4\UiFramework\Components\Forms\CheckBox\CheckBoxStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Forms\CheckBox\CheckBoxAccessibilityState;
+use W4\UI\Framework\Components\Forms\CheckBox\CheckBoxComponentEvent;
+use W4\UI\Framework\Components\Forms\CheckBox\CheckBoxInteractState;
+use W4\UI\Framework\Components\Forms\CheckBox\CheckBoxStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class CheckBox extends BaseComponent
 {

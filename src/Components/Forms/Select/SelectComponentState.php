@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\Select;
+namespace W4\UI\Framework\Components\Forms\Select;
 
 enum SelectComponentState: string
 {

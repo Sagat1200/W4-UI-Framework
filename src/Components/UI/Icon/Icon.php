@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Icon;
+namespace W4\UI\Framework\Components\UI\Icon;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\UI\Icon\IconAccessibilityState;
-use W4\UiFramework\Components\UI\Icon\IconComponentEvent;
-use W4\UiFramework\Components\UI\Icon\IconComponentState;
-use W4\UiFramework\Components\UI\Icon\IconInteractState;
-use W4\UiFramework\Components\UI\Icon\IconStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\UI\Icon\IconAccessibilityState;
+use W4\UI\Framework\Components\UI\Icon\IconComponentEvent;
+use W4\UI\Framework\Components\UI\Icon\IconComponentState;
+use W4\UI\Framework\Components\UI\Icon\IconInteractState;
+use W4\UI\Framework\Components\UI\Icon\IconStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Icon extends BaseComponent
 {

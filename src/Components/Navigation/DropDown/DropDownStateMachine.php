@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\DropDown;
+namespace W4\UI\Framework\Components\Navigation\DropDown;
 
 use RuntimeException;
-use W4\UiFramework\Components\Navigation\DropDown\DropDownComponentEvent;
-use W4\UiFramework\Components\Navigation\DropDown\DropDownComponentState;
+use W4\UI\Framework\Components\Navigation\DropDown\DropDownComponentEvent;
+use W4\UI\Framework\Components\Navigation\DropDown\DropDownComponentState;
 
 class DropDownStateMachine
 {

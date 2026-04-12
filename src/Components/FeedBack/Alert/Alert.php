@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\FeedBack\Alert;
+namespace W4\UI\Framework\Components\FeedBack\Alert;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\FeedBack\Alert\AlertAccessibilityState;
-use W4\UiFramework\Components\FeedBack\Alert\AlertComponentEvent;
-use W4\UiFramework\Components\FeedBack\Alert\AlertComponentState;
-use W4\UiFramework\Components\FeedBack\Alert\AlertInteractState;
-use W4\UiFramework\Components\FeedBack\Alert\AlertStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\FeedBack\Alert\AlertAccessibilityState;
+use W4\UI\Framework\Components\FeedBack\Alert\AlertComponentEvent;
+use W4\UI\Framework\Components\FeedBack\Alert\AlertComponentState;
+use W4\UI\Framework\Components\FeedBack\Alert\AlertInteractState;
+use W4\UI\Framework\Components\FeedBack\Alert\AlertStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Alert extends BaseComponent
 {

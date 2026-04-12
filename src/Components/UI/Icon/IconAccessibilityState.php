@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\UI\Icon;
+namespace W4\UI\Framework\Components\UI\Icon;
 
 class IconAccessibilityState
 {

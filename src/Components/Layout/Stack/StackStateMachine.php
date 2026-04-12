@@ -1,8 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Stack;
+namespace W4\UI\Framework\Components\Layout\Stack;
 
 use RuntimeException;
+use W4\UI\Framework\Components\Layout\Stack\StackComponentEvent;
+use W4\UI\Framework\Components\Layout\Stack\StackComponentState;
 
 class StackStateMachine
 {

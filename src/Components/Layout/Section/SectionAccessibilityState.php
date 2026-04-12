@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Section;
+namespace W4\UI\Framework\Components\Layout\Section;
 
 class SectionAccessibilityState
 {

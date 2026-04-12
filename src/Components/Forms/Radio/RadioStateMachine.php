@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\Radio;
+namespace W4\UI\Framework\Components\Forms\Radio;
 
 use RuntimeException;
-use W4\UiFramework\Components\Forms\Radio\RadioComponentEvent;
-use W4\UiFramework\Components\Forms\Radio\RadioComponentState;
+use W4\UI\Framework\Components\Forms\Radio\RadioComponentEvent;
+use W4\UI\Framework\Components\Forms\Radio\RadioComponentState;
 
 class RadioStateMachine
 {

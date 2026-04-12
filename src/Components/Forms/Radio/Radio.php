@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\Radio;
+namespace W4\UI\Framework\Components\Forms\Radio;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Forms\Radio\RadioAccessibilityState;
-use W4\UiFramework\Components\Forms\Radio\RadioComponentEvent;
-use W4\UiFramework\Components\Forms\Radio\RadioComponentState;
-use W4\UiFramework\Components\Forms\Radio\RadioInteractState;
-use W4\UiFramework\Components\Forms\Radio\RadioStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Forms\Radio\RadioAccessibilityState;
+use W4\UI\Framework\Components\Forms\Radio\RadioComponentEvent;
+use W4\UI\Framework\Components\Forms\Radio\RadioComponentState;
+use W4\UI\Framework\Components\Forms\Radio\RadioInteractState;
+use W4\UI\Framework\Components\Forms\Radio\RadioStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Radio extends BaseComponent
 {

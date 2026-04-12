@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Interactive\Modal;
+namespace W4\UI\Framework\Components\Interactive\Modal;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Interactive\Modal\ModalAccessibilityState;
-use W4\UiFramework\Components\Interactive\Modal\ModalComponentEvent;
-use W4\UiFramework\Components\Interactive\Modal\ModalComponentState;
-use W4\UiFramework\Components\Interactive\Modal\ModalInteractState;
-use W4\UiFramework\Components\Interactive\Modal\ModalStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Interactive\Modal\ModalAccessibilityState;
+use W4\UI\Framework\Components\Interactive\Modal\ModalComponentEvent;
+use W4\UI\Framework\Components\Interactive\Modal\ModalComponentState;
+use W4\UI\Framework\Components\Interactive\Modal\ModalInteractState;
+use W4\UI\Framework\Components\Interactive\Modal\ModalStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Modal extends BaseComponent
 {

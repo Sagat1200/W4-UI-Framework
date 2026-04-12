@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\Menu;
+namespace W4\UI\Framework\Components\Navigation\Menu;
 
 enum MenuComponentEvent: string
 {

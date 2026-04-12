@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\Toggle;
+namespace W4\UI\Framework\Components\Forms\Toggle;
 
 class ToggleInteractState
 {

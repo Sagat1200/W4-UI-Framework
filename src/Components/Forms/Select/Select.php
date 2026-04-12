@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\Select;
+namespace W4\UI\Framework\Components\Forms\Select;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Forms\Select\SelectAccessibilityState;
-use W4\UiFramework\Components\Forms\Select\SelectComponentEvent;
-use W4\UiFramework\Components\Forms\Select\SelectComponentState;
-use W4\UiFramework\Components\Forms\Select\SelectInteractState;
-use W4\UiFramework\Components\Forms\Select\SelectStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Forms\Select\SelectAccessibilityState;
+use W4\UI\Framework\Components\Forms\Select\SelectComponentEvent;
+use W4\UI\Framework\Components\Forms\Select\SelectComponentState;
+use W4\UI\Framework\Components\Forms\Select\SelectInteractState;
+use W4\UI\Framework\Components\Forms\Select\SelectStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Select extends BaseComponent
 {

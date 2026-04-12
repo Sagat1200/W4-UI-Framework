@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UiFramework\Components\Layout\Grid;
+namespace W4\UI\Framework\Components\Layout\Grid;
 
 class GridAccessibilityState
 {

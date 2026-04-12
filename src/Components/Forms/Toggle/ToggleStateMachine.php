@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Forms\Toggle;
+namespace W4\UI\Framework\Components\Forms\Toggle;
 
 use RuntimeException;
-use W4\UiFramework\Components\Forms\Toggle\ToggleComponentEvent;
-use W4\UiFramework\Components\Forms\Toggle\ToggleComponentState;
+use W4\UI\Framework\Components\Forms\Toggle\ToggleComponentEvent;
+use W4\UI\Framework\Components\Forms\Toggle\ToggleComponentState;
 
 class ToggleStateMachine
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Interactive\Modal;
+namespace W4\UI\Framework\Components\Interactive\Modal;
 
 use RuntimeException;
-use W4\UiFramework\Components\Interactive\Modal\ModalComponentEvent;
-use W4\UiFramework\Components\Interactive\Modal\ModalComponentState;
+use W4\UI\Framework\Components\Interactive\Modal\ModalComponentEvent;
+use W4\UI\Framework\Components\Interactive\Modal\ModalComponentState;
 
 class ModalStateMachine
 {

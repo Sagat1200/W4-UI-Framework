@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Navigation\Tab;
+namespace W4\UI\Framework\Components\Navigation\Tab;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Navigation\Tab\TabAccessibilityState;
-use W4\UiFramework\Components\Navigation\Tab\TabComponentEvent;
-use W4\UiFramework\Components\Navigation\Tab\TabComponentState;
-use W4\UiFramework\Components\Navigation\Tab\TabInteractState;
-use W4\UiFramework\Components\Navigation\Tab\TabStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Navigation\Tab\TabAccessibilityState;
+use W4\UI\Framework\Components\Navigation\Tab\TabComponentEvent;
+use W4\UI\Framework\Components\Navigation\Tab\TabComponentState;
+use W4\UI\Framework\Components\Navigation\Tab\TabInteractState;
+use W4\UI\Framework\Components\Navigation\Tab\TabStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Tab extends BaseComponent
 {
