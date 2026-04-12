@@ -41,7 +41,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "W4\\UI\\Framework\\Providers\\W4UiFrameworkServiceProvider" 
+                "W4\\UI\\Framework\\Providers\\W4UIFrameworkServiceProvider" 
             ]
         },
       "aliases": {
