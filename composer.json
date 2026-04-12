@@ -1,6 +1,6 @@
 {
     "name": "w4/ui-framework",
-    "description": "Paquete de abstraccion de componentes de usuario y gestor de temas para Laravel PHP.",
+    "description": "Framework de Abstraccion de Componentes para Interfaces de Usuario para laravel PHP",
     "type": "library",
     "license": "MIT",
     "keywords": [
