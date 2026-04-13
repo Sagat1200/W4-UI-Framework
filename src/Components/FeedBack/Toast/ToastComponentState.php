@@ -1,12 +1,12 @@
 <?php
 
-namespace W4\UI\Framework\Components\Interactive\Tooltip;
+namespace W4\UI\Framework\Components\FeedBack\Toast;
 
-enum TooltipComponentState: string
+enum ToastComponentState: string
 {
     case ENABLED = 'enabled';
     case DISABLED = 'disabled';
     case ACTIVE = 'active';
     case HIDDEN = 'hidden';
-    case OPEN = 'open';
+    case DISMISSED = 'dismissed';
 }

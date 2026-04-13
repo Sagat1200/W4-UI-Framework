@@ -29,7 +29,6 @@ use W4\UI\Framework\Managers\RendererManager;
 use W4\UI\Framework\Managers\ThemeManager;
 use W4\UI\Framework\Renderers\BladeRenderer;
 use W4\UI\Framework\Support\W4UiManager;
-use W4\UI\Framework\Themes\W4NativeDaisy\W4NativeDaisyTheme;
 use W4\UI\Framework\View\Components\Forms\CheckBox as CheckBoxBladeComponent;
 use W4\UI\Framework\View\Components\Forms\FieldError as FieldErrorBladeComponent;
 use W4\UI\Framework\View\Components\Forms\HelperText as HelperTextBladeComponent;
@@ -87,7 +86,7 @@ class W4UIFrameworkServiceProvider extends ServiceProvider
         $this->app->singleton(ThemeManager::class, function () {
             $manager = new ThemeManager();
 
-            $manager->register('w4native', new W4NativeDaisyTheme());
+            //$manager->register('w4native', new W4NativeDaisyTheme());
 
             return $manager;
         });

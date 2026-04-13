@@ -1,8 +1,8 @@
 <?php
 
-namespace W4\UI\Framework\Components\Interactive\Tooltip;
+namespace W4\UI\Framework\Components\FeedBack\Toast;
 
-enum TooltipComponentEvent: string
+enum ToastComponentEvent: string
 {
     case ACTIVATE = 'activate';
     case DEACTIVATE = 'deactivate';
@@ -10,8 +10,6 @@ enum TooltipComponentEvent: string
     case ENABLE = 'enable';
     case HIDE = 'hide';
     case SHOW = 'show';
-    case OPEN = 'open';
-    case CLOSE = 'close';
-    case TOGGLE = 'toggle';
+    case DISMISS = 'dismiss';
     case RESET = 'reset';
 }

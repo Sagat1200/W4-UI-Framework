@@ -1,10 +1,10 @@
 <?php
 
-namespace W4\UiFramework\Components\Interactive\Tooltip;
+namespace W4\UI\Framework\Components\Interactive\Tooltip;
 
 use RuntimeException;
-use W4\UiFramework\Components\Interactive\Tooltip\TooltipComponentEvent;
-use W4\UiFramework\Components\Interactive\Tooltip\TooltipComponentState;
+use W4\UI\Framework\Components\Interactive\Tooltip\TooltipComponentEvent;
+use W4\UI\Framework\Components\Interactive\Tooltip\TooltipComponentState;
 
 class TooltipStateMachine
 {

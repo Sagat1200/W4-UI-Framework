@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\FeedBack;
+namespace W4\UI\Framework\View\Components\Interactive;
 
-use W4\UI\Framework\Components\FeedBack\Badge\Badge as BadgeComponent;
-use W4\UI\Framework\Components\FeedBack\Badge\BadgeComponentEvent;
-use W4\UI\Framework\Components\FeedBack\Badge\BadgeInteractState;
+use W4\UI\Framework\Components\Interactive\Tooltip\Tooltip as TooltipComponent;
+use W4\UI\Framework\Components\Interactive\Tooltip\TooltipComponentEvent;
+use W4\UI\Framework\Components\Interactive\Tooltip\TooltipInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Badge extends BaseW4BladeComponent
+class Tooltip extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -18,13 +18,13 @@ class Badge extends BaseW4BladeComponent
         ?string $renderer = null,
         string|int|null $componentId = null,
         public ?string $text = null,
-        public ?string $icon = null,
-        public ?string $tone = 'neutral',
+        public ?string $placement = 'top',
+        public ?string $trigger = 'hover',
+        public bool $opened = false,
+        public ?int $delay = 0,
+        public bool $arrow = true,
         public string $variant = 'default',
         public string $size = 'md',
-        public bool $pill = false,
-        public bool $outlined = false,
-        public bool $highlighted = false,
         public bool $active = false,
         public bool $disabled = false,
         public bool $hidden = false,
@@ -46,45 +46,46 @@ class Badge extends BaseW4BladeComponent
     {
         $baseLabel = $this->label ?? $this->text;
 
-        $badge = BadgeComponent::make($baseLabel)
+        $tooltip = TooltipComponent::make($baseLabel)
             ->variant($this->variant)
             ->size($this->size)
-            ->pill($this->pill)
-            ->outlined($this->outlined)
-            ->highlighted($this->highlighted);
+            ->opened($this->opened)
+            ->arrow($this->arrow);
 
         if ($this->text !== null) {
-            $badge->text($this->text);
-        } elseif ($this->label !== null) {
-            $badge->text($this->label);
+            $tooltip->text($this->text);
         }
 
-        if ($this->icon !== null) {
-            $badge->icon($this->icon);
+        if ($this->placement !== null) {
+            $tooltip->placement($this->placement);
         }
 
-        if ($this->tone !== null) {
-            $badge->tone($this->tone);
+        if ($this->trigger !== null) {
+            $tooltip->trigger($this->trigger);
+        }
+
+        if ($this->delay !== null) {
+            $tooltip->delay($this->delay);
         }
 
         if ($this->hidden) {
-            $badge->dispatch(BadgeComponentEvent::HIDE);
+            $tooltip->dispatch(TooltipComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $badge->dispatch(BadgeComponentEvent::DISABLE);
-        } elseif ($this->highlighted) {
-            $badge->dispatch(BadgeComponentEvent::HIGHLIGHT);
+            $tooltip->dispatch(TooltipComponentEvent::DISABLE);
+        } elseif ($this->opened) {
+            $tooltip->dispatch(TooltipComponentEvent::OPEN);
         } elseif ($this->active) {
-            $badge->dispatch(BadgeComponentEvent::ACTIVATE);
+            $tooltip->dispatch(TooltipComponentEvent::ACTIVATE);
         }
 
-        $badge->interactState(new BadgeInteractState(
+        $tooltip->interactState(new TooltipInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            highlighted: $this->highlighted,
+            opened: $this->opened,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $badge->accessibilityState();
+            $accessibilityState = $tooltip->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -94,9 +95,9 @@ class Badge extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $badge->accessibilityState($accessibilityState);
+            $tooltip->accessibilityState($accessibilityState);
         }
 
-        return $badge;
+        return $tooltip;
     }
 }

@@ -1,17 +1,17 @@
 <?php
 
-namespace W4\UiFramework\Components\Interactive\Tooltip;
+namespace W4\UI\Framework\Components\Interactive\Tooltip;
 
 use InvalidArgumentException;
-use W4\UiFramework\Components\Interactive\Tooltip\TooltipAccessibilityState;
-use W4\UiFramework\Components\Interactive\Tooltip\TooltipComponentEvent;
-use W4\UiFramework\Components\Interactive\Tooltip\TooltipComponentState;
-use W4\UiFramework\Components\Interactive\Tooltip\TooltipInteractState;
-use W4\UiFramework\Components\Interactive\Tooltip\TooltipStateMachine;
-use W4\UiFramework\Core\BaseComponent;
-use W4\UiFramework\Support\Traits\InteractsWithSize;
-use W4\UiFramework\Support\Traits\InteractsWithState;
-use W4\UiFramework\Support\Traits\InteractsWithVariant;
+use W4\UI\Framework\Components\Interactive\Tooltip\TooltipAccessibilityState;
+use W4\UI\Framework\Components\Interactive\Tooltip\TooltipComponentEvent;
+use W4\UI\Framework\Components\Interactive\Tooltip\TooltipComponentState;
+use W4\UI\Framework\Components\Interactive\Tooltip\TooltipInteractState;
+use W4\UI\Framework\Components\Interactive\Tooltip\TooltipStateMachine;
+use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
+use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Tooltip extends BaseComponent
 {

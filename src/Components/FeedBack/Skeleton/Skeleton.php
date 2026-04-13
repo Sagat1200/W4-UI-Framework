@@ -5,6 +5,7 @@ namespace W4\UI\Framework\Components\FeedBack\Skeleton;
 use InvalidArgumentException;
 use W4\UI\Framework\Components\FeedBack\Skeleton\SkeletonAccessibilityState;
 use W4\UI\Framework\Components\FeedBack\Skeleton\SkeletonComponentEvent;
+use W4\UI\Framework\Components\FeedBack\Skeleton\SkeletonComponentState;
 use W4\UI\Framework\Components\FeedBack\Skeleton\SkeletonInteractState;
 use W4\UI\Framework\Components\FeedBack\Skeleton\SkeletonStateMachine;
 use W4\UI\Framework\Core\BaseComponent;

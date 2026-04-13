@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\FeedBack;
+namespace W4\UI\Framework\View\Components\Interactive;
 
-use W4\UI\Framework\Components\FeedBack\Badge\Badge as BadgeComponent;
-use W4\UI\Framework\Components\FeedBack\Badge\BadgeComponentEvent;
-use W4\UI\Framework\Components\FeedBack\Badge\BadgeInteractState;
+use W4\UI\Framework\Components\Interactive\Modal\Modal as ModalComponent;
+use W4\UI\Framework\Components\Interactive\Modal\ModalComponentEvent;
+use W4\UI\Framework\Components\Interactive\Modal\ModalInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Badge extends BaseW4BladeComponent
+class Modal extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,14 +17,14 @@ class Badge extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public ?string $text = null,
-        public ?string $icon = null,
-        public ?string $tone = 'neutral',
+        public ?string $title = null,
+        public ?string $content = null,
+        public ?string $footer = null,
+        public bool $opened = false,
+        public bool $dismissible = true,
+        public ?string $sizePreset = 'md',
         public string $variant = 'default',
         public string $size = 'md',
-        public bool $pill = false,
-        public bool $outlined = false,
-        public bool $highlighted = false,
         public bool $active = false,
         public bool $disabled = false,
         public bool $hidden = false,
@@ -44,47 +44,48 @@ class Badge extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $baseLabel = $this->label ?? $this->text;
+        $baseLabel = $this->label ?? $this->title;
 
-        $badge = BadgeComponent::make($baseLabel)
+        $modal = ModalComponent::make($baseLabel)
             ->variant($this->variant)
             ->size($this->size)
-            ->pill($this->pill)
-            ->outlined($this->outlined)
-            ->highlighted($this->highlighted);
+            ->opened($this->opened)
+            ->dismissible($this->dismissible);
 
-        if ($this->text !== null) {
-            $badge->text($this->text);
-        } elseif ($this->label !== null) {
-            $badge->text($this->label);
+        if ($this->title !== null) {
+            $modal->title($this->title);
         }
 
-        if ($this->icon !== null) {
-            $badge->icon($this->icon);
+        if ($this->content !== null) {
+            $modal->content($this->content);
         }
 
-        if ($this->tone !== null) {
-            $badge->tone($this->tone);
+        if ($this->footer !== null) {
+            $modal->footer($this->footer);
+        }
+
+        if ($this->sizePreset !== null) {
+            $modal->sizePreset($this->sizePreset);
         }
 
         if ($this->hidden) {
-            $badge->dispatch(BadgeComponentEvent::HIDE);
+            $modal->dispatch(ModalComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $badge->dispatch(BadgeComponentEvent::DISABLE);
-        } elseif ($this->highlighted) {
-            $badge->dispatch(BadgeComponentEvent::HIGHLIGHT);
+            $modal->dispatch(ModalComponentEvent::DISABLE);
+        } elseif ($this->opened) {
+            $modal->dispatch(ModalComponentEvent::OPEN);
         } elseif ($this->active) {
-            $badge->dispatch(BadgeComponentEvent::ACTIVATE);
+            $modal->dispatch(ModalComponentEvent::ACTIVATE);
         }
 
-        $badge->interactState(new BadgeInteractState(
+        $modal->interactState(new ModalInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            highlighted: $this->highlighted,
+            opened: $this->opened,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $badge->accessibilityState();
+            $accessibilityState = $modal->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -94,9 +95,9 @@ class Badge extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $badge->accessibilityState($accessibilityState);
+            $modal->accessibilityState($accessibilityState);
         }
 
-        return $badge;
+        return $modal;
     }
 }

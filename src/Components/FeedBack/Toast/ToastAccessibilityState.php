@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\Components\Interactive\Tooltip;
+namespace W4\UI\Framework\Components\FeedBack\Toast;
 
-class TooltipAccessibilityState
+class ToastAccessibilityState
 {
     public function __construct(
-        public string $role = 'tooltip',
-        public string $ariaLive = 'off',
+        public string $role = 'status',
+        public string $ariaLive = 'polite',
         public bool $ariaAtomic = true,
-        public bool $ariaHidden = true,
+        public bool $ariaHidden = false,
         public bool $ariaBusy = false,
         public ?string $ariaLabel = null,
         public ?string $ariaDescribedBy = null,

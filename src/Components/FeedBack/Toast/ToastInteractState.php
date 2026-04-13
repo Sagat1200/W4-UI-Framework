@@ -1,13 +1,13 @@
 <?php
 
-namespace W4\UI\Framework\Components\Interactive\Tooltip;
+namespace W4\UI\Framework\Components\FeedBack\Toast;
 
-class TooltipInteractState
+class ToastInteractState
 {
     public function __construct(
         public bool $hovered = false,
         public bool $focused = false,
-        public bool $opened = false,
+        public bool $dismissed = false,
     ) {}
 
     public function toArray(): array
@@ -15,7 +15,7 @@ class TooltipInteractState
         return [
             'hovered' => $this->hovered,
             'focused' => $this->focused,
-            'opened' => $this->opened,
+            'dismissed' => $this->dismissed,
         ];
     }
 }
