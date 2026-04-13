@@ -23,4 +23,4 @@
 @endphp
 {{-- {!! $html() !!} --}}
 
-{!! app(\W4\UiFramework\Support\W4UiManager::class)->render($instance, $renderer) !!}
+{!! app(\W4\UI\Framework\Support\W4UiManager::class)->render($instance, $renderer) !!}
