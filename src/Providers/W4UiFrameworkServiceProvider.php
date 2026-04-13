@@ -20,6 +20,7 @@ use W4\UI\Framework\Components\UI\IconButton\IconButton;
 use W4\UI\Framework\Components\UI\Label\Label;
 use W4\UI\Framework\Components\UI\Link\Link;
 use W4\UI\Framework\Components\UI\Text\Text;
+use W4\UI\Framework\Bridge\NativeUiThemeAdapter;
 use W4\UI\Framework\Core\ComponentFactory;
 use W4\UI\Framework\Core\ComponentRegistry;
 use W4\UI\Framework\Core\RendererPipeline;
@@ -132,6 +133,8 @@ class W4UIFrameworkServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->registerNativeUiThemeBridge();
+
         $this->publishes([
             __DIR__ . '/../../config/w4-ui-framework.php' => config_path('w4-ui-framework.php'),
         ], 'w4-ui-config'); // php artisan vendor:publish --tag=w4-ui-config --path=config/w4-ui-framework.php
@@ -189,5 +192,34 @@ class W4UIFrameworkServiceProvider extends ServiceProvider
         }
 
         return $prefix . '-' . $name;
+    }
+
+    protected function registerNativeUiThemeBridge(): void
+    {
+        $nativeThemeClass = \W4\NativeUI\Tools\Themes\NativeUITheme::class;
+
+        if (! class_exists($nativeThemeClass)) {
+            return;
+        }
+
+        if (! $this->app->bound($nativeThemeClass)) {
+            return;
+        }
+
+        try {
+            $nativeTheme = $this->app->make($nativeThemeClass);
+        } catch (\Throwable) {
+            return;
+        }
+
+        if (! is_object($nativeTheme)) {
+            return;
+        }
+
+        $themeManager = $this->app->make(ThemeManager::class);
+
+        $themeManager->register('w4native', new NativeUiThemeAdapter($nativeTheme, 'w4native'));
+        $themeManager->register('native-ui', new NativeUiThemeAdapter($nativeTheme, 'native-ui'));
+        $themeManager->register('native', new NativeUiThemeAdapter($nativeTheme, 'native'));
     }
 }

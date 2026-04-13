@@ -63,7 +63,7 @@ Tema soportado actualmente:
 ### 1) Core component + helper
 
 ```php
-use W4\UiFramework\Components\UI\Button\Button;
+use W4\UI\Framework\Components\UI\Button\Button;
 
 echo w4_render(
     Button::make('Guardar')
@@ -75,10 +75,10 @@ echo w4_render(
 ### 2) Facade
 
 ```php
-use W4\UiFramework\Components\Forms\Input\Input;
-use W4\UiFramework\Facades\W4Ui;
+use W4\UI\Framework\Components\Forms\Input\Input;
+use W4\UI\Framework\Facades\W4UI;
 
-echo W4Ui::render(
+echo W4UI::render(  
     Input::make('Correo')
         ->name('email')
         ->type('email')

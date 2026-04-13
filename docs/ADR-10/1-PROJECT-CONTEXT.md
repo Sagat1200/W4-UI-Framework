@@ -325,4 +325,3 @@ Orden recomendado inmediato:
 2. Definir y arrancar el primer bridge (Livewire o Inertia) con contrato mínimo.
 3. Expandir el set de componentes core reutilizando convenciones actuales.
 4. Mantener pruebas de integración por cada nueva capacidad para evitar regresiones.
-

@@ -8,9 +8,9 @@ return [
     /*
      * Selección de tema:
      * Puedes seleccionar entre:
-     * - w4-native-daisyui
+     * - w4native
      */
-    'theme' => env('W4_UI_THEME', 'w4-native-daisyui'),
+    'theme' => env('W4_UI_THEME', 'w4native'),
 
     /*
      * Selección de render:

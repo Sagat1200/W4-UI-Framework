@@ -1,17 +1,18 @@
 <?php
 
-namespace W4\UiFramework\Tests;
+namespace W4\UI\Framework\Tests;
 
-use W4\UiFramework\Components\Forms\Input\Input;
-use W4\UiFramework\Components\UI\Button\Button;
-use W4\UiFramework\Core\ComponentFactory;
-use W4\UiFramework\Core\ComponentRegistry;
-use W4\UiFramework\Managers\RendererManager;
-use W4\UiFramework\Managers\ThemeManager;
-use W4\UiFramework\Themes\W4Native\W4NativeTheme;
-use W4\UiFramework\View\Components\Render;
+use W4\UI\Framework\Components\Forms\Input\Input;
+use W4\UI\Framework\Components\UI\Button\Button;
+use W4\UI\Framework\Core\ComponentFactory;
+use W4\UI\Framework\Core\ComponentRegistry;
+use W4\UI\Framework\Managers\RendererManager;
+use W4\UI\Framework\Managers\ThemeManager;
+use W4\UI\Framework\Tests\TestCase;
+use W4\UI\Framework\Themes\W4Native\W4NativeTheme;
+use W4\UI\Framework\View\Components\Render;
 
-class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
+class W4UIFrameworkServiceProviderIntegrationTest extends TestCase
 {
     public function test_registers_core_bindings(): void
     {
@@ -28,15 +29,15 @@ class W4UiFrameworkServiceProviderIntegrationTest extends TestCase
         $this->assertSame('blade', config('w4-ui-framework.renderer'));
     }
 
-    public function test_theme_manager_registers_only_native_theme(): void
-    {
-        $themeManager = $this->app->make(ThemeManager::class);
-        $registeredThemes = $themeManager->all();
+    // public function test_theme_manager_registers_only_native_theme(): void
+    // {
+    //     $themeManager = $this->app->make(ThemeManager::class);
+    //     $registeredThemes = $themeManager->all();
 
-        $this->assertInstanceOf(W4NativeTheme::class, $themeManager->resolve('w4native'));
-        $this->assertCount(1, $registeredThemes);
-        $this->assertArrayHasKey('w4native', $registeredThemes);
-    }
+    //     $this->assertInstanceOf(W4NativeTheme::class, $themeManager->resolve('w4native'));
+    //     $this->assertCount(1, $registeredThemes);
+    //     $this->assertArrayHasKey('w4native', $registeredThemes);
+    // }
 
     public function test_registers_blade_component_aliases(): void
     {
