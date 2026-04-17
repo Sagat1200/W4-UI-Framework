@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Forms;
+namespace W4\UI\Framework\View\Components\Forms\CheckBox;
 
 use W4\UI\Framework\Components\Forms\CheckBox\CheckBox as CheckBoxComponent;
 use W4\UI\Framework\Components\Forms\CheckBox\CheckBoxComponentEvent;

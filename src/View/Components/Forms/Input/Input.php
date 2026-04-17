@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Forms;
+namespace W4\UI\Framework\View\Components\Forms\Input;
 
-use W4\UI\Framework\Components\Forms\Radio\Radio as RadioComponent;
-use W4\UI\Framework\Components\Forms\Radio\RadioComponentEvent;
-use W4\UI\Framework\Components\Forms\Radio\RadioInteractState;
+use W4\UI\Framework\Components\Forms\Input\Input as InputComponent;
+use W4\UI\Framework\Components\Forms\Input\InputComponentEvent;
+use W4\UI\Framework\Components\Forms\Input\InputInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Radio extends BaseW4BladeComponent
+class Input extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,14 +17,13 @@ class Radio extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public string $type = 'radio',
+        public string $type = 'text',
         public ?string $value = null,
-        public ?string $group = null,
+        public ?string $placeholder = null,
         public ?string $helperText = null,
         public ?string $errorMessage = null,
         public string $variant = 'default',
         public string $size = 'md',
-        public bool $selected = false,
         public bool $disabled = false,
         public bool $loading = false,
         public bool $readonly = false,
@@ -32,7 +31,7 @@ class Radio extends BaseW4BladeComponent
         public bool $valid = false,
         public bool $focused = false,
         public bool $hovered = false,
-        public bool $pressed = false,
+        public bool $filled = false,
         public ?string $ariaLabel = null,
         public ?string $ariaDescribedBy = null,
     ) {
@@ -47,48 +46,47 @@ class Radio extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $radio = RadioComponent::make($this->label)
+        $input = InputComponent::make($this->label)
             ->type($this->type)
             ->variant($this->variant)
-            ->size($this->size)
-            ->selected($this->selected);
+            ->size($this->size);
 
         if ($this->value !== null) {
-            $radio->value($this->value);
+            $input->value($this->value);
         }
 
-        if ($this->group !== null) {
-            $radio->group($this->group);
+        if ($this->placeholder !== null) {
+            $input->placeholder($this->placeholder);
         }
 
         if ($this->helperText !== null) {
-            $radio->helperText($this->helperText);
+            $input->helperText($this->helperText);
         }
 
         if ($this->errorMessage !== null) {
-            $radio->errorMessage($this->errorMessage);
+            $input->errorMessage($this->errorMessage);
         }
 
         if ($this->loading) {
-            $radio->dispatch(RadioComponentEvent::START_LOADING);
+            $input->dispatch(InputComponentEvent::START_LOADING);
         } elseif ($this->disabled) {
-            $radio->dispatch(RadioComponentEvent::DISABLE);
+            $input->dispatch(InputComponentEvent::DISABLE);
         } elseif ($this->readonly) {
-            $radio->dispatch(RadioComponentEvent::SET_READONLY);
+            $input->dispatch(InputComponentEvent::SET_READONLY);
         } elseif ($this->invalid || $this->errorMessage) {
-            $radio->dispatch(RadioComponentEvent::SET_INVALID);
+            $input->dispatch(InputComponentEvent::SET_INVALID);
         } elseif ($this->valid) {
-            $radio->dispatch(RadioComponentEvent::SET_VALID);
+            $input->dispatch(InputComponentEvent::SET_VALID);
         }
 
-        $radio->interactState(new RadioInteractState(
+        $input->interactState(new InputInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            pressed: $this->pressed,
+            filled: $this->filled || (($this->value ?? '') !== ''),
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $radio->accessibilityState();
+            $accessibilityState = $input->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -98,9 +96,9 @@ class Radio extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $radio->accessibilityState($accessibilityState);
+            $input->accessibilityState($accessibilityState);
         }
 
-        return $radio;
+        return $input;
     }
 }

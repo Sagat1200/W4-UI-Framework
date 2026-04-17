@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\FeedBack;
+namespace W4\UI\Framework\View\Components\FeedBack\Alert;
 
-use W4\UI\Framework\Components\FeedBack\Skeleton\Skeleton as SkeletonComponent;
-use W4\UI\Framework\Components\FeedBack\Skeleton\SkeletonComponentEvent;
-use W4\UI\Framework\Components\FeedBack\Skeleton\SkeletonInteractState;
+use W4\UI\Framework\Components\FeedBack\Alert\Alert as AlertComponent;
+use W4\UI\Framework\Components\FeedBack\Alert\AlertComponentEvent;
+use W4\UI\Framework\Components\FeedBack\Alert\AlertInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Skeleton extends BaseW4BladeComponent
+class Alert extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,17 +17,17 @@ class Skeleton extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public ?string $shape = 'line',
-        public ?string $width = null,
-        public ?string $height = null,
-        public bool $animated = true,
-        public ?int $lines = 1,
-        public string $variant = 'line',
+        public ?string $title = null,
+        public ?string $message = null,
+        public ?string $icon = null,
+        public ?string $tone = 'info',
+        public string $variant = 'default',
         public string $size = 'md',
+        public bool $dismissible = true,
+        public bool $dismissed = false,
         public bool $active = false,
         public bool $disabled = false,
         public bool $hidden = false,
-        public bool $loading = false,
         public bool $focused = false,
         public bool $hovered = false,
         public ?string $ariaLabel = null,
@@ -44,46 +44,47 @@ class Skeleton extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $skeleton = SkeletonComponent::make($this->label)
+        $baseLabel = $this->label ?? $this->title ?? $this->message;
+
+        $alert = AlertComponent::make($baseLabel)
             ->variant($this->variant)
             ->size($this->size)
-            ->animated($this->animated);
+            ->dismissible($this->dismissible);
 
-        if ($this->shape !== null) {
-            $skeleton->shape($this->shape);
+        if ($this->title !== null) {
+            $alert->title($this->title);
         }
 
-        if ($this->width !== null) {
-            $skeleton->width($this->width);
+        if ($this->message !== null) {
+            $alert->message($this->message);
         }
 
-        if ($this->height !== null) {
-            $skeleton->height($this->height);
+        if ($this->icon !== null) {
+            $alert->icon($this->icon);
         }
 
-        if ($this->lines !== null) {
-            $skeleton->lines($this->lines);
+        if ($this->tone !== null) {
+            $alert->tone($this->tone);
         }
 
         if ($this->hidden) {
-            $skeleton->dispatch(SkeletonComponentEvent::HIDE);
+            $alert->dispatch(AlertComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $skeleton->dispatch(SkeletonComponentEvent::DISABLE);
-        } elseif ($this->loading) {
-            $skeleton->dispatch(SkeletonComponentEvent::START_LOADING);
+            $alert->dispatch(AlertComponentEvent::DISABLE);
+        } elseif ($this->dismissed) {
+            $alert->dispatch(AlertComponentEvent::DISMISS);
         } elseif ($this->active) {
-            $skeleton->dispatch(SkeletonComponentEvent::ACTIVATE);
+            $alert->dispatch(AlertComponentEvent::ACTIVATE);
         }
 
-        $skeleton->interactState(new SkeletonInteractState(
+        $alert->interactState(new AlertInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            loading: $this->loading,
-            animated: $this->animated,
+            dismissed: $this->dismissed,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $skeleton->accessibilityState();
+            $accessibilityState = $alert->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -93,9 +94,9 @@ class Skeleton extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $skeleton->accessibilityState($accessibilityState);
+            $alert->accessibilityState($accessibilityState);
         }
 
-        return $skeleton;
+        return $alert;
     }
 }

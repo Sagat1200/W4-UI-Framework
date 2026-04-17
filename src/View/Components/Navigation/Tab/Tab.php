@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\FeedBack;
+namespace W4\UI\Framework\View\Components\Navigation\Tab;
 
-use W4\UI\Framework\Components\FeedBack\Alert\Alert as AlertComponent;
-use W4\UI\Framework\Components\FeedBack\Alert\AlertComponentEvent;
-use W4\UI\Framework\Components\FeedBack\Alert\AlertInteractState;
+use W4\UI\Framework\Components\Navigation\Tab\Tab as TabComponent;
+use W4\UI\Framework\Components\Navigation\Tab\TabComponentEvent;
+use W4\UI\Framework\Components\Navigation\Tab\TabInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Alert extends BaseW4BladeComponent
+class Tab extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,16 +17,14 @@ class Alert extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public ?string $title = null,
-        public ?string $message = null,
+        public ?string $value = null,
+        public bool $selected = false,
+        public bool $disabled = false,
         public ?string $icon = null,
-        public ?string $tone = 'info',
+        public ?string $href = null,
         public string $variant = 'default',
         public string $size = 'md',
-        public bool $dismissible = true,
-        public bool $dismissed = false,
         public bool $active = false,
-        public bool $disabled = false,
         public bool $hidden = false,
         public bool $focused = false,
         public bool $hovered = false,
@@ -44,47 +42,42 @@ class Alert extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $baseLabel = $this->label ?? $this->title ?? $this->message;
-
-        $alert = AlertComponent::make($baseLabel)
+        $tab = TabComponent::make($this->label)
             ->variant($this->variant)
             ->size($this->size)
-            ->dismissible($this->dismissible);
+            ->selected($this->selected)
+            ->disabled($this->disabled);
 
-        if ($this->title !== null) {
-            $alert->title($this->title);
-        }
-
-        if ($this->message !== null) {
-            $alert->message($this->message);
+        if ($this->value !== null) {
+            $tab->value($this->value);
         }
 
         if ($this->icon !== null) {
-            $alert->icon($this->icon);
+            $tab->icon($this->icon);
         }
 
-        if ($this->tone !== null) {
-            $alert->tone($this->tone);
+        if ($this->href !== null) {
+            $tab->href($this->href);
         }
 
         if ($this->hidden) {
-            $alert->dispatch(AlertComponentEvent::HIDE);
+            $tab->dispatch(TabComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $alert->dispatch(AlertComponentEvent::DISABLE);
-        } elseif ($this->dismissed) {
-            $alert->dispatch(AlertComponentEvent::DISMISS);
+            $tab->dispatch(TabComponentEvent::DISABLE);
+        } elseif ($this->selected) {
+            $tab->dispatch(TabComponentEvent::SELECT);
         } elseif ($this->active) {
-            $alert->dispatch(AlertComponentEvent::ACTIVATE);
+            $tab->dispatch(TabComponentEvent::ACTIVATE);
         }
 
-        $alert->interactState(new AlertInteractState(
+        $tab->interactState(new TabInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            dismissed: $this->dismissed,
+            selected: $this->selected,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $alert->accessibilityState();
+            $accessibilityState = $tab->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -94,9 +87,9 @@ class Alert extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $alert->accessibilityState($accessibilityState);
+            $tab->accessibilityState($accessibilityState);
         }
 
-        return $alert;
+        return $tab;
     }
 }

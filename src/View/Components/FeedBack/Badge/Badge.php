@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\FeedBack;
+namespace W4\UI\Framework\View\Components\FeedBack\Badge;
 
 use W4\UI\Framework\Components\FeedBack\Badge\Badge as BadgeComponent;
 use W4\UI\Framework\Components\FeedBack\Badge\BadgeComponentEvent;

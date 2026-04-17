@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\FeedBack;
+namespace W4\UI\Framework\View\Components\FeedBack\Toast;
 
 use W4\UI\Framework\Components\FeedBack\Toast\Toast as ToastComponent;
 use W4\UI\Framework\Components\FeedBack\Toast\ToastComponentEvent;

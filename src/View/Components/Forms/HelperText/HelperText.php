@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Navigation;
+namespace W4\UI\Framework\View\Components\Forms\HelperText;
 
-use W4\UI\Framework\Components\Navigation\Tab\Tab as TabComponent;
-use W4\UI\Framework\Components\Navigation\Tab\TabComponentEvent;
-use W4\UI\Framework\Components\Navigation\Tab\TabInteractState;
+use W4\UI\Framework\Components\Forms\HelperText\HelperText as HelperTextComponent;
+use W4\UI\Framework\Components\Forms\HelperText\HelperTextComponentEvent;
+use W4\UI\Framework\Components\Forms\HelperText\HelperTextInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Tab extends BaseW4BladeComponent
+class HelperText extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,14 +17,13 @@ class Tab extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public ?string $value = null,
-        public bool $selected = false,
-        public bool $disabled = false,
+        public ?string $text = null,
+        public ?string $forField = null,
         public ?string $icon = null,
-        public ?string $href = null,
-        public string $variant = 'default',
-        public string $size = 'md',
+        public string $variant = 'neutral',
+        public string $size = 'sm',
         public bool $active = false,
+        public bool $disabled = false,
         public bool $hidden = false,
         public bool $focused = false,
         public bool $hovered = false,
@@ -42,42 +41,41 @@ class Tab extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $tab = TabComponent::make($this->label)
-            ->variant($this->variant)
-            ->size($this->size)
-            ->selected($this->selected)
-            ->disabled($this->disabled);
+        $baseLabel = $this->label ?? $this->text;
 
-        if ($this->value !== null) {
-            $tab->value($this->value);
+        $helperText = HelperTextComponent::make($baseLabel)
+            ->variant($this->variant)
+            ->size($this->size);
+
+        if ($this->text !== null) {
+            $helperText->text($this->text);
+        } elseif ($this->label !== null) {
+            $helperText->text($this->label);
+        }
+
+        if ($this->forField !== null) {
+            $helperText->forField($this->forField);
         }
 
         if ($this->icon !== null) {
-            $tab->icon($this->icon);
-        }
-
-        if ($this->href !== null) {
-            $tab->href($this->href);
+            $helperText->icon($this->icon);
         }
 
         if ($this->hidden) {
-            $tab->dispatch(TabComponentEvent::HIDE);
+            $helperText->dispatch(HelperTextComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $tab->dispatch(TabComponentEvent::DISABLE);
-        } elseif ($this->selected) {
-            $tab->dispatch(TabComponentEvent::SELECT);
+            $helperText->dispatch(HelperTextComponentEvent::DISABLE);
         } elseif ($this->active) {
-            $tab->dispatch(TabComponentEvent::ACTIVATE);
+            $helperText->dispatch(HelperTextComponentEvent::ACTIVATE);
         }
 
-        $tab->interactState(new TabInteractState(
+        $helperText->interactState(new HelperTextInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            selected: $this->selected,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $tab->accessibilityState();
+            $accessibilityState = $helperText->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -87,9 +85,9 @@ class Tab extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $tab->accessibilityState($accessibilityState);
+            $helperText->accessibilityState($accessibilityState);
         }
 
-        return $tab;
+        return $helperText;
     }
 }

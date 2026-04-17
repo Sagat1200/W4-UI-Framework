@@ -13,6 +13,7 @@ use W4\UI\Framework\Components\Forms\Select\Select;
 use W4\UI\Framework\Components\Forms\TextArea\TextArea;
 use W4\UI\Framework\Components\Forms\Toggle\Toggle;
 use W4\UI\Framework\Components\Layout\Divider\Divider;
+use W4\UI\Framework\Components\Navigation\Tab\TabPane\TabPane;
 use W4\UI\Framework\Components\UI\Button\Button;
 use W4\UI\Framework\Components\UI\Heading\Heading;
 use W4\UI\Framework\Components\UI\Icon\Icon;
@@ -40,6 +41,7 @@ use W4\UI\Framework\View\Components\Forms\TextArea as TextAreaBladeComponent;
 use W4\UI\Framework\View\Components\Forms\Toggle as ToggleBladeComponent;
 use W4\UI\Framework\View\Components\Layout\Divider as DividerBladeComponent;
 use W4\UI\Framework\View\Components\Render as RenderComponent;
+use W4\UI\Framework\View\Components\Navigation\TabPane as TabPaneBladeComponent;
 use W4\UI\Framework\View\Components\UI\Button as ButtonBladeComponent;
 use W4\UI\Framework\View\Components\UI\Heading as HeadingBladeComponent;
 use W4\UI\Framework\View\Components\UI\Icon as IconBladeComponent;
@@ -75,7 +77,8 @@ class W4UIFrameworkServiceProvider extends ServiceProvider
                 ->register('input', Input::class)
                 ->register('textarea', TextArea::class)
                 ->register('text-area', TextArea::class)
-                ->register('toggle', Toggle::class);
+                ->register('toggle', Toggle::class)
+                ->register('tab-pane', TabPane::class);
         });
 
         $this->app->singleton(ComponentFactory::class, function ($app) {
@@ -164,6 +167,7 @@ class W4UIFrameworkServiceProvider extends ServiceProvider
         Blade::component($this->componentAlias($prefix, 'input'), InputBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'text-area'), TextAreaBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'toggle'), ToggleBladeComponent::class);
+        Blade::component($this->componentAlias($prefix, 'tab-pane'), TabPaneBladeComponent::class);
     }
 
     protected function resolveComponentPrefix(): string

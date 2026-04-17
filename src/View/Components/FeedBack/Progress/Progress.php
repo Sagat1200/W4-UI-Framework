@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\FeedBack;
+namespace W4\UI\Framework\View\Components\FeedBack\Progress;
 
 use W4\UI\Framework\Components\FeedBack\Progress\Progress as ProgressComponent;
 use W4\UI\Framework\Components\FeedBack\Progress\ProgressComponentEvent;

@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\FeedBack;
+namespace W4\UI\Framework\View\Components\Forms\FieldError;
 
-use W4\UI\Framework\Components\FeedBack\Loading\Loading as LoadingComponent;
-use W4\UI\Framework\Components\FeedBack\Loading\LoadingComponentEvent;
-use W4\UI\Framework\Components\FeedBack\Loading\LoadingInteractState;
+use W4\UI\Framework\Components\Forms\FielError\FieldError as FieldErrorComponent;
+use W4\UI\Framework\Components\Forms\FielError\FieldErrorComponentEvent;
+use W4\UI\Framework\Components\Forms\FielError\FieldErrorInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Loading extends BaseW4BladeComponent
+class FieldError extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,13 +17,12 @@ class Loading extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public ?string $type = 'spinner',
         public ?string $message = null,
-        public bool $overlay = false,
-        public bool $loading = false,
-        public ?string $speed = 'normal',
-        public string $variant = 'default',
-        public string $size = 'md',
+        public ?string $forField = null,
+        public ?string $code = null,
+        public ?string $hint = null,
+        public string $variant = 'error',
+        public string $size = 'sm',
         public bool $active = false,
         public bool $disabled = false,
         public bool $hidden = false,
@@ -43,42 +42,45 @@ class Loading extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $loading = LoadingComponent::make($this->label)
-            ->variant($this->variant)
-            ->size($this->size)
-            ->overlay($this->overlay)
-            ->loading($this->loading);
+        $baseLabel = $this->label ?? $this->message;
 
-        if ($this->type !== null) {
-            $loading->type($this->type);
-        }
+        $fieldError = FieldErrorComponent::make($baseLabel)
+            ->variant($this->variant)
+            ->size($this->size);
 
         if ($this->message !== null) {
-            $loading->message($this->message);
+            $fieldError->message($this->message);
+        } elseif ($this->label !== null) {
+            $fieldError->message($this->label);
         }
 
-        if ($this->speed !== null) {
-            $loading->speed($this->speed);
+        if ($this->forField !== null) {
+            $fieldError->forField($this->forField);
+        }
+
+        if ($this->code !== null) {
+            $fieldError->code($this->code);
+        }
+
+        if ($this->hint !== null) {
+            $fieldError->hint($this->hint);
         }
 
         if ($this->hidden) {
-            $loading->dispatch(LoadingComponentEvent::HIDE);
+            $fieldError->dispatch(FieldErrorComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $loading->dispatch(LoadingComponentEvent::DISABLE);
-        } elseif ($this->loading) {
-            $loading->dispatch(LoadingComponentEvent::START);
+            $fieldError->dispatch(FieldErrorComponentEvent::DISABLE);
         } elseif ($this->active) {
-            $loading->dispatch(LoadingComponentEvent::ACTIVATE);
+            $fieldError->dispatch(FieldErrorComponentEvent::ACTIVATE);
         }
 
-        $loading->interactState(new LoadingInteractState(
+        $fieldError->interactState(new FieldErrorInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            loading: $this->loading,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $loading->accessibilityState();
+            $accessibilityState = $fieldError->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -88,9 +90,9 @@ class Loading extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $loading->accessibilityState($accessibilityState);
+            $fieldError->accessibilityState($accessibilityState);
         }
 
-        return $loading;
+        return $fieldError;
     }
 }

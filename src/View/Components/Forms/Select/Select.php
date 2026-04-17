@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Forms;
+namespace W4\UI\Framework\View\Components\Forms\Select;
 
-use W4\UI\Framework\Components\Forms\Input\Input as InputComponent;
-use W4\UI\Framework\Components\Forms\Input\InputComponentEvent;
-use W4\UI\Framework\Components\Forms\Input\InputInteractState;
+use W4\UI\Framework\Components\Forms\Select\Select as SelectComponent;
+use W4\UI\Framework\Components\Forms\Select\SelectComponentEvent;
+use W4\UI\Framework\Components\Forms\Select\SelectInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Input extends BaseW4BladeComponent
+class Select extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,9 +17,10 @@ class Input extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public string $type = 'text',
-        public ?string $value = null,
+        public array $options = [],
+        public string|array|null $selected = null,
         public ?string $placeholder = null,
+        public bool $multiple = false,
         public ?string $helperText = null,
         public ?string $errorMessage = null,
         public string $variant = 'default',
@@ -31,7 +32,7 @@ class Input extends BaseW4BladeComponent
         public bool $valid = false,
         public bool $focused = false,
         public bool $hovered = false,
-        public bool $filled = false,
+        public bool $opened = false,
         public ?string $ariaLabel = null,
         public ?string $ariaDescribedBy = null,
     ) {
@@ -46,47 +47,45 @@ class Input extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $input = InputComponent::make($this->label)
-            ->type($this->type)
+        $select = SelectComponent::make($this->label)
             ->variant($this->variant)
-            ->size($this->size);
-
-        if ($this->value !== null) {
-            $input->value($this->value);
-        }
+            ->size($this->size)
+            ->multiple($this->multiple)
+            ->options($this->options)
+            ->selected($this->selected);
 
         if ($this->placeholder !== null) {
-            $input->placeholder($this->placeholder);
+            $select->placeholder($this->placeholder);
         }
 
         if ($this->helperText !== null) {
-            $input->helperText($this->helperText);
+            $select->helperText($this->helperText);
         }
 
         if ($this->errorMessage !== null) {
-            $input->errorMessage($this->errorMessage);
+            $select->errorMessage($this->errorMessage);
         }
 
         if ($this->loading) {
-            $input->dispatch(InputComponentEvent::START_LOADING);
+            $select->dispatch(SelectComponentEvent::START_LOADING);
         } elseif ($this->disabled) {
-            $input->dispatch(InputComponentEvent::DISABLE);
+            $select->dispatch(SelectComponentEvent::DISABLE);
         } elseif ($this->readonly) {
-            $input->dispatch(InputComponentEvent::SET_READONLY);
+            $select->dispatch(SelectComponentEvent::SET_READONLY);
         } elseif ($this->invalid || $this->errorMessage) {
-            $input->dispatch(InputComponentEvent::SET_INVALID);
+            $select->dispatch(SelectComponentEvent::SET_INVALID);
         } elseif ($this->valid) {
-            $input->dispatch(InputComponentEvent::SET_VALID);
+            $select->dispatch(SelectComponentEvent::SET_VALID);
         }
 
-        $input->interactState(new InputInteractState(
+        $select->interactState(new SelectInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            filled: $this->filled || (($this->value ?? '') !== ''),
+            opened: $this->opened,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $input->accessibilityState();
+            $accessibilityState = $select->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -96,9 +95,9 @@ class Input extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $input->accessibilityState($accessibilityState);
+            $select->accessibilityState($accessibilityState);
         }
 
-        return $input;
+        return $select;
     }
 }

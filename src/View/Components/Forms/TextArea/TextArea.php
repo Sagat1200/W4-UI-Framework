@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Forms;
+namespace W4\UI\Framework\View\Components\Forms\TextArea;
 
-use W4\UI\Framework\Components\Forms\Toggle\Toggle as ToggleComponent;
-use W4\UI\Framework\Components\Forms\Toggle\ToggleComponentEvent;
-use W4\UI\Framework\Components\Forms\Toggle\ToggleInteractState;
+use W4\UI\Framework\Components\Forms\TextArea\TextArea as TextAreaComponent;
+use W4\UI\Framework\Components\Forms\TextArea\TextAreaComponentEvent;
+use W4\UI\Framework\Components\Forms\TextArea\TextAreaInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Toggle extends BaseW4BladeComponent
+class TextArea extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -18,11 +18,14 @@ class Toggle extends BaseW4BladeComponent
         ?string $renderer = null,
         string|int|null $componentId = null,
         public ?string $value = null,
+        public ?string $placeholder = null,
+        public int $rows = 3,
+        public ?int $cols = null,
+        public string $resize = 'vertical',
         public ?string $helperText = null,
         public ?string $errorMessage = null,
         public string $variant = 'default',
         public string $size = 'md',
-        public bool $checked = false,
         public bool $disabled = false,
         public bool $loading = false,
         public bool $readonly = false,
@@ -30,7 +33,7 @@ class Toggle extends BaseW4BladeComponent
         public bool $valid = false,
         public bool $focused = false,
         public bool $hovered = false,
-        public bool $pressed = false,
+        public bool $filled = false,
         public ?string $ariaLabel = null,
         public ?string $ariaDescribedBy = null,
     ) {
@@ -45,43 +48,52 @@ class Toggle extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $toggle = ToggleComponent::make($this->label)
+        $textArea = TextAreaComponent::make($this->label)
             ->variant($this->variant)
             ->size($this->size)
-            ->checked($this->checked);
+            ->rows($this->rows)
+            ->resize($this->resize);
 
         if ($this->value !== null) {
-            $toggle->value($this->value);
+            $textArea->value($this->value);
+        }
+
+        if ($this->placeholder !== null) {
+            $textArea->placeholder($this->placeholder);
+        }
+
+        if ($this->cols !== null) {
+            $textArea->cols($this->cols);
         }
 
         if ($this->helperText !== null) {
-            $toggle->helperText($this->helperText);
+            $textArea->helperText($this->helperText);
         }
 
         if ($this->errorMessage !== null) {
-            $toggle->errorMessage($this->errorMessage);
+            $textArea->errorMessage($this->errorMessage);
         }
 
         if ($this->loading) {
-            $toggle->dispatch(ToggleComponentEvent::START_LOADING);
+            $textArea->dispatch(TextAreaComponentEvent::START_LOADING);
         } elseif ($this->disabled) {
-            $toggle->dispatch(ToggleComponentEvent::DISABLE);
+            $textArea->dispatch(TextAreaComponentEvent::DISABLE);
         } elseif ($this->readonly) {
-            $toggle->dispatch(ToggleComponentEvent::SET_READONLY);
+            $textArea->dispatch(TextAreaComponentEvent::SET_READONLY);
         } elseif ($this->invalid || $this->errorMessage) {
-            $toggle->dispatch(ToggleComponentEvent::SET_INVALID);
+            $textArea->dispatch(TextAreaComponentEvent::SET_INVALID);
         } elseif ($this->valid) {
-            $toggle->dispatch(ToggleComponentEvent::SET_VALID);
+            $textArea->dispatch(TextAreaComponentEvent::SET_VALID);
         }
 
-        $toggle->interactState(new ToggleInteractState(
+        $textArea->interactState(new TextAreaInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            pressed: $this->pressed,
+            filled: $this->filled || (($this->value ?? '') !== ''),
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $toggle->accessibilityState();
+            $accessibilityState = $textArea->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -91,9 +103,9 @@ class Toggle extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $toggle->accessibilityState($accessibilityState);
+            $textArea->accessibilityState($accessibilityState);
         }
 
-        return $toggle;
+        return $textArea;
     }
 }
