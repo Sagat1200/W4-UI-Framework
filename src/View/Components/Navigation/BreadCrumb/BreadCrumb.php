@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Navigation;
+namespace W4\UI\Framework\View\Components\Navigation\BreadCrumb;
 
 use W4\UI\Framework\Components\Navigation\BreadCrumb\BreadCrumb as BreadCrumbComponent;
 use W4\UI\Framework\Components\Navigation\BreadCrumb\BreadCrumbComponentEvent;

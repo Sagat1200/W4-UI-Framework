@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\UI;
+namespace W4\UI\Framework\View\Components\UI\IconButton;
 
 use W4\UI\Framework\Components\UI\IconButton\IconButton as IconButtonComponent;
 use W4\UI\Framework\Components\UI\IconButton\IconButtonComponentEvent;

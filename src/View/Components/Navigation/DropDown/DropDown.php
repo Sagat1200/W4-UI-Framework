@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Navigation;
+namespace W4\UI\Framework\View\Components\Navigation\DropDown;
 
-use W4\UI\Framework\Components\Navigation\NavBar\NavBar as NavBarComponent;
-use W4\UI\Framework\Components\Navigation\NavBar\NavBarComponentEvent;
-use W4\UI\Framework\Components\Navigation\NavBar\NavBarInteractState;
+use W4\UI\Framework\Components\Navigation\DropDown\DropDown as DropDownComponent;
+use W4\UI\Framework\Components\Navigation\DropDown\DropDownComponentEvent;
+use W4\UI\Framework\Components\Navigation\DropDown\DropDownInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class NavBar extends BaseW4BladeComponent
+class DropDown extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,13 +17,11 @@ class NavBar extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public ?string $brand = null,
-        public ?string $brandUrl = null,
         public ?array $items = null,
-        public bool $sticky = false,
-        public bool $bordered = true,
-        public bool $mobileExpanded = false,
-        public ?string $position = 'top',
+        public ?string $placement = 'bottom-start',
+        public bool $opened = false,
+        public bool $searchable = false,
+        public ?string $trigger = 'click',
         public string $variant = 'default',
         public string $size = 'md',
         public bool $active = false,
@@ -45,47 +43,42 @@ class NavBar extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $navBar = NavBarComponent::make($this->label)
+        $dropDown = DropDownComponent::make($this->label)
             ->variant($this->variant)
             ->size($this->size)
-            ->sticky($this->sticky)
-            ->bordered($this->bordered)
-            ->mobileExpanded($this->mobileExpanded);
-
-        if ($this->brand !== null) {
-            $navBar->brand($this->brand);
-        }
-
-        if ($this->brandUrl !== null) {
-            $navBar->brandUrl($this->brandUrl);
-        }
+            ->opened($this->opened)
+            ->searchable($this->searchable);
 
         if ($this->items !== null) {
-            $navBar->items($this->items);
+            $dropDown->items($this->items);
         }
 
-        if ($this->position !== null) {
-            $navBar->position($this->position);
+        if ($this->placement !== null) {
+            $dropDown->placement($this->placement);
+        }
+
+        if ($this->trigger !== null) {
+            $dropDown->trigger($this->trigger);
         }
 
         if ($this->hidden) {
-            $navBar->dispatch(NavBarComponentEvent::HIDE);
+            $dropDown->dispatch(DropDownComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $navBar->dispatch(NavBarComponentEvent::DISABLE);
-        } elseif ($this->mobileExpanded) {
-            $navBar->dispatch(NavBarComponentEvent::EXPAND);
+            $dropDown->dispatch(DropDownComponentEvent::DISABLE);
+        } elseif ($this->opened) {
+            $dropDown->dispatch(DropDownComponentEvent::OPEN);
         } elseif ($this->active) {
-            $navBar->dispatch(NavBarComponentEvent::ACTIVATE);
+            $dropDown->dispatch(DropDownComponentEvent::ACTIVATE);
         }
 
-        $navBar->interactState(new NavBarInteractState(
+        $dropDown->interactState(new DropDownInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            mobileExpanded: $this->mobileExpanded,
+            opened: $this->opened,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $navBar->accessibilityState();
+            $accessibilityState = $dropDown->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -95,9 +88,9 @@ class NavBar extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $navBar->accessibilityState($accessibilityState);
+            $dropDown->accessibilityState($accessibilityState);
         }
 
-        return $navBar;
+        return $dropDown;
     }
 }

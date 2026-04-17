@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Navigation;
+namespace W4\UI\Framework\View\Components\Navigation\Menu;
 
 use W4\UI\Framework\Components\Navigation\Menu\Menu as MenuComponent;
 use W4\UI\Framework\Components\Navigation\Menu\MenuComponentEvent;

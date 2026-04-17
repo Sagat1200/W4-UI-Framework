@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Navigation;
+namespace W4\UI\Framework\View\Components\Navigation\SideBar;
 
-use W4\UI\Framework\Components\Navigation\DropDown\DropDown as DropDownComponent;
-use W4\UI\Framework\Components\Navigation\DropDown\DropDownComponentEvent;
-use W4\UI\Framework\Components\Navigation\DropDown\DropDownInteractState;
+use W4\UI\Framework\Components\Navigation\SideBar\SideBar as SideBarComponent;
+use W4\UI\Framework\Components\Navigation\SideBar\SideBarComponentEvent;
+use W4\UI\Framework\Components\Navigation\SideBar\SideBarInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class DropDown extends BaseW4BladeComponent
+class SideBar extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,11 +17,12 @@ class DropDown extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
+        public ?string $title = null,
         public ?array $items = null,
-        public ?string $placement = 'bottom-start',
-        public bool $opened = false,
-        public bool $searchable = false,
-        public ?string $trigger = 'click',
+        public ?string $position = 'left',
+        public bool $collapsed = false,
+        public bool $overlay = false,
+        public bool $sticky = false,
         public string $variant = 'default',
         public string $size = 'md',
         public bool $active = false,
@@ -43,42 +44,45 @@ class DropDown extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $dropDown = DropDownComponent::make($this->label)
+        $baseLabel = $this->label ?? $this->title;
+
+        $sideBar = SideBarComponent::make($baseLabel)
             ->variant($this->variant)
             ->size($this->size)
-            ->opened($this->opened)
-            ->searchable($this->searchable);
+            ->collapsed($this->collapsed)
+            ->overlay($this->overlay)
+            ->sticky($this->sticky);
+
+        if ($this->title !== null) {
+            $sideBar->title($this->title);
+        }
 
         if ($this->items !== null) {
-            $dropDown->items($this->items);
+            $sideBar->items($this->items);
         }
 
-        if ($this->placement !== null) {
-            $dropDown->placement($this->placement);
-        }
-
-        if ($this->trigger !== null) {
-            $dropDown->trigger($this->trigger);
+        if ($this->position !== null) {
+            $sideBar->position($this->position);
         }
 
         if ($this->hidden) {
-            $dropDown->dispatch(DropDownComponentEvent::HIDE);
+            $sideBar->dispatch(SideBarComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $dropDown->dispatch(DropDownComponentEvent::DISABLE);
-        } elseif ($this->opened) {
-            $dropDown->dispatch(DropDownComponentEvent::OPEN);
+            $sideBar->dispatch(SideBarComponentEvent::DISABLE);
+        } elseif ($this->collapsed) {
+            $sideBar->dispatch(SideBarComponentEvent::COLLAPSE);
         } elseif ($this->active) {
-            $dropDown->dispatch(DropDownComponentEvent::ACTIVATE);
+            $sideBar->dispatch(SideBarComponentEvent::ACTIVATE);
         }
 
-        $dropDown->interactState(new DropDownInteractState(
+        $sideBar->interactState(new SideBarInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            opened: $this->opened,
+            expanded: ! $this->collapsed,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $dropDown->accessibilityState();
+            $accessibilityState = $sideBar->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -88,9 +92,9 @@ class DropDown extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $dropDown->accessibilityState($accessibilityState);
+            $sideBar->accessibilityState($accessibilityState);
         }
 
-        return $dropDown;
+        return $sideBar;
     }
 }

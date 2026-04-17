@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Navigation;
+namespace W4\UI\Framework\View\Components\Navigation\NavBar;
 
-use W4\UI\Framework\Components\Navigation\SideBar\SideBar as SideBarComponent;
-use W4\UI\Framework\Components\Navigation\SideBar\SideBarComponentEvent;
-use W4\UI\Framework\Components\Navigation\SideBar\SideBarInteractState;
+use W4\UI\Framework\Components\Navigation\NavBar\NavBar as NavBarComponent;
+use W4\UI\Framework\Components\Navigation\NavBar\NavBarComponentEvent;
+use W4\UI\Framework\Components\Navigation\NavBar\NavBarInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class SideBar extends BaseW4BladeComponent
+class NavBar extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,12 +17,13 @@ class SideBar extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public ?string $title = null,
+        public ?string $brand = null,
+        public ?string $brandUrl = null,
         public ?array $items = null,
-        public ?string $position = 'left',
-        public bool $collapsed = false,
-        public bool $overlay = false,
         public bool $sticky = false,
+        public bool $bordered = true,
+        public bool $mobileExpanded = false,
+        public ?string $position = 'top',
         public string $variant = 'default',
         public string $size = 'md',
         public bool $active = false,
@@ -44,45 +45,47 @@ class SideBar extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $baseLabel = $this->label ?? $this->title;
-
-        $sideBar = SideBarComponent::make($baseLabel)
+        $navBar = NavBarComponent::make($this->label)
             ->variant($this->variant)
             ->size($this->size)
-            ->collapsed($this->collapsed)
-            ->overlay($this->overlay)
-            ->sticky($this->sticky);
+            ->sticky($this->sticky)
+            ->bordered($this->bordered)
+            ->mobileExpanded($this->mobileExpanded);
 
-        if ($this->title !== null) {
-            $sideBar->title($this->title);
+        if ($this->brand !== null) {
+            $navBar->brand($this->brand);
+        }
+
+        if ($this->brandUrl !== null) {
+            $navBar->brandUrl($this->brandUrl);
         }
 
         if ($this->items !== null) {
-            $sideBar->items($this->items);
+            $navBar->items($this->items);
         }
 
         if ($this->position !== null) {
-            $sideBar->position($this->position);
+            $navBar->position($this->position);
         }
 
         if ($this->hidden) {
-            $sideBar->dispatch(SideBarComponentEvent::HIDE);
+            $navBar->dispatch(NavBarComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $sideBar->dispatch(SideBarComponentEvent::DISABLE);
-        } elseif ($this->collapsed) {
-            $sideBar->dispatch(SideBarComponentEvent::COLLAPSE);
+            $navBar->dispatch(NavBarComponentEvent::DISABLE);
+        } elseif ($this->mobileExpanded) {
+            $navBar->dispatch(NavBarComponentEvent::EXPAND);
         } elseif ($this->active) {
-            $sideBar->dispatch(SideBarComponentEvent::ACTIVATE);
+            $navBar->dispatch(NavBarComponentEvent::ACTIVATE);
         }
 
-        $sideBar->interactState(new SideBarInteractState(
+        $navBar->interactState(new NavBarInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            expanded: ! $this->collapsed,
+            mobileExpanded: $this->mobileExpanded,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $sideBar->accessibilityState();
+            $accessibilityState = $navBar->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -92,9 +95,9 @@ class SideBar extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $sideBar->accessibilityState($accessibilityState);
+            $navBar->accessibilityState($accessibilityState);
         }
 
-        return $sideBar;
+        return $navBar;
     }
 }

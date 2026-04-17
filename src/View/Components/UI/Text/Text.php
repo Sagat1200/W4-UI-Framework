@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\UI;
+namespace W4\UI\Framework\View\Components\UI\Text;
 
-use W4\UI\Framework\Components\UI\Link\Link as LinkComponent;
-use W4\UI\Framework\Components\UI\Link\LinkComponentEvent;
-use W4\UI\Framework\Components\UI\Link\LinkInteractState;
+use W4\UI\Framework\Components\UI\Text\Text as TextComponent;
+use W4\UI\Framework\Components\UI\Text\TextComponentEvent;
+use W4\UI\Framework\Components\UI\Text\TextInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Link extends BaseW4BladeComponent
+class Text extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -18,9 +18,6 @@ class Link extends BaseW4BladeComponent
         ?string $renderer = null,
         string|int|null $componentId = null,
         public ?string $text = null,
-        public ?string $href = null,
-        public ?string $target = null,
-        public ?string $rel = null,
         public string $variant = 'neutral',
         public string $size = 'md',
         public bool $disabled = false,
@@ -40,39 +37,27 @@ class Link extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $link = LinkComponent::make($this->label)
+        $text = TextComponent::make($this->label)
             ->variant($this->variant)
             ->size($this->size);
 
         if ($this->text !== null) {
-            $link->text($this->text);
-        }
-
-        if ($this->href !== null) {
-            $link->href($this->href);
-        }
-
-        if ($this->target !== null) {
-            $link->target($this->target);
-        }
-
-        if ($this->rel !== null) {
-            $link->rel($this->rel);
+            $text->text($this->text);
         }
 
         if ($this->hidden) {
-            $link->dispatch(LinkComponentEvent::HIDE);
+            $text->dispatch(TextComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $link->dispatch(LinkComponentEvent::DISABLE);
+            $text->dispatch(TextComponentEvent::DISABLE);
         } elseif ($this->active) {
-            $link->dispatch(LinkComponentEvent::ACTIVATE);
+            $text->dispatch(TextComponentEvent::ACTIVATE);
         }
 
-        $link->interactState(new LinkInteractState(
+        $text->interactState(new TextInteractState(
             hovered: $this->hovered,
             focused: $this->focused,
         ));
 
-        return $link;
+        return $text;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\UI;
+namespace W4\UI\Framework\View\Components\UI\Heading;
 
 use W4\UI\Framework\Components\UI\Heading\Heading as HeadingComponent;
 use W4\UI\Framework\Components\UI\Heading\HeadingComponentEvent;

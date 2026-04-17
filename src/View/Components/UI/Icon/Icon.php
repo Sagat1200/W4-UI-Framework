@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\UI;
+namespace W4\UI\Framework\View\Components\UI\Icon;
 
-use W4\UI\Framework\Components\UI\Text\Text as TextComponent;
-use W4\UI\Framework\Components\UI\Text\TextComponentEvent;
-use W4\UI\Framework\Components\UI\Text\TextInteractState;
+use W4\UI\Framework\Components\UI\Icon\Icon as IconComponent;
+use W4\UI\Framework\Components\UI\Icon\IconComponentEvent;
+use W4\UI\Framework\Components\UI\Icon\IconInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Text extends BaseW4BladeComponent
+class Icon extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,7 +17,9 @@ class Text extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public ?string $text = null,
+        public ?string $icon = null,
+        public bool $spin = false,
+        public bool $decorative = false,
         public string $variant = 'neutral',
         public string $size = 'md',
         public bool $disabled = false,
@@ -37,27 +39,29 @@ class Text extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $text = TextComponent::make($this->label)
+        $icon = IconComponent::make($this->label)
             ->variant($this->variant)
-            ->size($this->size);
+            ->size($this->size)
+            ->spin($this->spin)
+            ->decorative($this->decorative);
 
-        if ($this->text !== null) {
-            $text->text($this->text);
+        if ($this->icon !== null) {
+            $icon->icon($this->icon);
         }
 
         if ($this->hidden) {
-            $text->dispatch(TextComponentEvent::HIDE);
+            $icon->dispatch(IconComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $text->dispatch(TextComponentEvent::DISABLE);
+            $icon->dispatch(IconComponentEvent::DISABLE);
         } elseif ($this->active) {
-            $text->dispatch(TextComponentEvent::ACTIVATE);
+            $icon->dispatch(IconComponentEvent::ACTIVATE);
         }
 
-        $text->interactState(new TextInteractState(
+        $icon->interactState(new IconInteractState(
             hovered: $this->hovered,
             focused: $this->focused,
         ));
 
-        return $text;
+        return $icon;
     }
 }

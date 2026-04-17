@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\UI;
+namespace W4\UI\Framework\View\Components\UI\Link;
 
-use W4\UI\Framework\Components\UI\Icon\Icon as IconComponent;
-use W4\UI\Framework\Components\UI\Icon\IconComponentEvent;
-use W4\UI\Framework\Components\UI\Icon\IconInteractState;
+use W4\UI\Framework\Components\UI\Link\Link as LinkComponent;
+use W4\UI\Framework\Components\UI\Link\LinkComponentEvent;
+use W4\UI\Framework\Components\UI\Link\LinkInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Icon extends BaseW4BladeComponent
+class Link extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,9 +17,10 @@ class Icon extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public ?string $icon = null,
-        public bool $spin = false,
-        public bool $decorative = false,
+        public ?string $text = null,
+        public ?string $href = null,
+        public ?string $target = null,
+        public ?string $rel = null,
         public string $variant = 'neutral',
         public string $size = 'md',
         public bool $disabled = false,
@@ -39,29 +40,39 @@ class Icon extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $icon = IconComponent::make($this->label)
+        $link = LinkComponent::make($this->label)
             ->variant($this->variant)
-            ->size($this->size)
-            ->spin($this->spin)
-            ->decorative($this->decorative);
+            ->size($this->size);
 
-        if ($this->icon !== null) {
-            $icon->icon($this->icon);
+        if ($this->text !== null) {
+            $link->text($this->text);
+        }
+
+        if ($this->href !== null) {
+            $link->href($this->href);
+        }
+
+        if ($this->target !== null) {
+            $link->target($this->target);
+        }
+
+        if ($this->rel !== null) {
+            $link->rel($this->rel);
         }
 
         if ($this->hidden) {
-            $icon->dispatch(IconComponentEvent::HIDE);
+            $link->dispatch(LinkComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $icon->dispatch(IconComponentEvent::DISABLE);
+            $link->dispatch(LinkComponentEvent::DISABLE);
         } elseif ($this->active) {
-            $icon->dispatch(IconComponentEvent::ACTIVATE);
+            $link->dispatch(LinkComponentEvent::ACTIVATE);
         }
 
-        $icon->interactState(new IconInteractState(
+        $link->interactState(new LinkInteractState(
             hovered: $this->hovered,
             focused: $this->focused,
         ));
 
-        return $icon;
+        return $link;
     }
 }

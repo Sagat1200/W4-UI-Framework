@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\UI;
+namespace W4\UI\Framework\View\Components\UI\Label;
 
 use W4\UI\Framework\Components\UI\Label\Label as LabelComponent;
 use W4\UI\Framework\Components\UI\Label\LabelComponentEvent;

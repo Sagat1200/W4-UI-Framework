@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\UI;
+namespace W4\UI\Framework\View\Components\UI\button;
 
 use W4\UI\Framework\Components\UI\Button\Button as ButtonComponent;
 use W4\UI\Framework\Components\UI\Button\ButtonComponentEvent;
