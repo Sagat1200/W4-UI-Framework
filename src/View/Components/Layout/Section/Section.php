@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Layout;
+namespace W4\UI\Framework\View\Components\Layout\Section;
 
 use W4\UI\Framework\Components\Layout\Section\Section as SectionComponent;
 use W4\UI\Framework\Components\Layout\Section\SectionComponentEvent;

@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Layout;
+namespace W4\UI\Framework\View\Components\Layout\Panel;
 
-use W4\UI\Framework\Components\Layout\Card\Card as CardComponent;
-use W4\UI\Framework\Components\Layout\Card\CardComponentEvent;
-use W4\UI\Framework\Components\Layout\Card\CardInteractState;
+use W4\UI\Framework\Components\Layout\Panel\Panel as PanelComponent;
+use W4\UI\Framework\Components\Layout\Panel\PanelComponentEvent;
+use W4\UI\Framework\Components\Layout\Panel\PanelInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Card extends BaseW4BladeComponent
+class Panel extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -18,14 +18,13 @@ class Card extends BaseW4BladeComponent
         ?string $renderer = null,
         string|int|null $componentId = null,
         public ?string $title = null,
-        public ?string $subtitle = null,
         public ?string $body = null,
         public ?string $footer = null,
-        public bool $elevated = false,
-        public bool $bordered = true,
-        public bool $padded = true,
         public bool $collapsible = false,
         public bool $expanded = true,
+        public bool $bordered = true,
+        public bool $padded = true,
+        public ?string $tone = 'default',
         public string $variant = 'default',
         public string $size = 'md',
         public bool $active = false,
@@ -49,48 +48,47 @@ class Card extends BaseW4BladeComponent
     {
         $baseLabel = $this->label ?? $this->title;
 
-        $card = CardComponent::make($baseLabel)
+        $panel = PanelComponent::make($baseLabel)
             ->variant($this->variant)
             ->size($this->size)
-            ->elevated($this->elevated)
+            ->collapsible($this->collapsible)
             ->bordered($this->bordered)
-            ->padded($this->padded)
-            ->collapsible($this->collapsible);
+            ->padded($this->padded);
 
         if ($this->title !== null) {
-            $card->title($this->title);
-        }
-
-        if ($this->subtitle !== null) {
-            $card->subtitle($this->subtitle);
+            $panel->title($this->title);
         }
 
         if ($this->body !== null) {
-            $card->body($this->body);
+            $panel->body($this->body);
         }
 
         if ($this->footer !== null) {
-            $card->footer($this->footer);
+            $panel->footer($this->footer);
+        }
+
+        if ($this->tone !== null) {
+            $panel->tone($this->tone);
         }
 
         if ($this->hidden) {
-            $card->dispatch(CardComponentEvent::HIDE);
+            $panel->dispatch(PanelComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $card->dispatch(CardComponentEvent::DISABLE);
+            $panel->dispatch(PanelComponentEvent::DISABLE);
         } elseif ($this->collapsible && ! $this->expanded) {
-            $card->dispatch(CardComponentEvent::COLLAPSE);
+            $panel->dispatch(PanelComponentEvent::COLLAPSE);
         } elseif ($this->active) {
-            $card->dispatch(CardComponentEvent::ACTIVATE);
+            $panel->dispatch(PanelComponentEvent::ACTIVATE);
         }
 
-        $card->interactState(new CardInteractState(
+        $panel->interactState(new PanelInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
             expanded: $this->expanded,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $card->accessibilityState();
+            $accessibilityState = $panel->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -100,9 +98,9 @@ class Card extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $card->accessibilityState($accessibilityState);
+            $panel->accessibilityState($accessibilityState);
         }
 
-        return $card;
+        return $panel;
     }
 }

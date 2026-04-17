@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Layout;
+namespace W4\UI\Framework\View\Components\Layout\Grid;
 
 use W4\UI\Framework\Components\Layout\Grid\Grid as GridComponent;
 use W4\UI\Framework\Components\Layout\Grid\GridComponentEvent;

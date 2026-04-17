@@ -1,6 +1,6 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Layout;
+namespace W4\UI\Framework\View\Components\Layout\Divider;
 
 use W4\UI\Framework\Components\Layout\Divider\Divider as DividerComponent;
 use W4\UI\Framework\Components\Layout\Divider\DividerComponentEvent;

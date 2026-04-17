@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Layout;
+namespace W4\UI\Framework\View\Components\Layout\Container;
 
-use W4\UI\Framework\Components\Layout\Panel\Panel as PanelComponent;
-use W4\UI\Framework\Components\Layout\Panel\PanelComponentEvent;
-use W4\UI\Framework\Components\Layout\Panel\PanelInteractState;
+use W4\UI\Framework\Components\Layout\Container\Container as ContainerComponent;
+use W4\UI\Framework\Components\Layout\Container\ContainerComponentEvent;
+use W4\UI\Framework\Components\Layout\Container\ContainerInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Panel extends BaseW4BladeComponent
+class Container extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,14 +17,12 @@ class Panel extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public ?string $title = null,
-        public ?string $body = null,
-        public ?string $footer = null,
-        public bool $collapsible = false,
-        public bool $expanded = true,
-        public bool $bordered = true,
+        public ?string $content = null,
+        public ?string $maxWidth = 'lg',
+        public bool $fluid = false,
+        public bool $centered = true,
         public bool $padded = true,
-        public ?string $tone = 'default',
+        public ?string $gap = 'md',
         public string $variant = 'default',
         public string $size = 'md',
         public bool $active = false,
@@ -46,49 +44,43 @@ class Panel extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $baseLabel = $this->label ?? $this->title;
-
-        $panel = PanelComponent::make($baseLabel)
+        $container = ContainerComponent::make($this->label)
             ->variant($this->variant)
             ->size($this->size)
-            ->collapsible($this->collapsible)
-            ->bordered($this->bordered)
+            ->fluid($this->fluid)
+            ->centered($this->centered)
             ->padded($this->padded);
 
-        if ($this->title !== null) {
-            $panel->title($this->title);
+        if ($this->content !== null) {
+            $container->content($this->content);
         }
 
-        if ($this->body !== null) {
-            $panel->body($this->body);
+        if ($this->maxWidth !== null) {
+            $container->maxWidth($this->maxWidth);
         }
 
-        if ($this->footer !== null) {
-            $panel->footer($this->footer);
-        }
-
-        if ($this->tone !== null) {
-            $panel->tone($this->tone);
+        if ($this->gap !== null) {
+            $container->gap($this->gap);
         }
 
         if ($this->hidden) {
-            $panel->dispatch(PanelComponentEvent::HIDE);
+            $container->dispatch(ContainerComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $panel->dispatch(PanelComponentEvent::DISABLE);
-        } elseif ($this->collapsible && ! $this->expanded) {
-            $panel->dispatch(PanelComponentEvent::COLLAPSE);
+            $container->dispatch(ContainerComponentEvent::DISABLE);
+        } elseif ($this->fluid) {
+            $container->dispatch(ContainerComponentEvent::SET_FLUID);
         } elseif ($this->active) {
-            $panel->dispatch(PanelComponentEvent::ACTIVATE);
+            $container->dispatch(ContainerComponentEvent::ACTIVATE);
         }
 
-        $panel->interactState(new PanelInteractState(
+        $container->interactState(new ContainerInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            expanded: $this->expanded,
+            fluid: $this->fluid,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $panel->accessibilityState();
+            $accessibilityState = $container->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -98,9 +90,9 @@ class Panel extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $panel->accessibilityState($accessibilityState);
+            $container->accessibilityState($accessibilityState);
         }
 
-        return $panel;
+        return $container;
     }
 }

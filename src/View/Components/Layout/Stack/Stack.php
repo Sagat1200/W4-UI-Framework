@@ -1,14 +1,14 @@
 <?php
 
-namespace W4\UI\Framework\View\Components\Layout;
+namespace W4\UI\Framework\View\Components\Layout\Stack;
 
-use W4\UI\Framework\Components\Layout\Container\Container as ContainerComponent;
-use W4\UI\Framework\Components\Layout\Container\ContainerComponentEvent;
-use W4\UI\Framework\Components\Layout\Container\ContainerInteractState;
+use W4\UI\Framework\Components\Layout\Stack\Stack as StackComponent;
+use W4\UI\Framework\Components\Layout\Stack\StackComponentEvent;
+use W4\UI\Framework\Components\Layout\Stack\StackInteractState;
 use W4\UI\Framework\Contracts\ComponentInterface;
 use W4\UI\Framework\View\Components\BaseW4BladeComponent;
 
-class Container extends BaseW4BladeComponent
+class Stack extends BaseW4BladeComponent
 {
     public function __construct(
         public ?string $label = null,
@@ -17,12 +17,12 @@ class Container extends BaseW4BladeComponent
         ?string $theme = null,
         ?string $renderer = null,
         string|int|null $componentId = null,
-        public ?string $content = null,
-        public ?string $maxWidth = 'lg',
-        public bool $fluid = false,
-        public bool $centered = true,
-        public bool $padded = true,
+        public ?array $items = null,
+        public ?string $direction = 'vertical',
         public ?string $gap = 'md',
+        public bool $wrap = false,
+        public ?string $alignItems = null,
+        public ?string $justifyContent = null,
         public string $variant = 'default',
         public string $size = 'md',
         public bool $active = false,
@@ -44,43 +44,51 @@ class Container extends BaseW4BladeComponent
 
     protected function makeComponent(): ComponentInterface
     {
-        $container = ContainerComponent::make($this->label)
+        $stack = StackComponent::make($this->label)
             ->variant($this->variant)
             ->size($this->size)
-            ->fluid($this->fluid)
-            ->centered($this->centered)
-            ->padded($this->padded);
+            ->wrap($this->wrap);
 
-        if ($this->content !== null) {
-            $container->content($this->content);
+        if ($this->items !== null) {
+            $stack->items($this->items);
         }
 
-        if ($this->maxWidth !== null) {
-            $container->maxWidth($this->maxWidth);
+        if ($this->direction !== null) {
+            $stack->direction($this->direction);
         }
 
         if ($this->gap !== null) {
-            $container->gap($this->gap);
+            $stack->gap($this->gap);
+        }
+
+        if ($this->alignItems !== null) {
+            $stack->alignItems($this->alignItems);
+        }
+
+        if ($this->justifyContent !== null) {
+            $stack->justifyContent($this->justifyContent);
         }
 
         if ($this->hidden) {
-            $container->dispatch(ContainerComponentEvent::HIDE);
+            $stack->dispatch(StackComponentEvent::HIDE);
         } elseif ($this->disabled) {
-            $container->dispatch(ContainerComponentEvent::DISABLE);
-        } elseif ($this->fluid) {
-            $container->dispatch(ContainerComponentEvent::SET_FLUID);
+            $stack->dispatch(StackComponentEvent::DISABLE);
+        } elseif ($this->direction === 'horizontal') {
+            $stack->dispatch(StackComponentEvent::SET_HORIZONTAL);
+        } elseif ($this->wrap) {
+            $stack->dispatch(StackComponentEvent::SET_WRAP);
         } elseif ($this->active) {
-            $container->dispatch(ContainerComponentEvent::ACTIVATE);
+            $stack->dispatch(StackComponentEvent::ACTIVATE);
         }
 
-        $container->interactState(new ContainerInteractState(
+        $stack->interactState(new StackInteractState(
             focused: $this->focused,
             hovered: $this->hovered,
-            fluid: $this->fluid,
+            wrapped: $this->wrap,
         ));
 
         if ($this->ariaLabel !== null || $this->ariaDescribedBy !== null) {
-            $accessibilityState = $container->accessibilityState();
+            $accessibilityState = $stack->accessibilityState();
 
             if ($this->ariaLabel !== null) {
                 $accessibilityState->ariaLabel = $this->ariaLabel;
@@ -90,9 +98,9 @@ class Container extends BaseW4BladeComponent
                 $accessibilityState->ariaDescribedBy = $this->ariaDescribedBy;
             }
 
-            $container->accessibilityState($accessibilityState);
+            $stack->accessibilityState($accessibilityState);
         }
 
-        return $container;
+        return $stack;
     }
 }
