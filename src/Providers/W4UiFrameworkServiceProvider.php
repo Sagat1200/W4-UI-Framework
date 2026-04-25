@@ -31,24 +31,25 @@ use W4\UI\Framework\Managers\RendererManager;
 use W4\UI\Framework\Managers\ThemeManager;
 use W4\UI\Framework\Renderers\BladeRenderer;
 use W4\UI\Framework\Support\W4UiManager;
-use W4\UI\Framework\View\Components\Forms\CheckBox as CheckBoxBladeComponent;
-use W4\UI\Framework\View\Components\Forms\FieldError as FieldErrorBladeComponent;
-use W4\UI\Framework\View\Components\Forms\HelperText as HelperTextBladeComponent;
-use W4\UI\Framework\View\Components\Forms\Input as InputBladeComponent;
-use W4\UI\Framework\View\Components\Forms\Radio as RadioBladeComponent;
-use W4\UI\Framework\View\Components\Forms\Select as SelectBladeComponent;
-use W4\UI\Framework\View\Components\Forms\TextArea as TextAreaBladeComponent;
-use W4\UI\Framework\View\Components\Forms\Toggle as ToggleBladeComponent;
-use W4\UI\Framework\View\Components\Layout\Divider as DividerBladeComponent;
+use W4\UI\Framework\Themes\NativeUI\NativeUITheme;
+use W4\UI\Framework\View\Components\Forms\CheckBox\CheckBox as CheckBoxBladeComponent;
+use W4\UI\Framework\View\Components\Forms\FieldError\FieldError as FieldErrorBladeComponent;
+use W4\UI\Framework\View\Components\Forms\HelperText\HelperText as HelperTextBladeComponent;
+use W4\UI\Framework\View\Components\Forms\Input\Input as InputBladeComponent;
+use W4\UI\Framework\View\Components\Forms\Radio\Radio as RadioBladeComponent;
+use W4\UI\Framework\View\Components\Forms\Select\Select as SelectBladeComponent;
+use W4\UI\Framework\View\Components\Forms\TextArea\TextArea as TextAreaBladeComponent;
+use W4\UI\Framework\View\Components\Forms\Toggle\Toggle as ToggleBladeComponent;
+use W4\UI\Framework\View\Components\Layout\Divider\Divider as DividerBladeComponent;
 use W4\UI\Framework\View\Components\Render as RenderComponent;
-use W4\UI\Framework\View\Components\Navigation\TabPane as TabPaneBladeComponent;
-use W4\UI\Framework\View\Components\UI\Button as ButtonBladeComponent;
-use W4\UI\Framework\View\Components\UI\Heading as HeadingBladeComponent;
-use W4\UI\Framework\View\Components\UI\Icon as IconBladeComponent;
-use W4\UI\Framework\View\Components\UI\IconButton as IconButtonBladeComponent;
-use W4\UI\Framework\View\Components\UI\Label as LabelBladeComponent;
-use W4\UI\Framework\View\Components\UI\Link as LinkBladeComponent;
-use W4\UI\Framework\View\Components\UI\Text as TextBladeComponent;
+use W4\UI\Framework\View\Components\Navigation\Tab\TabPane\TabPane as TabPaneBladeComponent;
+use W4\UI\Framework\View\Components\UI\Button\Button as ButtonBladeComponent;
+use W4\UI\Framework\View\Components\UI\Heading\Heading as HeadingBladeComponent;
+use W4\UI\Framework\View\Components\UI\Icon\Icon as IconBladeComponent;
+use W4\UI\Framework\View\Components\UI\IconButton\IconButton as IconButtonBladeComponent;
+use W4\UI\Framework\View\Components\UI\Label\Label as LabelBladeComponent;
+use W4\UI\Framework\View\Components\UI\Link\Link as LinkBladeComponent;
+use W4\UI\Framework\View\Components\UI\Text\Text as TextBladeComponent;
 
 class W4UIFrameworkServiceProvider extends ServiceProvider
 {
@@ -75,7 +76,6 @@ class W4UIFrameworkServiceProvider extends ServiceProvider
                 ->register('radio', Radio::class)
                 ->register('select', Select::class)
                 ->register('input', Input::class)
-                ->register('textarea', TextArea::class)
                 ->register('text-area', TextArea::class)
                 ->register('toggle', Toggle::class)
                 ->register('tab-pane', TabPane::class);
@@ -90,7 +90,7 @@ class W4UIFrameworkServiceProvider extends ServiceProvider
         $this->app->singleton(ThemeManager::class, function () {
             $manager = new ThemeManager();
 
-            //$manager->register('w4native', new W4NativeDaisyTheme());
+            $manager->register('w4native', new NativeUITheme());
 
             return $manager;
         });
@@ -136,7 +136,7 @@ class W4UIFrameworkServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->registerNativeUiThemeBridge();
+        // $this->registerNativeUiThemeBridge();
 
         $this->publishes([
             __DIR__ . '/../../config/w4-ui-framework.php' => config_path('w4-ui-framework.php'),
@@ -198,32 +198,32 @@ class W4UIFrameworkServiceProvider extends ServiceProvider
         return $prefix . '-' . $name;
     }
 
-    protected function registerNativeUiThemeBridge(): void
-    {
-        $nativeThemeClass = \W4\NativeUI\Tools\Themes\NativeUITheme::class;
+    // protected function registerNativeUiThemeBridge(): void
+    // {
+    //     $nativeThemeClass = \W4\NativeUI\Tools\Themes\NativeUITheme::class;
 
-        if (! class_exists($nativeThemeClass)) {
-            return;
-        }
+    //     if (! class_exists($nativeThemeClass)) {
+    //         return;
+    //     }
 
-        if (! $this->app->bound($nativeThemeClass)) {
-            return;
-        }
+    //     if (! $this->app->bound($nativeThemeClass)) {
+    //         return;
+    //     }
 
-        try {
-            $nativeTheme = $this->app->make($nativeThemeClass);
-        } catch (\Throwable) {
-            return;
-        }
+    //     try {
+    //         $nativeTheme = $this->app->make($nativeThemeClass);
+    //     } catch (\Throwable) {
+    //         return;
+    //     }
 
-        if (! is_object($nativeTheme)) {
-            return;
-        }
+    //     if (! is_object($nativeTheme)) {
+    //         return;
+    //     }
 
-        $themeManager = $this->app->make(ThemeManager::class);
+    //     $themeManager = $this->app->make(ThemeManager::class);
 
-        $themeManager->register('w4native', new NativeUiThemeAdapter($nativeTheme, 'w4native'));
-        $themeManager->register('native-ui', new NativeUiThemeAdapter($nativeTheme, 'native-ui'));
-        $themeManager->register('native', new NativeUiThemeAdapter($nativeTheme, 'native'));
-    }
+    //     $themeManager->register('w4native', new NativeUiThemeAdapter($nativeTheme, 'w4native'));
+    //     $themeManager->register('native-ui', new NativeUiThemeAdapter($nativeTheme, 'native-ui'));
+    //     $themeManager->register('native', new NativeUiThemeAdapter($nativeTheme, 'native'));
+    // }
 }
