@@ -14,6 +14,7 @@ use W4\UI\Framework\Components\Forms\TextArea\TextArea;
 use W4\UI\Framework\Components\Forms\Toggle\Toggle;
 use W4\UI\Framework\Components\Layout\Divider\Divider;
 use W4\UI\Framework\Components\Navigation\Tab\TabPane\TabPane;
+use W4\UI\Framework\Components\Navigation\Drawer\Drawer;
 use W4\UI\Framework\Components\UI\Button\Button;
 use W4\UI\Framework\Components\UI\Heading\Heading;
 use W4\UI\Framework\Components\UI\Icon\Icon;
@@ -42,6 +43,7 @@ use W4\UI\Framework\View\Components\Forms\Toggle\Toggle as ToggleBladeComponent;
 use W4\UI\Framework\View\Components\Layout\Divider\Divider as DividerBladeComponent;
 use W4\UI\Framework\View\Components\Render as RenderComponent;
 use W4\UI\Framework\View\Components\Navigation\Tab\TabPane\TabPane as TabPaneBladeComponent;
+use W4\UI\Framework\View\Components\Navigation\Drawer\Drawer as DrawerBladeComponent;
 use W4\UI\Framework\View\Components\UI\Button\Button as ButtonBladeComponent;
 use W4\UI\Framework\View\Components\UI\Heading\Heading as HeadingBladeComponent;
 use W4\UI\Framework\View\Components\UI\Icon\Icon as IconBladeComponent;
@@ -77,7 +79,8 @@ class W4UIFrameworkServiceProvider extends ServiceProvider
                 ->register('input', Input::class)
                 ->register('text-area', TextArea::class)
                 ->register('toggle', Toggle::class)
-                ->register('tab-pane', TabPane::class);
+                ->register('tab-pane', TabPane::class)
+                ->register('drawer', Drawer::class);
         });
 
         $this->app->singleton(ComponentFactory::class, function ($app) {
@@ -166,6 +169,7 @@ class W4UIFrameworkServiceProvider extends ServiceProvider
         Blade::component($this->componentAlias($prefix, 'text-area'), TextAreaBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'toggle'), ToggleBladeComponent::class);
         Blade::component($this->componentAlias($prefix, 'tab-pane'), TabPaneBladeComponent::class);
+        Blade::component($this->componentAlias($prefix, 'drawer'), DrawerBladeComponent::class);
     }
 
     protected function resolveComponentPrefix(): string
