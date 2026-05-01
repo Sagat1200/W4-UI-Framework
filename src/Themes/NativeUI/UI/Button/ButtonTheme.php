@@ -49,6 +49,14 @@ class ButtonTheme implements ComponentThemeResolverInterface
 
     protected function collectStates(array $context): array
     {
+        $rawState = $context['attributes']['data-w4-state'] ?? null;
+
+        if (is_string($rawState) && trim($rawState) !== '') {
+            $states = preg_split('/\s+/', strtolower(trim($rawState))) ?: [];
+
+            return array_values(array_unique(array_filter($states, fn($state) => $state !== '')));
+        }
+
         $states = [];
 
         if (isset($context['state']) && is_scalar($context['state'])) {

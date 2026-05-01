@@ -9,10 +9,14 @@ use W4\UI\Framework\Components\Navigation\Drawer\DrawerComponentState;
 use W4\UI\Framework\Components\Navigation\Drawer\DrawerInteractState;
 use W4\UI\Framework\Components\Navigation\Drawer\DrawerStateMachine;
 use W4\UI\Framework\Core\BaseComponent;
+use W4\UI\Framework\Support\Traits\InteractsWithSize;
 use W4\UI\Framework\Support\Traits\InteractsWithState;
+use W4\UI\Framework\Support\Traits\InteractsWithVariant;
 
 class Drawer extends BaseComponent
 {
+    use InteractsWithVariant;
+    use InteractsWithSize;
     use InteractsWithState;
 
     protected bool $open = false;
